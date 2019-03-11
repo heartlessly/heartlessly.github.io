@@ -111,7 +111,7 @@
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47570.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47624.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47626.png">
-<meta property="og:updated_time" content="2019-03-11T11:12:55.944Z">
+<meta property="og:updated_time" content="2019-03-11T22:44:41.406Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
 <meta name="twitter:description" content="常用距离算法详解在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。  一、欧氏距离（欧几里得度量）欧氏距离，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（">
@@ -424,12 +424,24 @@
                 
               
 
-              <time title="创建时间：2019-03-11 14:48:17 / 修改时间：19:12:55" itemprop="dateCreated datePublished" datetime="2019-03-11T14:48:17+08:00">2019-03-11</time>
+              <time title="创建时间：2019-03-11 14:48:17" itemprop="dateCreated datePublished" datetime="2019-03-11T14:48:17+08:00">2019-03-11</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-12 06:44:41" itemprop="dateModified" datetime="2019-03-12T06:44:41+08:00">2019-03-12</time>
               
             
           </span>
@@ -486,7 +498,7 @@
 <p>由此可得，<strong>三维空间</strong> 中欧氏距离的距离公式为：</p>
 <p>$$\left | AB \right | = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2 + \left ( z_2 - z_1 \right )^2}$$</p>
 <p>$$|P| = \sqrt{x^2+y^2+z^2}$$</p>
-<p><strong><a href="https://www.luogu.org/problemnew/show/P3958" target="_blank" rel="noopener">NOIP2017提高组 奶酪</a></strong> 就运用了这一知识，可以作为欧氏距离的 <strong>例题</strong>。</p>
+<p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P3958" target="_blank" rel="noopener">[Luogu]P3958</a></strong></p>
 <p>以此类推，我们就得到了 $n$ <strong>维空间</strong> 中欧氏距离的距离公式：</p>
 <p>$$d(x,y) = \sqrt{\left ( x_1 - y_1 \right )^2 + \left ( x_2 - y_2 \right )^2 + \cdot \cdot \cdot +\left ( x_n - y_n \right )^2}$$<br>$$ = \sqrt{\sum_{i = 1}^{n}(x_i - y_i)^2}$$</p>
 <p>欧氏距离虽然很有用，但也有明显的缺点。两个整点计算其欧氏距离时，往往答案是浮点型，会存在一定误差。</p>
@@ -520,7 +532,7 @@
 <p>$d(i,j)\leq d(i,k)+d(k,j)$</p>
 </li>
 </ul>
-<p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">P5098</a></strong></p>
+<p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong></p>
 <p><strong>解析：</strong></p>
 <p><del>（不要被难度吓住，是假的）</del></p>
 <p>根据题意，对于式子$|x_1-x_2|+|y_1-y_2|$，我们可以假设 $x_1 - x_2 \geq 0$，根据 $y_1 - y_2$ 的符号分成两种情况：</p>
@@ -567,7 +579,7 @@
 <p>所以，<strong>曼哈顿距离</strong> 与 <strong>切比雪夫距离</strong> 之间会不会有联系呢？</p>
 <p>接下来我们简略证明一下：</p>
 <p>假设 $A(x_1,y_1),B(x_2,y_2)$，</p>
-<p>$A,B$ 两点的 <strong>曼哈顿距离</strong> 为：<br>$$d(A,B)=|x_1 - x_2| + |y_1 - y_2|$$<br>$$=|x_1 - x_2| + |y_1 - y_2|$$<br>$$= \max\begin{Bmatrix} x_1 - x_2 + y_1 - y_2, x_1 - x_2 + y_2 - y_1,x_2 - x_1 + y_1 - y_2, x_2 - x_1 + y_2 - y_1\end{Bmatrix} $$<br>   （ 把绝对值拆开，能够得到四个值，这四个值中的最大值是两个<strong> 非负数 </strong>之和，即 <strong>曼哈顿距离</strong> ）<br>$$= \max\begin{Bmatrix}|(x_1 + y_1) - (x_2 + y_2)|, |(x_1 - y_2) - (x_2 - y_2)|\end{Bmatrix}$$</p>
+<p>$A,B$ 两点的 <strong>曼哈顿距离</strong> 为：<br>$$d(A,B)=|x_1 - x_2| + |y_1 - y_2|$$<br>$$=|x_1 - x_2| + |y_1 - y_2|$$<br>$$= \max\begin{Bmatrix} x_1 - x_2 + y_1 - y_2, x_1 - x_2 + y_2 - y_1,x_2 - x_1 + y_1 - y_2, x_2 - x_1 + y_2 - y_1\end{Bmatrix} $$<br>   （ 把绝对值拆开，能够得到四个值，这四个值中的最大值是两个 <strong>非负数</strong> 之和，即 <strong>曼哈顿距离</strong> ）<br>$$= \max\begin{Bmatrix}|(x_1 + y_1) - (x_2 + y_2)|, |(x_1 - y_2) - (x_2 - y_2)|\end{Bmatrix}$$</p>
 <p>我们很容易发现，这就是 $(x_1 + y_1,x_1 - y_1), (x_2 + y_2,x_2 - y_2)$ 两点之间的 <strong>切比雪夫距离</strong>。</p>
 <p>所以将每一个点 $(x,y)$ 转化为 $(x + y, x - y)$，新坐标系下的  <strong>切比雪夫距离</strong> 即为原坐标系下的 <strong>曼哈顿距离</strong>。</p>
 <p>同理，$A,B$ 两点的 <strong>切比雪夫距离</strong> 为：<br>$$d(A,B)=\max\begin{Bmatrix} |x_1 - x_2|,|y_1 - y_2|\end{Bmatrix} $$<br>$$=\max\begin{Bmatrix} |\frac{x_1 + y_1}{2}-\frac{x_2 + y_2}{2}|+|\frac{x_1 - y_1}{2}-\frac{x_2 - y_2}{2}|\end{Bmatrix} $$</p>
@@ -587,9 +599,9 @@
 <p>原坐标系中的 <strong>切比雪夫距离</strong> $=$ 新坐标系中的 <strong>曼哈顿距离</strong></p>
 <p>碰到求 <strong>切比雪夫距离</strong> 或 <strong>曼哈顿距离</strong> 的题目时，我们往往可以相互转化来求解。两种距离在不同的题目中有不同的优缺点，应该灵活运用。</p>
 <p><strong>例题：</strong></p>
-<p><strong><a href="https://www.luogu.org/problemnew/show/P4648" target="_blank" rel="noopener">P4648</a></strong>（曼哈顿距离转切比雪夫距离）</p>
-<p><strong><a href="https://www.luogu.org/problemnew/show/P3964" target="_blank" rel="noopener">P3964</a></strong>（切比雪夫距离转曼哈顿距离）</p>
-<p>最后给出 <strong><a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">P5098</a></strong> 的第二种解法：</p>
+<p><strong><a href="https://www.luogu.org/problemnew/show/P4648" target="_blank" rel="noopener">[Luogu]P4648</a></strong>（曼哈顿距离转切比雪夫距离）</p>
+<p><strong><a href="https://www.luogu.org/problemnew/show/P3964" target="_blank" rel="noopener">[Luogu]P3964</a></strong>（切比雪夫距离转曼哈顿距离）</p>
+<p>最后给出 <strong><a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong> 的第二种解法：</p>
 <p>我们考虑将题目所求的 <strong>曼哈顿距离</strong> 转化为 <strong>切比雪夫距离</strong>，即把每个点的坐标 $(x,y)$ 变为 $(x + y, x - y)$。</p>
 <p>所求的答案就变为 $\max_{i,j\in n}\begin{Bmatrix} \max\begin{Bmatrix} |x_i - x_j|,|y_i - y_j|\end{Bmatrix}\end{Bmatrix}$</p>
 <p>现要使得横坐标之差和纵坐标之差最大，只需要预处理出 $x,y$ 的最大值和最小值即可。</p>
