@@ -97,20 +97,20 @@
 
 
   <meta name="description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
-<meta name="keywords" content="Luogu,题解,线段树,SPOJ">
+<meta name="keywords" content="线段树,SPOJ,Luogu,题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/12/[SPOJ1043]GSS1/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/53832.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/53853.png">
-<meta property="og:updated_time" content="2019-03-12T06:59:07.143Z">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipHcd.png">
+<meta property="og:updated_time" content="2019-03-12T07:52:09.133Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
 <meta name="twitter:description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
-<meta name="twitter:image" content="https://cdn.luogu.org/upload/pic/53832.png">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
 
 
 
@@ -419,7 +419,7 @@
                 
               
 
-              <time title="创建时间：2019-03-12 10:41:33 / 修改时间：14:59:07" itemprop="dateCreated datePublished" datetime="2019-03-12T10:41:33+08:00">2019-03-12</time>
+              <time title="创建时间：2019-03-12 10:41:33 / 修改时间：15:52:09" itemprop="dateCreated datePublished" datetime="2019-03-12T10:41:33+08:00">2019-03-12</time>
             
 
             
@@ -476,13 +476,13 @@
 <p>$res[x]$ 表示该区间内的最大子段和。</p>
 <p>与普通的线段树不同，这道题维护的信息很多，我们先来分析该题最重要的 $\mathrm{pushUp}$ 与 $\mathrm{query}$ 操作。</p>
 <h3 id="mathrm-pushUp-操作："><a href="#mathrm-pushUp-操作：" class="headerlink" title="$\mathrm{pushUp}$ 操作："></a>$\mathrm{pushUp}$ 操作：</h3><p>假如我们知道一个区间的左右子区间信息，如何更新该区间的最大子段和？</p>
-<p><img src="https://cdn.luogu.org/upload/pic/53832.png" alt></p>
+<p><img src="https://s2.ax1x.com/2019/03/12/AipbjA.png" alt="AipbjA.png"></p>
 <p>很显然，答案可能为 <strong>左区间的最大子段和</strong> 或 <strong>右区间的最大子段和</strong> 。</p>
 <p>除此之外，合并区间后，答案也有可能为 <strong>左区间的右起最大子段和 + 右区间的左起最大子段和</strong>，如上图。</p>
 <p>由此我们可以得到代码：</p>
 <p>$$res[x]=\max\begin{Bmatrix}res[lson(x)],res[rson(x)],rsum[lson(x)]+lsum[rson(x)]\end{Bmatrix}$$</p>
 <p>那如何更新该区间的 <strong>左起最大子段和</strong> 和 <strong>右起最大子段和</strong> 呢？</p>
-<p><img src="https://cdn.luogu.org/upload/pic/53853.png" alt></p>
+<p><img src="https://s2.ax1x.com/2019/03/12/AipHcd.png" alt="AipHcd.png"></p>
 <p>区间左起最大子段和可以是 <strong>左区间的左起最大子段和</strong> 或 <strong>左区间的区间和 + 右区间的左起最大子段和</strong>，如上图。</p>
 <p>右起最大子段和将上述操作反过来即可。</p>
 <p>代码实现如下：</p>
@@ -512,13 +512,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
-          
-            <a href="/tags/题解/" rel="tag"># 题解</a>
-          
             <a href="/tags/线段树/" rel="tag"># 线段树</a>
           
             <a href="/tags/SPOJ/" rel="tag"># SPOJ</a>
+          
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+          
+            <a href="/tags/题解/" rel="tag"># 题解</a>
           
         </div>
       
