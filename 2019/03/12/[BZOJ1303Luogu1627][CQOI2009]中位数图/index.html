@@ -96,20 +96,20 @@
 
 
 
-  <meta name="description" content="Description:给定长度为 $n$ 的序列，求有多少包含 $b$  的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为">
+  <meta name="description" content="Source:BZOJ1303 Luogu1627 Description:给定长度为 $n$ 的序列，求有多少包含 $b$ 的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$">
 <meta name="keywords" content="数学,BZOJ,Luogu,CQOI,2009,题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「BZOJ1303&#x2F;Luogu1627」「CQOI2009」中位数图">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/12/[BZOJ1303Luogu1627][CQOI2009]中位数图/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description:给定长度为 $n$ 的序列，求有多少包含 $b$  的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为">
+<meta property="og:description" content="Source:BZOJ1303 Luogu1627 Description:给定长度为 $n$ 的序列，求有多少包含 $b$ 的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/51589.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/51610.png">
-<meta property="og:updated_time" content="2019-03-11T23:39:30.828Z">
+<meta property="og:updated_time" content="2019-03-12T01:35:52.620Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「BZOJ1303&#x2F;Luogu1627」「CQOI2009」中位数图">
-<meta name="twitter:description" content="Description:给定长度为 $n$ 的序列，求有多少包含 $b$  的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为">
+<meta name="twitter:description" content="Source:BZOJ1303 Luogu1627 Description:给定长度为 $n$ 的序列，求有多少包含 $b$ 的奇数长度的序列中位数为 $b$ 。  Solution:因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$">
 <meta name="twitter:image" content="https://cdn.luogu.org/upload/pic/51589.png">
 
 
@@ -419,7 +419,7 @@
                 
               
 
-              <time title="创建时间：2019-03-12 06:55:10 / 修改时间：07:39:30" itemprop="dateCreated datePublished" datetime="2019-03-12T06:55:10+08:00">2019-03-12</time>
+              <time title="创建时间：2019-03-12 06:55:10 / 修改时间：09:35:52" itemprop="dateCreated datePublished" datetime="2019-03-12T06:55:10+08:00">2019-03-12</time>
             
 
             
@@ -464,7 +464,9 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>给定长度为 $n$ 的序列，求有多少包含 $b$  的奇数长度的序列中位数为 $b$ 。</p>
+        <h2 id="Source"><a href="#Source" class="headerlink" title="Source:"></a>Source:</h2><p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1303" target="_blank" rel="noopener">BZOJ1303</a></strong></p>
+<p><strong><a href="https://www.luogu.org/problemnew/show/P1627" target="_blank" rel="noopener">Luogu1627</a></strong></p>
+<h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>给定长度为 $n$ 的序列，求有多少包含 $b$ 的奇数长度的序列中位数为 $b$ 。</p>
 <hr>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。</p>
 <h3 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">7 4</span><br><span class="line">5 7 2 4 3 1 6</span><br></pre></td></tr></table></figure>
@@ -716,7 +718,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-Input"><span class="nav-number">2.1.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-Output"><span class="nav-number">2.2.</span> <span class="nav-text">Sample Output:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">2.3.</span> <span class="nav-text">Example:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">3.</span> <span class="nav-text">Code</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Source"><span class="nav-number">1.</span> <span class="nav-text">Source:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">2.</span> <span class="nav-text">Description:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">3.</span> <span class="nav-text">Solution:</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-Input"><span class="nav-number">3.1.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sample-Output"><span class="nav-number">3.2.</span> <span class="nav-text">Sample Output:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">3.3.</span> <span class="nav-text">Example:</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">4.</span> <span class="nav-text">Code</span></a></li></ol></div>
             
 
           </div>
