@@ -96,21 +96,21 @@
 
 
 
-  <meta name="description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
-<meta name="keywords" content="Luogu,题解,线段树,SPOJ">
+  <meta name="description" content="Source:[Luogu]SP1043 [SPOJ]1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段">
+<meta name="keywords" content="线段树,SPOJ,Luogu,题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/12/[SPOJ1043]GSS1/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
+<meta property="og:description" content="Source:[Luogu]SP1043 [SPOJ]1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipHcd.png">
 <meta property="og:image" content="https://i.loli.net/2019/03/13/5c889bcf96aac.png">
-<meta property="og:updated_time" content="2019-03-13T06:53:51.888Z">
+<meta property="og:updated_time" content="2019-03-13T07:24:36.744Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
-<meta name="twitter:description" content="Source:[Luogu]SP1043 SPOJ1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段树，">
+<meta name="twitter:description" content="Source:[Luogu]SP1043 [SPOJ]1043 Description:给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。 Solution:如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。 很容易想到用数据结构来维护。 我们建立一棵线段">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
 
 
@@ -437,7 +437,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-13 14:53:51" itemprop="dateModified" datetime="2019-03-13T14:53:51+08:00">2019-03-13</time>
+                <time title="修改时间：2019-03-13 15:24:36" itemprop="dateModified" datetime="2019-03-13T15:24:36+08:00">2019-03-13</time>
               
             
           </span>
@@ -478,7 +478,7 @@
 
       
         <h2 id="Source"><a href="#Source" class="headerlink" title="Source:"></a>Source:</h2><p><strong><a href="https://www.luogu.org/problemnew/show/SP1043" target="_blank" rel="noopener">[Luogu]SP1043</a></strong></p>
-<p><strong><a href="https://www.spoj.com/problems/GSS1/" target="_blank" rel="noopener">SPOJ1043</a></strong></p>
+<p><strong><a href="https://www.spoj.com/problems/GSS1/" target="_blank" rel="noopener">[SPOJ]1043</a></strong></p>
 <h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>给定一个长度为 $n (n \leq 50000,|a[i]| \leq 15007)$ 的整数序列，对于 $m$ 个询问 $l,r$，求区间 $[l,r]$ 的最大子段和。</p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>如果用朴素的最大子段和算法，时间复杂度为 $O(nm)$，一定会超时。</p>
 <p>很容易想到用数据结构来维护。</p>
@@ -531,13 +531,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
-          
-            <a href="/tags/题解/" rel="tag"># 题解</a>
-          
             <a href="/tags/线段树/" rel="tag"># 线段树</a>
           
             <a href="/tags/SPOJ/" rel="tag"># SPOJ</a>
+          
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+          
+            <a href="/tags/题解/" rel="tag"># 题解</a>
           
         </div>
       
@@ -634,7 +634,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
