@@ -104,7 +104,7 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Source:[Luogu]SP2713 [Luogu]P4145 [BZOJ]3211 [SPOJ]2713 Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-13T08:06:11.627Z">
+<meta property="og:updated_time" content="2019-03-13T08:08:44.615Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ2713&#x2F;BZOJ3211」GSS4 - Can you answer these queries Ⅳ&#x2F;花神游历各国">
 <meta name="twitter:description" content="Source:[Luogu]SP2713 [Luogu]P4145 [BZOJ]3211 [SPOJ]2713 Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
@@ -416,7 +416,7 @@
                 
               
 
-              <time title="创建时间：2019-03-13 15:20:45 / 修改时间：16:06:11" itemprop="dateCreated datePublished" datetime="2019-03-13T15:20:45+08:00">2019-03-13</time>
+              <time title="创建时间：2019-03-13 15:20:45 / 修改时间：16:08:44" itemprop="dateCreated datePublished" datetime="2019-03-13T15:20:45+08:00">2019-03-13</time>
             
 
             
@@ -474,7 +474,7 @@
 <p>但是会发现懒惰标记不能打，那该怎么办呢？</p>
 <p>考虑暴力修改：</p>
 <p>$a[i]$ 最大为 $10^{18}$。</p>
-<p>$$\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}} = 1$$</p>
+<p>$$\left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1$$</p>
 <p>换言之，</p>
 <p>$$\left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1$$</p>
 <p>一个数最多开 $6$ 次平方根就会变成 $1$ 。</p>
