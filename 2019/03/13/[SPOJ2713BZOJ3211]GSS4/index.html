@@ -96,18 +96,18 @@
 
 
 
-  <meta name="description" content="Source:[Luogu]SP2713 [Luogu]P4145 [BZOJ]3211 [SPOJ]2713 Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
-<meta name="keywords" content="BZOJ,Luogu,题解,线段树,SPOJ">
+  <meta name="description" content="Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
+<meta name="keywords" content="线段树,SPOJ,Luogu,题解,BZOJ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「SPOJ2713&#x2F;BZOJ3211」GSS4 - Can you answer these queries Ⅳ&#x2F;花神游历各国">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/13/[SPOJ2713BZOJ3211]GSS4/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Source:[Luogu]SP2713 [Luogu]P4145 [BZOJ]3211 [SPOJ]2713 Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
+<meta property="og:description" content="Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-13T08:08:44.615Z">
+<meta property="og:updated_time" content="2019-03-13T10:13:53.078Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ2713&#x2F;BZOJ3211」GSS4 - Can you answer these queries Ⅳ&#x2F;花神游历各国">
-<meta name="twitter:description" content="Source:[Luogu]SP2713 [Luogu]P4145 [BZOJ]3211 [SPOJ]2713 Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
+<meta name="twitter:description" content="Description:给定 $n$ 个数，已知： $$\sum_{i=1}^{n}a[i] \leq 10^{18}$$ $m$ 个操作： $0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。">
 
 
 
@@ -416,7 +416,7 @@
                 
               
 
-              <time title="创建时间：2019-03-13 15:20:45 / 修改时间：16:08:44" itemprop="dateCreated datePublished" datetime="2019-03-13T15:20:45+08:00">2019-03-13</time>
+              <time title="创建时间：2019-03-13 15:20:45 / 修改时间：18:13:53" itemprop="dateCreated datePublished" datetime="2019-03-13T15:20:45+08:00">2019-03-13</time>
             
 
             
@@ -461,15 +461,16 @@
       
 
       
-        <h2 id="Source"><a href="#Source" class="headerlink" title="Source:"></a>Source:</h2><p><strong><a href="https://www.luogu.org/problemnew/show/SP2713" target="_blank" rel="noopener">[Luogu]SP2713</a></strong></p>
-<p><strong><a href="https://www.luogu.org/problemnew/show/P4145" target="_blank" rel="noopener">[Luogu]P4145</a></strong></p>
-<p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=3211" target="_blank" rel="noopener">[BZOJ]3211</a></strong></p>
-<p><strong><a href="https://www.spoj.com/problems/GSS4/" target="_blank" rel="noopener">[SPOJ]2713</a></strong></p>
-<h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>给定 $n$ 个数，已知：</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>给定 $n$ 个数，已知：</p>
 <p>$$\sum_{i=1}^{n}a[i] \leq 10^{18}$$</p>
 <p>$m$ 个操作：</p>
 <p>$0\ x\ y:$ 将区间 $[x,y]$ 内的每一个数开 <strong>平方根（下取整）</strong> 。</p>
 <p>$1\ x\ y:$ 询问区间 $[x,y]$ 所有数的和。</p>
+<a id="more"></a>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source:"></a>Source:</h2><p><strong><a href="https://www.luogu.org/problemnew/show/SP2713" target="_blank" rel="noopener">[Luogu]SP2713</a></strong></p>
+<p><strong><a href="https://www.luogu.org/problemnew/show/P4145" target="_blank" rel="noopener">[Luogu]P4145</a></strong></p>
+<p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=3211" target="_blank" rel="noopener">[BZOJ]3211</a></strong></p>
+<p><strong><a href="https://www.spoj.com/problems/GSS4/" target="_blank" rel="noopener">[SPOJ]2713</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution:"></a>Solution:</h2><p>因为要维护区间和，所以我们想到用线段树来维护。</p>
 <p>但是会发现懒惰标记不能打，那该怎么办呢？</p>
 <p>考虑暴力修改：</p>
@@ -506,15 +507,15 @@
       
         <div class="post-tags">
           
-            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
+            <a href="/tags/线段树/" rel="tag"># 线段树</a>
+          
+            <a href="/tags/SPOJ/" rel="tag"># SPOJ</a>
           
             <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/题解/" rel="tag"># 题解</a>
           
-            <a href="/tags/线段树/" rel="tag"># 线段树</a>
-          
-            <a href="/tags/SPOJ/" rel="tag"># SPOJ</a>
+            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
         </div>
       
@@ -724,7 +725,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Source"><span class="nav-number">1.</span> <span class="nav-text">Source:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">2.</span> <span class="nav-text">Description:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">3.</span> <span class="nav-text">Solution:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">4.</span> <span class="nav-text">Code</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source"><span class="nav-number">2.</span> <span class="nav-text">Source:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">3.</span> <span class="nav-text">Solution:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">4.</span> <span class="nav-text">Code</span></a></li></ol></div>
             
 
           </div>

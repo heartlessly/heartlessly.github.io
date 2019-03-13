@@ -96,13 +96,13 @@
 
 
 
-  <meta name="description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。  一、欧氏距离（欧几里得度量）欧氏距离，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距">
-<meta name="keywords" content="数学,Luogu,距离">
+  <meta name="description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
+<meta name="keywords" content="Luogu,数学,距离">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用距离算法详解">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/11/常用距离算法详解/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。  一、欧氏距离（欧几里得度量）欧氏距离，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距">
+<meta property="og:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47565.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47571.png">
@@ -111,10 +111,10 @@
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47570.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47624.png">
 <meta property="og:image" content="https://cdn.luogu.org/upload/pic/47626.png">
-<meta property="og:updated_time" content="2019-03-13T05:40:15.223Z">
+<meta property="og:updated_time" content="2019-03-13T10:12:59.211Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
-<meta name="twitter:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。  一、欧氏距离（欧几里得度量）欧氏距离，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距">
+<meta name="twitter:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
 <meta name="twitter:image" content="https://cdn.luogu.org/upload/pic/47565.png">
 
 
@@ -441,7 +441,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-13 13:40:15" itemprop="dateModified" datetime="2019-03-13T13:40:15+08:00">2019-03-13</time>
+                <time title="修改时间：2019-03-13 18:12:59" itemprop="dateModified" datetime="2019-03-13T18:12:59+08:00">2019-03-13</time>
               
             
           </span>
@@ -482,6 +482,7 @@
 
       
         <p>在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 <strong>三种</strong> 常见的距离算法，分别是 <strong>欧氏距离</strong>，<strong>曼哈顿距离</strong>，<strong>切比雪夫距离</strong> 。</p>
+<a id="more"></a>
 <hr>
 <h2 id="一、欧氏距离（欧几里得度量）"><a href="#一、欧氏距离（欧几里得度量）" class="headerlink" title="一、欧氏距离（欧几里得度量）"></a>一、欧氏距离（欧几里得度量）</h2><p><strong>欧氏距离</strong>，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距离）。在二维和三维空间中的欧氏距离就是两点之间的实际距离。—— <em><strong>来源：<a href="https://baike.baidu.com/item/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E5%BA%A6%E9%87%8F/1274107?fromtitle=%E6%AC%A7%E6%B0%8F%E8%B7%9D%E7%A6%BB&amp;fromid=1798948" target="_blank" rel="noopener">百度百科</a></strong></em> </p>
 <p><strong>欧氏距离</strong> 是最易于理解的一种距离算法。在数学的平面直角坐标系中，设点 $A,B$ 的坐标分别为 $A(x_1,y_1),B(x_2,y_2)$，求点 $A,B$ 之间的距离，我们一般会使用如下公式：</p>
@@ -630,9 +631,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数学/" rel="tag"># 数学</a>
-          
             <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+          
+            <a href="/tags/数学/" rel="tag"># 数学</a>
           
             <a href="/tags/距离/" rel="tag"># 距离</a>
           
