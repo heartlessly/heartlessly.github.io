@@ -8,11 +8,11 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
+        <tag>BZOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -23,10 +23,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -37,10 +37,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -51,12 +51,12 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
         <tag>数学</tag>
         <tag>BZOJ</tag>
-        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
-        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -67,8 +67,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>Luogu</tag>
+        <tag>数学</tag>
         <tag>距离</tag>
       </tags>
   </entry>
