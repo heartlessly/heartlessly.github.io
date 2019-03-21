@@ -2,11 +2,14 @@
 <search>
   <entry>
     <title><![CDATA[同余问题知识归纳]]></title>
-    <url>%2F2019%2F03%2F18%2F%E5%90%8C%E4%BD%99%E9%97%AE%E9%A2%98%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%2F</url>
+    <url>%2F2019%2F03%2F18%2F%E5%90%8C%E4%BD%99%E9%97%AE%E9%A2%98%E7%9F%A5%E8%AF%86%E5%BD%92%E7%BA%B3%2F</url>
     <content type="text"><![CDATA[同余问题在数论中是最重要也是最基础的部分之一。 给定正整数 $m$ 与 整数 $a,b$，如果满足 $m\ |\ a - b$，或者说 $a\ \%\ m = b\ \%\ m$，则称 $a$ 与 $b$ 对模 $m$ 同余，记为 $a \equiv b \pmod m$，这个式子称作 同余式 。 e.g. $7 \equiv 1 \pmod 3​$ 同余式的性质自反性$a \equiv a \pmod m$ 对称性若 $a \equiv b \pmod m$，则 $b \equiv a \pmod m$ 。 传递性若 $a \equiv b \pmod m$，且 $b \equiv c \pmod m$，则 $a \equiv c \pmod m$ 。 同加性若 $a \equiv b \pmod m$，则 $a + c \equiv b + c \pmod m$ 。 同乘性若 $a \equiv b \pmod m$，则 $a \times c \equiv b \times c \pmod m$ 若 $a \equiv b \pmod m$，且 $c \equiv d \pmod m$，则 $a \times c \equiv b \times d \pmod m$ 同幂性若 $a \equiv b \pmod m​$，则 $a ^ n \equiv b ^ n \pmod m​$ 同除性注意，同余式不具有同除性，]]></content>
+      <categories>
+        <category>OI</category>
+      </categories>
       <tags>
-        <tag>数学</tag>
         <tag>数论</tag>
+        <tag>数学</tag>
       </tags>
   </entry>
   <entry>
@@ -17,11 +20,11 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
+        <tag>BZOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -32,10 +35,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -46,10 +49,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -60,12 +63,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
+        <tag>题解</tag>
+        <tag>BZOJ</tag>
+        <tag>数学</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
-        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -76,8 +79,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数学</tag>
         <tag>Luogu</tag>
+        <tag>数学</tag>
         <tag>距离</tag>
       </tags>
   </entry>
