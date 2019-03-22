@@ -15,7 +15,7 @@
   <entry>
     <title><![CDATA[伸展树(Splay)小结]]></title>
     <url>%2F2019%2F03%2F21%2F%E4%BC%B8%E5%B1%95%E6%A0%91Splay%E5%B0%8F%E7%BB%93%2F</url>
-    <content type="text"><![CDATA[前置知识二叉查找树(BST) 简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树。它能在 $O(log\ n)$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 LCT 的辅助树，可以说是一种万能的平衡树。 咕咕咕]]></content>
+    <content type="text"><![CDATA[前置知识二叉查找树(BST) 线段树 简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树。它能在 $O(log\ n)$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 LCT 的辅助树，可以说是一种万能的平衡树。 原理咕咕咕]]></content>
       <categories>
         <category>OI</category>
       </categories>
@@ -46,11 +46,11 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -61,10 +61,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -75,10 +75,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -89,12 +89,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>数学</tag>
         <tag>BZOJ</tag>
+        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -105,8 +105,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数学</tag>
+        <tag>Luogu</tag>
         <tag>笔记</tag>
         <tag>距离</tag>
       </tags>
