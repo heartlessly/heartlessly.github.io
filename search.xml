@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[二叉查找树(BST)简介]]></title>
+    <url>%2F2019%2F03%2F21%2F%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91(BST)%E7%AE%80%E4%BB%8B%2F</url>
+    <content type="text"><![CDATA[介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质： 如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。 通俗地讲：二叉查找树上点的权值，左儿子 &lt; 根节点 &lt; 右儿子 。 根据这个性质，我们很容易发现二叉查找树的中序遍历是一个单调不减的序列。 那么，二叉查找树有什么作用呢？ 对于一个长度为 $8$ 的序列： $1,\ 15,\ 5,\ 3,\ 8,\ 10,\ 9,\ 12,\ 10$，该如何找到这个序列第 $k$ 大的数，并且支持插入与删除元素呢？如果我们将其排序再进行查询，时间复杂度为 $O(n\ log\ n)$，这显然不够优秀。因此我们考虑构造出一棵二叉查找树，如图。 插入假设我们要向上述序列插入一个数 $11​$，我们从根节点开始。 我们发现 $11 &gt; 9$，因此我们把 $11$ 放到 $9$ 的右儿子。 此时 $12$ 比 $11$ 大了，为了保持二叉搜索树的性质，我们把 $11$ 放到 $12​$ 的左儿子。 $11 &gt; 10$，本来应该让 $11$ 和 $10$ 的右儿子继续比较，可是 $10$ 没有右儿子，因此我们把 $11$ 插入到该位置。 小结：依次比较要插入的数和当前节点的值，如果大于当前节点，就放到该结点的右儿子，如果小于当前节点，就放到该结点的左儿子，重复上述操作，直到下放的位置没有结点。如果中途碰到与某个节点相等，我们再定义一个 $cnt$ 数组，表示当前节点值的个数，并且加上 $1​$ 。这样我们就完成了一个数的插入过程。 删除类似插入的过程，还是依次比较要删除的数和当前节点的值，不断下放，当找到目标节点时，给该节点值的个数减 $1$ 。如果对于节点 $x$，$cnt[x] = 0$， 则表示当前位置没有节点。当一个位置没有节点时，这棵树依旧满足二叉查找树的性质。 查询前驱$x$ 的前驱定义为小于 $x$ 的最大的数。那么如何找 $x​$ 的前驱呢？ 这里以 $6​$ 为例。 后继$x​$ 的后继定义为大于 $x​$ 的最小的数。]]></content>
+      <categories>
+        <category>OI</category>
+      </categories>
+      <tags>
+        <tag>平衡树</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[伸展树(Splay)小结]]></title>
+    <url>%2F2019%2F03%2F21%2F%E4%BC%B8%E5%B1%95%E6%A0%91(Splay)%E5%B0%8F%E7%BB%93%2F</url>
+    <content type="text"><![CDATA[前置知识简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树。]]></content>
+      <categories>
+        <category>OI</category>
+      </categories>
+      <tags>
+        <tag>平衡树</tag>
+        <tag>Splay</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[同余问题知识归纳]]></title>
     <url>%2F2019%2F03%2F18%2F%E5%90%8C%E4%BD%99%E9%97%AE%E9%A2%98%E7%9F%A5%E8%AF%86%E5%BD%92%E7%BA%B3%2F</url>
     <content type="text"><![CDATA[同余问题在数论中是最重要也是最基础的部分之一。 给定正整数 $m$ 与 整数 $a,b$，如果满足 $m\ |\ a - b$，或者说 $a\ \%\ m = b\ \%\ m$，则称 $a$ 与 $b$ 对模 $m$ 同余，记为 $a \equiv b \pmod m$，这个式子称作 同余式 。 e.g. $7 \equiv 1 \pmod 3​$ 同余式的性质自反性$a \equiv a \pmod m$ 对称性若 $a \equiv b \pmod m$，则 $b \equiv a \pmod m$ 。 传递性若 $a \equiv b \pmod m$，且 $b \equiv c \pmod m$，则 $a \equiv c \pmod m$ 。 同加性若 $a \equiv b \pmod m$，则 $a + c \equiv b + c \pmod m$ 。 同乘性若 $a \equiv b \pmod m$，则 $a \times c \equiv b \times c \pmod m$ 若 $a \equiv b \pmod m$，且 $c \equiv d \pmod m$，则 $a \times c \equiv b \times d \pmod m$ 同幂性若 $a \equiv b \pmod m​$，则 $a ^ n \equiv b ^ n \pmod m​$ 同除性注意，同余式不具有同除性，]]></content>
@@ -8,8 +31,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论</tag>
         <tag>数学</tag>
+        <tag>数论</tag>
       </tags>
   </entry>
   <entry>
@@ -20,11 +43,11 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -35,10 +58,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -49,10 +72,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
-        <tag>SPOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -63,12 +86,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>数学</tag>
+        <tag>BZOJ</tag>
+        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -79,8 +102,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数学</tag>
+        <tag>Luogu</tag>
         <tag>距离</tag>
       </tags>
   </entry>
