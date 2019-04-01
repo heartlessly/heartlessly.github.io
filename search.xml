@@ -36,8 +36,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>平衡树</tag>
         <tag>笔记</tag>
+        <tag>平衡树</tag>
       </tags>
   </entry>
   <entry>
@@ -48,9 +48,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>笔记</tag>
         <tag>平衡树</tag>
         <tag>Splay</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -61,9 +61,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论</tag>
         <tag>数学</tag>
         <tag>笔记</tag>
-        <tag>数论</tag>
       </tags>
   </entry>
   <entry>
@@ -76,9 +76,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
+        <tag>BZOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -119,8 +119,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>数学</tag>
         <tag>BZOJ</tag>
+        <tag>数学</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
       </tags>
