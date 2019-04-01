@@ -98,24 +98,25 @@
 
 
 
-  <meta name="description" content="友情链接   链接 学校     面向大海 绍兴市第一中学   Fighter 绍兴市第一中学   yuy 绍兴市第一中学   lxy-tql 绍兴市第一中学   xjh 绍兴市第一中学">
-<meta property="og:type" content="website">
-<meta property="og:title" content="friends">
-<meta property="og:url" content="https://heartlessly.github.io/friends/index.html">
+  <meta name="description" content="Description现在有 $n$ 个球，第 $i$ 个球的颜色为 $c_i$，重量为 $w_i$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。">
+<meta name="keywords" content="图论,AtCoder,Luogu,题解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「AtCoder AGC012-D」Colorful Balls">
+<meta property="og:url" content="https://heartlessly.github.io/2019/04/01/AT2364/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="友情链接   链接 学校     面向大海 绍兴市第一中学   Fighter 绍兴市第一中学   yuy 绍兴市第一中学   lxy-tql 绍兴市第一中学   xjh 绍兴市第一中学">
+<meta property="og:description" content="Description现在有 $n$ 个球，第 $i$ 个球的颜色为 $c_i$，重量为 $w_i$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-23T06:00:25.050Z">
+<meta property="og:updated_time" content="2019-04-01T03:00:56.785Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="friends">
-<meta name="twitter:description" content="友情链接   链接 学校     面向大海 绍兴市第一中学   Fighter 绍兴市第一中学   yuy 绍兴市第一中学   lxy-tql 绍兴市第一中学   xjh 绍兴市第一中学">
+<meta name="twitter:title" content="「AtCoder AGC012-D」Colorful Balls">
+<meta name="twitter:description" content="Description现在有 $n$ 个球，第 $i$ 个球的颜色为 $c_i$，重量为 $w_i$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。">
 
 
 
 
 
 
-  <link rel="canonical" href="https://heartlessly.github.io/friends/">
+  <link rel="canonical" href="https://heartlessly.github.io/2019/04/01/AT2364/">
 
 
 
@@ -125,7 +126,7 @@
   };
 </script>
 
-  <title>friends | Heartlessly's Blog</title>
+  <title>「AtCoder AGC012-D」Colorful Balls | Heartlessly's Blog</title>
   
 
 
@@ -300,7 +301,7 @@
         
         
           
-          <li class="menu-item menu-item-friends menu-item-active">
+          <li class="menu-item menu-item-friends">
 
     
     
@@ -371,106 +372,207 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/04/01/AT2364/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Heartlessly">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Heartlessly's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-<h1 class="post-title" itemprop="name headline">friends
-
-</h1>
-
-<div class="post-meta">
-  
-  
-
-
-
-</div>
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <h2 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h2><table>
-<thead>
-<tr>
-<th style="text-align:center">链接</th>
-<th style="text-align:center">学校</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><a href="https://mxdh.github.io/" target="_blank" rel="noopener">面向大海</a></td>
-<td style="text-align:center">绍兴市第一中学</td>
-</tr>
-<tr>
-<td style="text-align:center"><a href="https://fighter.cf" target="_blank" rel="noopener">Fighter</a></td>
-<td style="text-align:center">绍兴市第一中学</td>
-</tr>
-<tr>
-<td style="text-align:center"><a href="https://hexo.syuy.top/" target="_blank" rel="noopener">yuy</a></td>
-<td style="text-align:center">绍兴市第一中学</td>
-</tr>
-<tr>
-<td style="text-align:center"><a href="https://lxy-tql.github.io/" target="_blank" rel="noopener">lxy-tql</a></td>
-<td style="text-align:center">绍兴市第一中学</td>
-</tr>
-<tr>
-<td style="text-align:center"><a href="https://xuxuxuxuxuxjh.github.io/" target="_blank" rel="noopener">xjh</a></td>
-<td style="text-align:center">绍兴市第一中学</td>
-</tr>
-</tbody>
-</table>
+          <h1 class="post-title" itemprop="name headline">「AtCoder AGC012-D」Colorful Balls
 
+              
+            
+          </h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-01 07:36:19 / 修改时间：11:00:56" itemprop="dateCreated datePublished" datetime="2019-04-01T07:36:19+08:00">2019-04-01</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OI/" itemprop="url" rel="index"><span itemprop="name">OI</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有 $n$ 个球，第 $i$ 个球的颜色为 $c_i$，重量为 $w_i$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。</p>
+<a id="more"></a>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/AT2364" target="_blank" rel="noopener">[Luogu]AT2364</a></strong></p>
+<p><strong><a href="https://agc012.contest.atcoder.jp/tasks/agc012_d" target="_blank" rel="noopener">[AtCoder]AGC012-D</a></strong></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>首先可以发现一个性质：如果球 $i$ 可以和球 $j$ 换，球 $j$ 可以和球 $k$ 换，那球 $i$ 也可以和球 $k$ 换。原因很简单，假设原来排列是 $i\ j\ k$，可以先换 $i,\ j$ 得到 $j\ i\ k$，再换 $j,\ k$ 得到 $k\ i\ j$，最后交换 $i,\ j$ 就能得到 $k\ j\ i$，即交换了 $i,\ k$ 。通过这个性质，我们还能够发现 $i\ j\ k$ 的所有排列都可以通过交换得到，也就是说 $i\ j\ k\ ;\ i\ k\ j\ ;\ j\ i\ k\ ;\ j\ k\ i\ ;\ k\ i\ j\ ;\ k\ j\ i$ 都能够得到。这个规律可以推广到 $n$ 个球。</p>
+<p>很容易想到建一个无向图来表示能否交换。如果球 $a$ 和球 $b$ 能够交换，我们就在 $a,\ b$ 之间连一条无向边，在同一个连通块内的球都可以互相交换，根据乘法原理，最后的答案就是每个连通块内颜色序列数的乘积。每个连通块的答案怎么算呢？因为球的颜色可能是相同的，所以我们要求 <strong>有重复元素的排列个数</strong> 。这里给出计算公式：</p>
+<p>如果在 $n​$ 个元素中，有 $n_1​$ 个元素彼此相同，$n_2​$ 个元素彼此相同，……，$n_m​$ 个元素彼此相同，且 $\sum_{i=1}^{m}n_i=n​$，则这 $n​$ 个元素的不重复排列个数为：<br>$$<br>\frac{n!}{\prod_{i=1}^{m}(n_i!)}<br>$$<br>对于这道题来说，一共有 $n$ 种颜色（题目已知），假设某个连通块的大小为 $size$，颜色为 $i$ 的球的个数为 $col_i$，则该连通块的答案为：<br>$$<br>\frac{size!}{\prod_{i=1}^{n}(col_i!)}<br>$$<br>我们用并查集可以很好地维护与连通块有关的问题，考虑每一个球能否与 $1\sim n​$ 除自己外的其它球交换，如果可以，就把它们合并到一个连通块里。预处理 $1\sim n​$ 的阶乘与阶乘的逆元，分别计算出每一个连通块的答案，求它们的乘积即能得到结果，时间复杂度为 $O(n^2)​$，而 $n\leq 2 \times 10^5​$，这显然是会超时的，所以我们考虑如何优化。</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
       
     </div>
-    
-
-
 
     
+
     
     
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/图论/" rel="tag"># 图论</a>
+          
+            <a href="/tags/AtCoder/" rel="tag"># AtCoder</a>
+          
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+          
+            <a href="/tags/题解/" rel="tag"># 题解</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/21/二叉查找树BST简介/" rel="next" title="二叉查找树(BST)简介">
+                <i class="fa fa-chevron-left"></i> 二叉查找树(BST)简介
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
   </div>
 
 
@@ -682,7 +784,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#友情链接"><span class="nav-number">1.</span> <span class="nav-text">友情链接</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Source"><span class="nav-number">2.</span> <span class="nav-text">Source</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">3.</span> <span class="nav-text">Solution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">4.</span> <span class="nav-text">Code</span></a></li></ol></div>
             
 
           </div>
@@ -1303,7 +1405,7 @@
   <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
   <script>
   
-    bookmark.loadBookmark();
+    bookmark.scrollToMark('auto', "#更多");
   
   </script>
 
