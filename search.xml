@@ -3,13 +3,14 @@
   <entry>
     <title><![CDATA[「BZOJ2721」「Violet 5」樱花]]></title>
     <url>%2F2019%2F04%2F02%2FBZOJ2721%2F</url>
-    <content type="text"><![CDATA[Descripion求不定方程 $$\frac{1}{x} + \frac{1}{y} = \frac{1}{n!}\ (1 \leq n \leq 10^6)$$ 正整数解 $(x, y) $ 的数目，答案对 $10^9+7$ 取模。 Source[BZOJ]2721 [Luogu]P4145 Solution显然要先化简题目所给的方程，我们先把等式左边通分，得到$$\frac{x+y}{xy}=\frac{1}{n!}$$对角相乘，得到$$xy=(x+y)n!$$移项$$xy-(x+y)n!=0$$根据等式的性质，两边同时加上 $(n!)^2$，得到$$xy-(x+y)n!+(n!)^2=(n!)^2$$这时我们发现等式左边可以因式分解了，式子变为$$(x-n!)(y-n!)=(n!)^2$$即使到了这一步，还是看不出什么，我们考虑换元。假设 $a=x-n!$，$b=y-n!$，则能得到$$ab=(n!)^2$$很显然 $a,b$ 有多少不同的正整数解， $x,y$ 就有多少不同的值能使等式成立，而 $a,b$ 都是 $(n!)^2$ 的因数，所以问题就变为求 $(n!)^2$ 的因数个数。根据 唯一分解定理：$$n!=p_1^{a_1} \times p_2^{a_2} \times \cdot \cdot \cdot \times p_m^{a_m}$$其中 $m$ 表示 $n!$ 分解出的不同质数的个数，$p_i$ 表示 $n!$ 分解出的质数，$a_i$ 表示质因子 $p_i​$ 的个数，那么$$(n!)^2=p_1^{2a_1} \times p_2^{2a_2} \times \cdot \cdot \cdot \times p_m^{2a_m}$$$(n!)^2$ 的因数个数就等于 $\prod\limits_{i=1}^{m}(2a_i+1)$ 。 这个东西怎么求呢？ Code12]]></content>
+    <content type="text"><![CDATA[Descripion求不定方程 $$\frac{1}{x} + \frac{1}{y} = \frac{1}{n!}\ (1 \leq n \leq 10^6)$$ 正整数解 $(x, y) $ 的数目，答案对 $10^9+7$ 取模。 Source[BZOJ]2721 [Luogu]P1445 Solution显然要先化简题目所给的方程，我们先把等式左边通分，得到$$\frac{x+y}{xy}=\frac{1}{n!}$$对角相乘，得到$$xy=(x+y)n!$$移项$$xy-(x+y)n!=0$$根据等式的性质，两边同时加上 $(n!)^2$，得到$$xy-(x+y)n!+(n!)^2=(n!)^2$$这时我们发现等式左边可以因式分解了，式子变为$$(x-n!)(y-n!)=(n!)^2$$即使到了这一步，还是看不出什么，我们考虑换元。假设 $a=x-n!$，$b=y-n!$，则能得到$$ab=(n!)^2$$很显然 $a,b$ 有多少不同的正整数解， $x,y$ 就有多少不同的值能使等式成立，而 $a,b$ 都是 $(n!)^2$ 的因数，所以问题就变为求 $(n!)^2$ 的因数个数。根据 唯一分解定理：$$n!=p_1^{a_1} \times p_2^{a_2} \times \cdot \cdot \cdot \times p_m^{a_m}$$其中 $m$ 表示 $n!$ 分解出的不同质数的个数，$p_i$ 表示 $n!$ 分解出的质数，$a_i$ 表示质因子 $p_i​$ 的个数，那么$$(n!)^2=p_1^{2a_1} \times p_2^{2a_2} \times \cdot \cdot \cdot \times p_m^{2a_m}$$$(n!)^2$ 的因数个数就等于 $\prod\limits_{i=1}^{m}(2a_i+1)$ 。 这个东西怎么求呢？ Code12]]></content>
       <categories>
         <category>OI</category>
       </categories>
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>数学</tag>
         <tag>BZOJ</tag>
         <tag>数论</tag>
         <tag>筛法</tag>
@@ -23,10 +24,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
-        <tag>Codeforces</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -37,10 +38,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>图论</tag>
         <tag>AtCoder</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -89,10 +90,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
         <tag>BZOJ</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
   </entry>
@@ -104,9 +105,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
   </entry>
@@ -118,9 +119,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
   </entry>
