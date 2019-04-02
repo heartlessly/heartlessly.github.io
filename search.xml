@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「BZOJ2721」「Violet 5」樱花]]></title>
+    <url>%2F2019%2F04%2F02%2FBZOJ2721%2F</url>
+    <content type="text"><![CDATA[Descripion求不定方程 $$\frac{1}{x} + \frac{1}{y} = \frac{1}{n!}\ (1 \leq n \leq 10^6)$$ 正整数解 $(x, y) $ 的数目，答案对 $10^9+7$ 取模。 Source[BZOJ]2721 [Luogu]P4145 SolutionCode12]]></content>
+      <tags>
+        <tag>BZOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
+        <tag>数论</tag>
+        <tag>筛法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Codeforces 242E」XOR on Segment]]></title>
     <url>%2F2019%2F04%2F01%2FCF242E%2F</url>
     <content type="text"><![CDATA[Description给定 $n\ (1 \leq n \leq 10^5)$ 个数 $a_i\ (0 \leq a_i \leq 10^6)$，现在有 $m\ (1 \leq m \leq 5 \times 10^4)$ 个操作（操作有 $2$ 种）: $1\ l\ r:$ 求 $\sum\limits_{i=l}^{r}a_i\ (1 \leq l \leq r \leq n)​$； $2\ l\ r\ x:$ 区间 $[l,r]\ (1 \leq l \leq r \leq n)$ 内的数对 $x\ (1 \leq x \leq 10^6)​$ 异或。 Source[Luogu]CF242E [Codeforces]242E Solution因为是区间修改和区间查询，且异或具有结合律：$(a \oplus b) \oplus c = a \oplus (b \oplus c)$，我们很容易想到用线段树来维护。可是似乎打不了懒标记，怎么办？先考虑 $a_i$ 只有 $0$ 和 $1$ 两个值的情况，当对一条线段区间反转的时候，我们只需要让这条线段的懒标记异或 $1$，这个区间 $1$ 的个数变为 区间长度 - 原来区间 $1$ 的个数。标记下放时，如果这条线段的懒标记为 $1$，则将这条线段的左右区间反转（做上述反转操作），并清空这条线段的懒标记。 显然只有 $0$ 和 $1$ 时用线段树维护很简单，现在我们需要让这些数转化为 $0$ 和 $1$ 进行操作，这不就是把它们转化成 二进制 吗？相当于建了 $\log (\max_{\forall i \in n}\begin{Bmatrix}a_i\end{Bmatrix})$ 棵线段树，分别维护 $a_i$ 在二进制下的每一位，以及每一位的区间和。对于即将异或的数 $x$，先找到要修改的区间 $[l,r]$，再把 $x$ 二进制拆分，如果 $x$ 在二进制下某一位是 $1$，我们就对这一位所在的线段树区间 $[l,r]$ 反转。查询时，同样先找到要查询的区间 $[l,r]$，把二进制下每一位所在的 线段树区间 $[l,r]$ 的和 × 二进制下这一位对应的值 加起来就是答案。因为每一次修改或查询都要在线段树内二进制拆分，所以时间复杂度为 $O(n\log^2n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 1e5, MAX_LOG = 21;int n, m, a[MAXN + 5];struct SegmentTree &#123; LL lazy[MAXN &lt;&lt; 2 | 3], sum[MAX_LOG + 1][MAXN &lt;&lt; 2 | 3]; //sum[i][x]表示二进制下第 i 位第 x 条线段的和 inline int lson(int x) &#123; return x &lt;&lt; 1; &#125; inline int rson(int x) &#123; return x &lt;&lt; 1 | 1; &#125; inline void pushUp(LL x) &#123; for (int i = 0; i &lt;= MAX_LOG; ++i) sum[i][x] = sum[i][lson(x)] + sum[i][rson(x)];//维护二进制下每一位 &#125; void build(int *a, int x = 1, int l = 1, int r = n) &#123; if (l == r) &#123; for (register int i = 0; i &lt;= MAX_LOG; ++i) sum[i][x] = (a[l] &gt;&gt; i) &amp; 1;//二进制拆分 return; &#125; int mid = (l + r) &gt;&gt; 1; build(a, lson(x), l, mid), build(a, rson(x), mid + 1, r); pushUp(x); &#125; inline void modify(int x, int l, int r, LL p) &#123; lazy[x] ^= p;//异或满足结合律 (a ^ b) ^ c = a ^ (b ^ c) for (int i = 0; i &lt;= MAX_LOG; ++i) if ((p &gt;&gt; i) &amp; 1)//如果第 i 位为 1 sum[i][x] = r - l + 1 - sum[i][x];//区间内 1 的个数取反 &#125; inline void pushDown(int x, int l, int r) &#123; LL mid = (l + r) &gt;&gt; 1; modify(lson(x), l, mid, lazy[x]), modify(rson(x), mid + 1, r, lazy[x]); lazy[x] = 0; &#125; void update(int ql, int qr, LL p, int l = 1, int r = n, int x = 1) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) &#123; modify(x, l, r, p); return; &#125; if (lazy[x]) pushDown(x, l, r); LL mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) update(ql, qr, p, l, mid, lson(x)); if (qr &gt; mid) update(ql, qr, p, mid + 1, r, rson(x)); pushUp(x); &#125; LL query(int ql, int qr, int l = 1, int r = n, int x = 1) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) &#123; LL res = 0; for (int i = 0; i &lt;= MAX_LOG; ++i) res += sum[i][x] &lt;&lt; i;//二进制下第 i 位对应 2 的 i 次方，累加 return res; &#125; if (lazy[x]) pushDown(x, l, r); LL res = 0, mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) res += query(ql, qr, l, mid, lson(x)); if (qr &gt; mid) res += query(ql, qr, mid + 1, r, rson(x)); return res; &#125;&#125; tr;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(a[i]); tr.build(a); read(m); for (int i = 1; i &lt;= m; ++i) &#123; int opt, l, r; LL x; read(opt); if (opt == 1) &#123; read(l), read(r); write(tr.query(l, r)); putchar('\n'); &#125; else &#123; read(l), read(r), read(x); tr.update(l, r, x); &#125; &#125; return 0;&#125;]]></content>
@@ -8,10 +20,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
-        <tag>Codeforces</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -61,9 +73,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>笔记</tag>
-        <tag>数论</tag>
         <tag>数学</tag>
+        <tag>数论</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -74,11 +86,11 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
-        <tag>BZOJ</tag>
       </tags>
   </entry>
   <entry>
@@ -89,9 +101,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
   </entry>
@@ -103,26 +115,26 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ1303/Luogu1627」「CQOI2009」中位数图]]></title>
+    <title><![CDATA[「BZOJ1303」「CQOI2009」中位数图]]></title>
     <url>%2F2019%2F03%2F12%2FBZOJ1303%2F</url>
-    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[BZOJ]1303 [Luogu]P1627 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$ , $[1,7]$ , $[2,4]$ , $[4,4]$。 接下来我们建造两个桶，分别计数 $tmp$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l$，右边的前缀和为 $r$ 。$l[i]/r[i]$ 表示从点 $i$ 向右/向左 到点 $tmp$ 为止 (比 $b$ 大的数的数量 - 比 $b$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x​$ 可以与右边的每一个 $-x​$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]​$，由题意可知 $-10^5 \le x \le 10^5​$，遍历所有的 $x​$ 即可，最终答案为： $$\sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]$$ 值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[Luogu]P1627 [BZOJ]1303 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$ , $[1,7]$ , $[2,4]$ , $[4,4]$。 接下来我们建造两个桶，分别计数 $tmp$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l$，右边的前缀和为 $r$ 。$l[i]/r[i]$ 表示从点 $i$ 向右/向左 到点 $tmp$ 为止 (比 $b$ 大的数的数量 - 比 $b$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x​$ 可以与右边的每一个 $-x​$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]​$，由题意可知 $-10^5 \le x \le 10^5​$，遍历所有的 $x​$ 即可，最终答案为： $$\sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]$$ 值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>数学</tag>
+        <tag>BZOJ</tag>
+        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -133,9 +145,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数学</tag>
         <tag>Luogu</tag>
         <tag>笔记</tag>
-        <tag>数学</tag>
         <tag>距离</tag>
       </tags>
   </entry>
