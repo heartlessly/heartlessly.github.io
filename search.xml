@@ -3,15 +3,15 @@
   <entry>
     <title><![CDATA[「BZOJ2721」「Violet 5」樱花]]></title>
     <url>%2F2019%2F04%2F02%2FBZOJ2721%2F</url>
-    <content type="text"><![CDATA[Descripion求不定方程 $$\frac{1}{x} + \frac{1}{y} = \frac{1}{n!}\ (1 \leq n \leq 10^6)$$ 正整数解 $(x, y) $ 的数目，答案对 $10^9+7$ 取模。 Source[BZOJ]2721 [Luogu]P1445 Solution显然要先化简题目所给的方程，我们先把等式左边通分，得到$$\frac{x+y}{xy}=\frac{1}{n!}$$对角相乘，得到$$xy=(x+y)n!$$移项$$xy-(x+y)n!=0$$根据等式的性质，两边同时加上 $(n!)^2$，得到$$xy-(x+y)n!+(n!)^2=(n!)^2$$这时我们发现等式左边可以因式分解了，式子变为$$(x-n!)(y-n!)=(n!)^2$$即使到了这一步，还是看不出什么，我们考虑换元。假设 $a=x-n!$，$b=y-n!$，则能得到$$ab=(n!)^2$$很显然 $a,b$ 有多少不同的正整数解， $x,y$ 就有多少不同的值能使等式成立，而 $a,b$ 都是 $(n!)^2$ 的因数，所以问题就变为求 $(n!)^2$ 的因数个数。根据 唯一分解定理：$$n!=p_1^{a_1} \times p_2^{a_2} \times \cdot \cdot \cdot \times p_m^{a_m}$$其中 $m$ 表示 $n!$ 分解出的不同质数的个数，$p_i$ 表示 $n!$ 分解出的质数，$a_i$ 表示质因子 $p_i​$ 的个数，那么$$(n!)^2=p_1^{2a_1} \times p_2^{2a_2} \times \cdot \cdot \cdot \times p_m^{2a_m}$$$(n!)^2$ 的因数个数就等于 $\prod\limits_{i=1}^{m}(2a_i+1)$ 。 这个东西怎么求呢？ Code12]]></content>
+    <content type="text"><![CDATA[Descripion求不定方程 $$\frac{1}{x} + \frac{1}{y} = \frac{1}{n!}\ (1 \leq n \leq 10^6)$$ 正整数解 $(x, y) $ 的数目，答案对 $10^9+7$ 取模。 Source[BZOJ]2721 [Luogu]P1445 Solution显然要先化简题目所给的方程，我们先把等式左边通分，得到$$\frac{x+y}{xy}=\frac{1}{n!}$$对角相乘，得到$$xy=(x+y)n!$$移项$$xy-(x+y)n!=0$$根据等式的性质，两边同时加上 $(n!)^2$，得到$$xy-(x+y)n!+(n!)^2=(n!)^2$$这时我们发现等式左边可以因式分解了，式子变为$$(x-n!)(y-n!)=(n!)^2$$即使到了这一步，还是看不出什么，我们考虑换元。假设 $a=x-n!$，$b=y-n!$，则能得到$$ab=(n!)^2$$很显然 $n!$ 是确定的，$a,b$ 有多少不同的正整数解， $x,y$ 就有多少不同的值能使等式成立，而 $a,b$ 都是 $(n!)^2$ 的因数，所以问题就变为求 $(n!)^2$ 的因数个数。根据 唯一分解定理：$$n!=p_1^{a_1} \times p_2^{a_2} \times \cdot \cdot \cdot \times p_m^{a_m}$$其中 $m$ 表示 $n!$ 分解出的不同质数的个数，$p_i$ 表示 $n!$ 分解出的质数，$a_i$ 表示质因子 $p_i$ 的个数，那么$$(n!)^2=p_1^{2a_1} \times p_2^{2a_2} \times \cdot \cdot \cdot \times p_m^{2a_m}$$$(n!)^2$ 的因数个数就等于 $\prod\limits_{i=1}^{m}(2a_i+1)$ 。 这个东西怎么求呢？ 我们先用 线性筛法（欧拉筛）求出 $1\sim n$ 内的质数，并记录下每个数的最小质因子（线性筛中的合数只会被它的最小质因子筛去）。因为我们要求 $n!$ 的质因数，所以枚举 $1 \sim n$ 每一个数，依次分解它们，得到它们有哪些质因数。具体方法：每次除以它本身的最小质因子，直到这个数变成 $1$ 为止。例如求 $18$ 的因数：$18$ 的最小质因子是 $2$，就将 $a_2 +1$，$18$ 除以 $2$ 变为 $9$；再考虑 $9$，$9$ 的最小质因子是 $3$，将 $a_3 +1$，$9$ 除以 $3$ 变为 $3$；$3$ 的最小质因子是 $3$，所以将 $a_3 + 1$，$3$ 除以 $3$ 变为 $1$，停止计算 。此时我们已经可以知道：$18=2^{a_2=1}\times 3^{a_3=2} $。按上述操作处理，就能算出 $n!$ 的质因数分布，根据公式就能得到答案。同时因为最小的质数是 $2$，每次除以它的最小质因子时，最大也会变为原来的 $\frac{1}{2}$，所以时间复杂度为 $O(n\log n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 1e6;const LL MOD = 1e9 + 7;int n, cnt, a[MAXN + 5], prime[MAXN + 5], minPrime[MAXN + 5];//minPrime[i]表示 i 的最小质因子 LL ans = 1;inline void getPrime(int n) &#123; for (int i = 2; i &lt;= n; ++i) &#123; if (!minPrime[i]) &#123; minPrime[i] = i;//质数的最小质因子是它本身 prime[++cnt] = i; &#125; for (int j = 1; j &lt;= cnt &amp;&amp; i * prime[j] &lt;= n; ++j) &#123; minPrime[i * prime[j]] = prime[j];//线性筛中的合数只会被最小质因子筛去 if (i % prime[j] == 0) break; &#125; &#125; &#125;int main() &#123; read(n); getPrime(n);//线性筛质数 for (int i = 1; i &lt;= n; ++i) for (int j = i; j &gt; 1; j /= minPrime[j]) ++a[minPrime[j]];//质因子计数 for (int i = 1; i &lt;= cnt; ++i) ans = ans * (LL) (a[prime[i]] &lt;&lt; 1 | 1) % MOD;//用公式求得答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>数学</tag>
         <tag>BZOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
         <tag>数论</tag>
         <tag>筛法</tag>
       </tags>
@@ -38,10 +38,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>图论</tag>
-        <tag>AtCoder</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>图论</tag>
+        <tag>AtCoder</tag>
       </tags>
   </entry>
   <entry>
@@ -90,9 +90,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
@@ -133,12 +133,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
         <tag>数学</tag>
         <tag>BZOJ</tag>
+        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -149,8 +149,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数学</tag>
+        <tag>Luogu</tag>
         <tag>笔记</tag>
         <tag>距离</tag>
       </tags>
