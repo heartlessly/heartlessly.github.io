@@ -98,13 +98,13 @@
 
 
 
-  <meta name="description" content="Description给定一个长度为 $n\ (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m\ (m \leq 50000)$ 个询问 $l,r\ (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
+  <meta name="description" content="Description给定一个长度为 $n (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m (m \leq 50000)$ 个询问 $l,r (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
 <meta name="keywords" content="Luogu,题解,线段树,SPOJ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/12/SPOJ1043/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description给定一个长度为 $n\ (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m\ (m \leq 50000)$ 个询问 $l,r\ (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
+<meta property="og:description" content="Description给定一个长度为 $n (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m (m \leq 50000)$ 个询问 $l,r (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/03/12/AipHcd.png">
@@ -112,7 +112,7 @@
 <meta property="og:updated_time" content="2019-04-07T04:35:27.974Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ1043」GSS1 - Can you answer these queries Ⅰ">
-<meta name="twitter:description" content="Description给定一个长度为 $n\ (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m\ (m \leq 50000)$ 个询问 $l,r\ (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
+<meta name="twitter:description" content="Description给定一个长度为 $n (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m (m \leq 50000)$ 个询问 $l,r (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。">
 <meta name="twitter:image" content="https://s2.ax1x.com/2019/03/12/AipbjA.png">
 
 
@@ -515,7 +515,7 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定一个长度为 $n\ (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m\ (m \leq 50000)$ 个询问 $l,r\ (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定一个长度为 $n (n \leq 50000,|a_i| \leq 15007)$ 的整数序列，对于 $m (m \leq 50000)$ 个询问 $l,r (1 \leq l \leq r \leq n)$，求区间 $[l,r]$ 的最大子段和。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/SP1043" target="_blank" rel="noopener">[Luogu]SP1043</a></strong></p>
 <p><strong><a href="https://www.spoj.com/problems/GSS1/" target="_blank" rel="noopener">[SPOJ]GSS1</a></strong></p>
@@ -528,21 +528,17 @@
 <p>$res[x]$ 表示该区间内的最大子段和。</p>
 <p>与普通的线段树不同，这道题维护的信息很多，我们先来分析该题最重要的 $\mathrm{pushUp}$ 与 $\mathrm{query}$ 操作。</p>
 <h3 id="mathrm-pushUp-操作"><a href="#mathrm-pushUp-操作" class="headerlink" title="$\mathrm{pushUp}$ 操作"></a>$\mathrm{pushUp}$ 操作</h3><p>首先，是维护区间和，最基本的线段树操作，就不用多说了：</p>
-<p>$$sum[x] = sum[lson(x)] + sum[rson(x)]$$</p>
-<p>其次，假如我们知道一个区间的左右子区间信息，如何更新该区间的最大子段和？</p>
+<script type="math/tex; mode=display">sum[x] = sum[lson(x)] + sum[rson(x)]</script><p>其次，假如我们知道一个区间的左右子区间信息，如何更新该区间的最大子段和？</p>
 <p><img src="https://s2.ax1x.com/2019/03/12/AipbjA.png" alt="AipbjA.png"></p>
 <p>很显然，答案可能为 <strong>左区间的最大子段和</strong> 或 <strong>右区间的最大子段和</strong> 。</p>
 <p>除此之外，合并区间后，答案也有可能为 <strong>左区间的右起最大子段和 + 右区间的左起最大子段和</strong>，如上图。</p>
 <p>由此我们可以得到代码：</p>
-<p>$$res[x]=\max\begin{Bmatrix}res[lson(x)],res[rson(x)],rsum[lson(x)]+lsum[rson(x)]\end{Bmatrix}$$</p>
-<p>那如何更新该区间的 <strong>左起最大子段和</strong> 和 <strong>右起最大子段和</strong> 呢？</p>
+<script type="math/tex; mode=display">res[x]=\max\begin{Bmatrix}res[lson(x)],res[rson(x)],rsum[lson(x)]+lsum[rson(x)]\end{Bmatrix}</script><p>那如何更新该区间的 <strong>左起最大子段和</strong> 和 <strong>右起最大子段和</strong> 呢？</p>
 <p><img src="https://s2.ax1x.com/2019/03/12/AipHcd.png" alt="AipHcd.png"></p>
 <p>区间左起最大子段和可以是 <strong>左区间的左起最大子段和</strong> 或 <strong>左区间的区间和 + 右区间的左起最大子段和</strong>，如上图。</p>
 <p>右起最大子段和将上述操作反过来即可。</p>
 <p>代码实现如下：</p>
-<p>$$lsum[x]=\max(lsum[lson],sum[lson]+lsum[rson])$$</p>
-<p>$$rsum[x]=\max(rsum[rson],rsum[lson]+sum[rsum])$$</p>
-<h3 id="mathrm-query-操作"><a href="#mathrm-query-操作" class="headerlink" title="$\mathrm{query}$ 操作"></a>$\mathrm{query}$ 操作</h3><p><img src="https://i.loli.net/2019/03/13/5c889bcf96aac.png" alt></p>
+<script type="math/tex; mode=display">lsum[x]=\max(lsum[lson],sum[lson]+lsum[rson])</script><script type="math/tex; mode=display">rsum[x]=\max(rsum[rson],rsum[lson]+sum[rsum])</script><h3 id="mathrm-query-操作"><a href="#mathrm-query-操作" class="headerlink" title="$\mathrm{query}$ 操作"></a>$\mathrm{query}$ 操作</h3><p><img src="https://i.loli.net/2019/03/13/5c889bcf96aac.png" alt></p>
 <p>当答案来自两个不同的区间时（如图），我们需要对这两个区间答案进行合并，并不只是取最大值那样简单。</p>
 <p>我们还需要进行类似 $\mathrm{pushUp}$ 的操作，已知左右区间的答案，更新该区间答案。</p>
 <p>函数的返回值有很多，所以用结构体式线段树实现更方便。</p>

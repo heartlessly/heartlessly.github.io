@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0\ x\ y:​$ 将区间 $[x,y]\ (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x">
-<meta name="keywords" content="BZOJ,Luogu,题解,线段树,SPOJ">
+  <meta name="description" content="Description给定 $n (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0 x y:​$ 将区间 $[x,y] (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1 x y:$ 询问区间 $[x,y] (1">
+<meta name="keywords" content="Luogu,题解,BZOJ,线段树,SPOJ">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「SPOJ2713」GSS4 - Can you answer these queries Ⅳ">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/13/SPOJ2713/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0\ x\ y:​$ 将区间 $[x,y]\ (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x">
+<meta property="og:description" content="Description给定 $n (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0 x y:​$ 将区间 $[x,y] (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1 x y:$ 询问区间 $[x,y] (1">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-04-07T04:36:16.925Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「SPOJ2713」GSS4 - Can you answer these queries Ⅳ">
-<meta name="twitter:description" content="Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0\ x\ y:​$ 将区间 $[x,y]\ (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1\ x\ y:$ 询问区间 $[x">
+<meta name="twitter:description" content="Description给定 $n (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m (m \leq 10^5)$ 个操作（操作有 $2​$ 种）： $0 x y:​$ 将区间 $[x,y] (1 \leq x,y \leq n)​$ 内的每一个数开 平方根（下取整） 。 $1 x y:$ 询问区间 $[x,y] (1">
 
 
 
@@ -511,10 +511,10 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。</p>
-<p>$m\ (m \leq 10^5)$ 个操作（操作有 $2​$ 种）：</p>
-<p>$0\ x\ y:​$ 将区间 $[x,y]\ (1 \leq x,y \leq n)​$ 内的每一个数开 <strong>平方根（下取整）</strong> 。</p>
-<p>$1\ x\ y:$ 询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $n (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。</p>
+<p>$m (m \leq 10^5)$ 个操作（操作有 $2​$ 种）：</p>
+<p>$0 x y:​$ 将区间 $[x,y] (1 \leq x,y \leq n)​$ 内的每一个数开 <strong>平方根（下取整）</strong> 。</p>
+<p>$1 x y:$ 询问区间 $[x,y] (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/SP2713" target="_blank" rel="noopener">[Luogu]SP2713</a></strong></p>
 <p><strong><a href="https://www.luogu.org/problemnew/show/P4145" target="_blank" rel="noopener">[Luogu]P4145</a></strong></p>
@@ -524,10 +524,8 @@
 <p>但是会发现懒惰标记不能打，那该怎么办呢？</p>
 <p>考虑暴力修改：</p>
 <p>$a[i]$ 最大为 $10^{18}$。</p>
-<p>$$\left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1$$</p>
-<p>换言之，</p>
-<p>$$\left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1$$</p>
-<p>一个数最多开 $6$ 次平方根就会变成 $1$ 。</p>
+<script type="math/tex; mode=display">\left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1</script><p>换言之，</p>
+<script type="math/tex; mode=display">\left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1</script><p>一个数最多开 $6$ 次平方根就会变成 $1$ 。</p>
 <p>因为 $\sqrt{1} = 1,\sqrt{0} = 0$，</p>
 <p>我们只需要维护 <strong>区间和</strong> 与 <strong>区间最大值</strong> 即可，</p>
 <p>当一个区间的最大值 $\leq 1$ 时，我们对这个区间的修改就是无用的，因为无论怎么修改这个数仍是它本身。</p>
@@ -556,11 +554,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
-          
             <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/题解/" rel="tag"># 题解</a>
+          
+            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
             <a href="/tags/线段树/" rel="tag"># 线段树</a>
           
@@ -587,7 +585,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/03/18/同余问题知识归纳/" rel="prev" title="同余问题知识归纳">
+              <a href="/2019/03/18/tong-yu-wen-ti-zhi-shi-gui-na/" rel="prev" title="同余问题知识归纳">
                 同余问题知识归纳 <i class="fa fa-chevron-right"></i>
               </a>
             

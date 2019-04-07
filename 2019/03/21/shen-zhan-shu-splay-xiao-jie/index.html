@@ -98,43 +98,25 @@
 
 
 
-  <meta name="description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
-<meta name="keywords" content="笔记,平衡树">
+  <meta name="description" content="前置知识二叉查找树(BST) 线段树 简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树，使用旋转保持平衡。它能在 $O(\log n)​$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 LCT 的辅助树，可以说是一种万能的平衡树。">
+<meta name="keywords" content="笔记,平衡树,Splay">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二叉查找树(BST)简介">
-<meta property="og:url" content="https://heartlessly.github.io/2019/03/21/二叉查找树BST简介/index.html">
+<meta property="og:title" content="伸展树(Splay)小结">
+<meta property="og:url" content="https://heartlessly.github.io/2019/03/21/shen-zhan-shu-splay-xiao-jie/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
+<meta property="og:description" content="前置知识二叉查找树(BST) 线段树 简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树，使用旋转保持平衡。它能在 $O(\log n)​$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 LCT 的辅助树，可以说是一种万能的平衡树。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e570088.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e587668.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5b70cf.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5b8c75.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5ba82c.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d2aef.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d44f3.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d0dc0.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13cf139.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701897e.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94617017000.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94616fc8407.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701570e.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701897e.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94617017000.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94616fc8407.png">
-<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701570e.png">
-<meta property="og:updated_time" content="2019-03-24T23:46:51.630Z">
+<meta property="og:updated_time" content="2019-03-24T23:45:54.282Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="二叉查找树(BST)简介">
-<meta name="twitter:description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
-<meta name="twitter:image" content="https://i.loli.net/2019/03/22/5c9437e570088.png">
+<meta name="twitter:title" content="伸展树(Splay)小结">
+<meta name="twitter:description" content="前置知识二叉查找树(BST) 线段树 简介伸展树(Splay Tree) 是平衡二叉树的一种，也属于二叉查找树，使用旋转保持平衡。它能在 $O(\log n)​$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 LCT 的辅助树，可以说是一种万能的平衡树。">
 
 
 
 
 
 
-  <link rel="canonical" href="https://heartlessly.github.io/2019/03/21/二叉查找树BST简介/">
+  <link rel="canonical" href="https://heartlessly.github.io/2019/03/21/shen-zhan-shu-splay-xiao-jie/">
 
 
 
@@ -144,7 +126,7 @@
   };
 </script>
 
-  <title>二叉查找树(BST)简介 | Heartlessly's Blog</title>
+  <title>伸展树(Splay)小结 | Heartlessly's Blog</title>
   
 
 
@@ -410,7 +392,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/03/21/二叉查找树BST简介/">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/03/21/shen-zhan-shu-splay-xiao-jie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Heartlessly">
@@ -427,7 +409,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">二叉查找树(BST)简介
+          <h1 class="post-title" itemprop="name headline">伸展树(Splay)小结
 
               
             
@@ -453,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-03-21 14:25:27" itemprop="dateCreated datePublished" datetime="2019-03-21T14:25:27+08:00">2019-03-21</time>
+              <time title="创建时间：2019-03-21 13:07:34" itemprop="dateCreated datePublished" datetime="2019-03-21T13:07:34+08:00">2019-03-21</time>
             
 
             
@@ -470,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-03-25 07:46:51" itemprop="dateModified" datetime="2019-03-25T07:46:51+08:00">2019-03-25</time>
+                <time title="修改时间：2019-03-25 07:45:54" itemprop="dateModified" datetime="2019-03-25T07:45:54+08:00">2019-03-25</time>
               
             
           </span>
@@ -529,65 +511,11 @@
       
 
       
-        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>二叉查找树(Binary Search Tree)</strong> 又称 <strong>二叉排序树(Binary Sort Tree)</strong> ，亦称 <strong>二叉搜索树</strong>，简写为 <strong>BST</strong> 。</p>
-<p>二叉查找树具有以下性质：</p>
-<ul>
-<li>如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。</li>
-<li>如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。</li>
-<li>二叉查找树的 <strong>左子树</strong> 与 <strong>右子树</strong> 也分别为二叉查找树。</li>
-</ul>
+        <h2 id="前置知识"><a href="#前置知识" class="headerlink" title="前置知识"></a>前置知识</h2><p><strong><a href="https://heartlessly.github.io/2019/03/21/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91BST%E7%AE%80%E4%BB%8B/">二叉查找树(BST)</a></strong></p>
+<p><strong>线段树</strong></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p><strong>伸展树(Splay Tree)</strong> 是平衡二叉树的一种，也属于二叉查找树，使用旋转保持平衡。它能在 $O(\log n)​$ 内完成插入、删除和查询操作，还具有很强的区间操作能力，所以也能作为 <strong>LCT</strong> 的辅助树，可以说是一种万能的平衡树。</p>
 <a id="more"></a>
-<p>通俗地讲：二叉查找树上点的权值，<strong>左儿子 &lt; 根节点 &lt; 右儿子</strong> 。</p>
-<p>根据这个性质，我们很容易发现二叉查找树的中序遍历是一个单调不减的序列。</p>
-<p>那么，二叉查找树有什么作用呢？</p>
-<p>对于一个长度为 $8​$ 的序列： $1,\ 15,\ 5,\ 3,\ 8,\ 10,\ 9,\ 12,\ 10​$，该如何找到这个序列第 $k​$ 大的数，并且支持插入与删除元素呢？如果我们将其排序再进行查询，时间复杂度为 $O(n \log n)​$，这显然不够优秀。因此我们考虑构造出一棵二叉查找树，如图。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9437e570088.png" alt="graph1.png"></p>
-<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>假设我们要向上述序列插入一个数 $11​$，我们从根节点开始。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9437e587668.png" alt="graph2.png"></p>
-<p>我们发现 $11 &gt; 9$，因此我们把 $11$ 放到 $9$ 的右儿子。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9437e5b70cf.png" alt="graph3.png"></p>
-<p>此时 $12$ 比 $11$ 大了，为了保持二叉搜索树的性质，我们把 $11$ 放到 $12​$ 的左儿子。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9437e5b8c75.png" alt="graph4.png"></p>
-<p>$11 &gt; 10$，本来应该让 $11$ 和 $10$ 的右儿子继续比较，可是 $10$ 没有右儿子，因此我们把 $11$ 插入到该位置。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9437e5ba82c.png" alt="graph5.png"></p>
-<p><strong>小结：</strong>插入一个数时，从根节点开始，依次比较要插入的数和当前节点的值，如果大于当前节点，就放到该结点的右儿子，如果小于当前节点，就放到该结点的左儿子，重复上述操作，直到下放的位置没有结点。如果中途碰到与某个节点相等，我们再定义一个 $cnt$ 数组，表示当前节点值的个数，并且加上 $1$ 。这样我们就完成了一个数的插入过程。</p>
-<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>类似插入的过程，还是依次比较要删除的数和当前节点的值，不断下放，当找到目标节点时，并不需要把该节点整个删掉，只需要给该节点值的个数减 $1$ 。对于节点 $x$，如果 $cnt[x] = 0$， 则表示当前位置没有节点。当一个位置没有节点时，这棵树依旧满足二叉查找树的性质。</p>
-<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><h3 id="前驱"><a href="#前驱" class="headerlink" title="前驱"></a>前驱</h3><p>$x$ 的前驱定义为小于 $x$ 的最大的数。那么如何找 $x​$ 的前驱呢？</p>
-<p>这里以 $6$ 为例，从根节点开始。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c943e13d2aef.png" alt="graph6.png"></p>
-<p>从前驱的定义可知，$6$ 的前驱一定比 $6$ 小。而 $9 &gt; 6$，所以把 $6$ 放在 $9$ 的左儿子。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c943e13d44f3.png" alt="graph7.png"></p>
-<p>$8$ 还是比 $6$ 大，因此我们把 $6$ 放到 $8$ 的左儿子。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c943e13d0dc0.png" alt="graph8.png"></p>
-<p>我们发现 $3 &lt; 6$，但是并不知道 $3$ 是不是小于 $6$ 的数中最大的，我们还要去找比 $3$ 大的数，因为这些数也有可能成为答案。所以记录当前答案为 $3$，把 $6$ 放在 $3$ 的右儿子。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c943e13cf139.png" alt="graph9.png"></p>
-<p>$5$ 还是比 $6$ 小，更新当前答案为 $5$，而 $5$ 没有右儿子，所以最后答案 （$6$ 的前驱）就是 $5$ 。</p>
-<p><strong>小结：</strong>寻找 $x$ 的前驱时，从根节点开始，依次比较 $x$ 和当前节点的值。如果当前节点的值大于 $x$，则往该节点的左儿子找，直到出现小于 $x$ 的节点。此时我们记录当前答案为这个节点的值，往这个节点的右儿子找，如果途中遇到的节点的值小于 $x$，就更新当前答案，否则结束查询，当前答案就是 $x$ 的前驱。</p>
-<h3 id="后继"><a href="#后继" class="headerlink" title="后继"></a>后继</h3><p>$x​$ 的后继定义为大于 $x​$ 的最小的数。</p>
-<p>与前驱的操作恰恰相反，依次比较 $x​$ 和当前节点的值。如果当前节点的值小于 $x​$，则往该节点的右儿子找，直到出现大于 $x​$ 的节点。此时我们记录当前答案为这个节点的值，往这个节点的左儿子找，如果途中遇到的节点的值大于 $x​$，就更新当前答案，否则结束查询，当前答案就是 $x​$ 的后继。</p>
-<h3 id="已知排名求值"><a href="#已知排名求值" class="headerlink" title="已知排名求值"></a>已知排名求值</h3><p>排名定义为比当前数小的数的个数 $+1​$，现在需要寻找排名为 $x​$ 的数。</p>
-<p>我们新定义一个数组 $size$，对于一个节点 $x$，$size[x]$ 表示 $x$ 以及它的子树大小之和，需要递归预处理出每个节点的 $size$，当然，插入与删除操作时也要更新 $size$ 数组。假设我们要寻找排名为 $7$ 的数是多少，从根节点开始，如图（红色的数字即为节点的 $size$）。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9461701897e.png" alt="graph10.png"></p>
-<p>$9​$ 的左儿子的 $size​$ 为 $4​$，所以 $9​$ 的排名为 $5​$，而要寻找的数的排名为 $7​$，所以该数一定比 $9​$ 大，因此我们到 $9​$ 的右子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c94617017000.png" alt="graph11.png"></p>
-<p>此时到了一棵新的子树上，因为排名为 $5$ 以及 $5$ 之前的节点都不要了，所以我们需要在该子树上找排名为 $2$ 的数。$12$ 的左儿子的 $size$ 为 $2$，因此 $12$ 在该子树上的排名为 $3$，排名为 $2$ 的数一定比 $12$ 小，应该到 $12$ 的左子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c94616fc8407.png" alt="graph12.png"></p>
-<p>现在所在的子树又少了 $2$ 个节点，但这 $2$ 个节点的排名都比 $2$ 大，所以仍然在新子树中找排名为 $2$ 的数。因为 $10$ 没有左儿子（即 $size$ 为 $0$），所以 $10$ 的排名为 $1$，而要查询的数排名为 $2$，大于 $10$，应该到 $10$ 的右子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9461701570e.png" alt="graph13.png"></p>
-<p>排名为 $1​$ 的节点已经不要了，因此要在新子树中找排名为 $1​$ 的节点。而 $11​$ 没有左儿子（即 $size​$ 为 $0​$），所以 $11​$ 的排名为 $1​$ 。最后的答案就是 $11​$ 。</p>
-<p><strong>小结：</strong>已知排名求值时，先预处理出每个节点的子树大小 $size$，从根节点开始，依次检查每个节点的排名，每个节点 $x$ 的排名为它 <strong>左儿子的</strong> $size$ 加上 $cnt[x]$ (该节点值的数量) 。如果该节点的排名比要查询的排名小，则在该节点的右子树中查询 <strong>当前要查询的排名 - 该节点排名</strong> 的数。如果该节点排名更大，就在左子树中继续查询这个排名的数。如果排名相等，则该节点的值就是答案。</p>
-<h3 id="已知值求排名"><a href="#已知值求排名" class="headerlink" title="已知值求排名"></a>已知值求排名</h3><p>与已知排名求值的过程相似，以查询 $11$ 的排名为例，从根节点开始，初始没有数比 $11$ 小，所以 $11$ 的排名为 $1​$ 。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9461701897e.png" alt="graph10.png"></p>
-<p>$9​$ 的排名为它左儿子的 $size​$ 加上它的 $cnt​$，也就是 $5​$，显然 $9 &lt; 11​$，所以 $11​$ 的排名变为 $1 + 5 = 6​$，并且往 $9​$ 的右子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c94617017000.png" alt="graph11.png"></p>
-<p>因为 $12 &gt; 11$，没有数比 $11$ 小，所以往 $12$ 的左子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c94616fc8407.png" alt="graph12.png"></p>
-<p>$10$ 比 $11$ 小，因为 $10$ 没有左儿子（左儿子 $size$ 为 $0$），所以 $10$ 在该子树中的排名为 $1$ 。$11$ 的排名更新为 $6 + 1 = 7$，并往 $10$ 的右子树找。</p>
-<p><img src="https://i.loli.net/2019/03/22/5c9461701570e.png" alt="graph13.png"></p>
-<p>与目标节点重合，停止查询，$7$ 即为 $11$ 的排名。</p>
-<p><strong>小结：</strong>已知值求排名时，初始化已知值的排名为 $1$ 。从根节点开始，依次检查每个节点的值，如果该节点的值比已知值小，则排名更新为 <strong>它当前的排名</strong> 加上 <strong>该节点的排名</strong>，每个节点 $x$ 的排名为它 <strong>左儿子的</strong> $size$ 加上 $cnt[x]$ (该节点值的数量) ，往该节点的右子树走。如果该节点的值比已知值大，则往该节点的左子树走。如果与已知值相等，则停止查询，当前排名就是这个值最终的排名。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>普通的二叉查找树在数据随机的情况下所有操作的时间复杂度都是 $O(\log n)$ 的，但是在最劣情况下会变成一条链，时间复杂度为 $O(n)$，因此我们需要旋转，分裂等操作来维护二叉查找树，使其时间复杂度稳定为 $O(\log n)$，这种二叉查找树称作平衡二叉树，简称平衡树。平衡树的常见实现方法有 <strong>Treap</strong> , <strong>Splay</strong> , <strong>AVL</strong> , <strong>替罪羊树</strong> , <strong>红黑树</strong> 等，这里不作介绍。</p>
-
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><h1 id="咕咕咕"><a href="#咕咕咕" class="headerlink" title="咕咕咕"></a>咕咕咕</h1>
       
     </div>
 
@@ -614,6 +542,8 @@
           
             <a href="/tags/平衡树/" rel="tag"># 平衡树</a>
           
+            <a href="/tags/Splay/" rel="tag"># Splay</a>
+          
         </div>
       
 
@@ -625,8 +555,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/03/21/伸展树Splay小结/" rel="next" title="伸展树(Splay)小结">
-                <i class="fa fa-chevron-left"></i> 伸展树(Splay)小结
+              <a href="/2019/03/18/tong-yu-wen-ti-zhi-shi-gui-na/" rel="next" title="同余问题知识归纳">
+                <i class="fa fa-chevron-left"></i> 同余问题知识归纳
               </a>
             
           </div>
@@ -635,8 +565,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/04/01/AT2364/" rel="prev" title="「AtCoder AGC012-D」Colorful Balls">
-                「AtCoder AGC012-D」Colorful Balls <i class="fa fa-chevron-right"></i>
+              <a href="/2019/03/21/er-cha-cha-zhao-shu-bst-jian-jie/" rel="prev" title="二叉查找树(BST)简介">
+                二叉查找树(BST)简介 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -872,7 +802,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入"><span class="nav-number">2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">4.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前驱"><span class="nav-number">4.1.</span> <span class="nav-text">前驱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后继"><span class="nav-number">4.2.</span> <span class="nav-text">后继</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已知排名求值"><span class="nav-number">4.3.</span> <span class="nav-text">已知排名求值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已知值求排名"><span class="nav-number">4.4.</span> <span class="nav-text">已知值求排名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前置知识"><span class="nav-number">1.</span> <span class="nav-text">前置知识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">2.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#咕咕咕"><span class="nav-number"></span> <span class="nav-text">咕咕咕</span></a></li></div>
             
 
           </div>

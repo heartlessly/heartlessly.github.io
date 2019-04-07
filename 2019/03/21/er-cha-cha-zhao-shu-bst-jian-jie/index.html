@@ -98,25 +98,43 @@
 
 
 
-  <meta name="description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
-<meta name="keywords" content="数学,数论,笔记">
+  <meta name="description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
+<meta name="keywords" content="笔记,平衡树">
 <meta property="og:type" content="article">
-<meta property="og:title" content="常见积性函数">
-<meta property="og:url" content="https://heartlessly.github.io/2019/04/05/常见积性函数/index.html">
+<meta property="og:title" content="二叉查找树(BST)简介">
+<meta property="og:url" content="https://heartlessly.github.io/2019/03/21/er-cha-cha-zhao-shu-bst-jian-jie/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
+<meta property="og:description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-06T06:04:51.926Z">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e570088.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e587668.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5b70cf.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5b8c75.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9437e5ba82c.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d2aef.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d44f3.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13d0dc0.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c943e13cf139.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701897e.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94617017000.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94616fc8407.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701570e.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701897e.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94617017000.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c94616fc8407.png">
+<meta property="og:image" content="https://i.loli.net/2019/03/22/5c9461701570e.png">
+<meta property="og:updated_time" content="2019-03-24T23:46:51.630Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="常见积性函数">
-<meta name="twitter:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
+<meta name="twitter:title" content="二叉查找树(BST)简介">
+<meta name="twitter:description" content="介绍二叉查找树(Binary Search Tree) 又称 二叉排序树(Binary Sort Tree) ，亦称 二叉搜索树，简写为 BST 。 二叉查找树具有以下性质：  如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。 如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。 二叉查找树的 左子树 与 右子树 也分别为二叉查找树。">
+<meta name="twitter:image" content="https://i.loli.net/2019/03/22/5c9437e570088.png">
 
 
 
 
 
 
-  <link rel="canonical" href="https://heartlessly.github.io/2019/04/05/常见积性函数/">
+  <link rel="canonical" href="https://heartlessly.github.io/2019/03/21/er-cha-cha-zhao-shu-bst-jian-jie/">
 
 
 
@@ -126,7 +144,7 @@
   };
 </script>
 
-  <title>常见积性函数 | Heartlessly's Blog</title>
+  <title>二叉查找树(BST)简介 | Heartlessly's Blog</title>
   
 
 
@@ -392,7 +410,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/04/05/常见积性函数/">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/03/21/er-cha-cha-zhao-shu-bst-jian-jie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Heartlessly">
@@ -409,7 +427,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">常见积性函数
+          <h1 class="post-title" itemprop="name headline">二叉查找树(BST)简介
 
               
             
@@ -435,7 +453,7 @@
                 
               
 
-              <time title="创建时间：2019-04-05 21:59:42" itemprop="dateCreated datePublished" datetime="2019-04-05T21:59:42+08:00">2019-04-05</time>
+              <time title="创建时间：2019-03-21 14:25:27" itemprop="dateCreated datePublished" datetime="2019-03-21T14:25:27+08:00">2019-03-21</time>
             
 
             
@@ -452,11 +470,29 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-06 14:04:51" itemprop="dateModified" datetime="2019-04-06T14:04:51+08:00">2019-04-06</time>
+                <time title="修改时间：2019-03-25 07:46:51" itemprop="dateModified" datetime="2019-03-25T07:46:51+08:00">2019-03-25</time>
               
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OI/" itemprop="url" rel="index"><span itemprop="name">OI</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -493,64 +529,65 @@
       
 
       
-        <h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p><strong>积性函数</strong> 指对于 <strong>任意互质的整数</strong> $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。</p>
-<p><strong>完全积性函数</strong> 指对于 <strong>任意整数</strong> $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。</p>
-<p>很显然 <strong>完全积性函数</strong> 是 <strong>积性函数</strong> 的一个子集。</p>
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><strong>二叉查找树(Binary Search Tree)</strong> 又称 <strong>二叉排序树(Binary Sort Tree)</strong> ，亦称 <strong>二叉搜索树</strong>，简写为 <strong>BST</strong> 。</p>
+<p>二叉查找树具有以下性质：</p>
+<ul>
+<li>如果左子树非空，那么左子树上的所有节点的值均小于等于根节点的值。</li>
+<li>如果右子树非空，那么右子树上的所有节点的值均大于等于根节点的值。</li>
+<li>二叉查找树的 <strong>左子树</strong> 与 <strong>右子树</strong> 也分别为二叉查找树。</li>
+</ul>
 <a id="more"></a>
-<h1 id="积性函数"><a href="#积性函数" class="headerlink" title="积性函数"></a>积性函数</h1><h2 id="欧拉函数"><a href="#欧拉函数" class="headerlink" title="欧拉函数"></a>欧拉函数</h2><h3 id="定义："><a href="#定义：" class="headerlink" title="定义："></a>定义：</h3><p>欧拉函数，属于 <strong>积性函数</strong>，但不是完全积性函数。常用 $\varphi$ 表示，读作 <strong>fai</strong> 。</p>
-<p>$\varphi(n)$ 定义为小于等于 $n$ 的正整数中与 $n$ 互质的数的个数。</p>
-<h3 id="公式："><a href="#公式：" class="headerlink" title="公式："></a>公式：</h3><p>若 $p_1\ ,\ p_2\ ,\ldots, p_m$ 为 $x$ 的所有 <strong>互不相同</strong> 的质因数，$n$ 是一个不为 $0$ 的整数，则<br>$$<br>\begin{align}<br>\varphi(n)&amp;=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\<br>&amp;=n\prod\limits_{i=1}^{m}\left ( 1-\frac{1}{p_i}\right )\<br>\end{align}<br>$$</p>
-<h3 id="性质-amp-证明："><a href="#性质-amp-证明：" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
-<p>若 $n\ ,\ m$ <strong>互质</strong>，则 $\varphi(nm)=\varphi(n) \times \varphi(m)$ 。</p>
-<p><strong>证明：</strong></p>
-<p>积性函数特有性质。</p>
-<p><strong>性质 2：</strong></p>
-<p>若 $n$ 为 <strong>质数</strong>，则 $\varphi(n)=n-1$ 。</p>
-<p><strong>证明：</strong></p>
-<p>所有小于 $n$ 的正整数都与 $n$ 互质，一共 $n - 1$ 个。</p>
-<p><strong>性质 3：</strong></p>
-<p>若 $n$ 为 <strong>奇数</strong>，则 $\varphi(2n)=\varphi(n)$ 。</p>
-<p><strong>证明：</strong></p>
-<p>显然 $n$ 与 $2$ 互质，且 $\varphi(2) = 1$，所以根据 <strong>性质 1</strong>，可得<br>$$<br>\begin{align}<br>\varphi(2n)&amp;=\varphi(2) \times \varphi(n)\<br>&amp;=1\times \varphi(n)\<br>&amp;=\varphi(n)<br>\end{align}<br>$$<br><strong>性质 4：</strong></p>
-<p>若 $p$ 为质数，$n = p^k$，则<br>$$<br>\varphi(n)=p^k-p^{k-1}<br>$$<br><strong>证明：</strong></p>
-<p>由 $n=p^k$，得 $n$ 的质因数只有 $p$，再通过公式，可知<br>$$<br>\begin{align}<br>\varphi(n)&amp;=n\times\left(1-\frac{1}{p}\right)\<br>&amp;=p^k \times \left(1-\frac{1}{p}\right)\<br>&amp;= p^k - p^{k-1}<br>\end{align}<br>$$<br><strong>性质 5：</strong></p>
-<p>若 $n &gt; 2$，则 $\varphi(n)$ 为偶数。</p>
-<p>若 $n &gt; 1$，则小于等于 $n$ 且与 $n$ 互质的数的和为<br>$$<br>\frac{n \times \varphi(n)}{2}<br>$$<br><strong>证明：</strong></p>
-<p>首先需要知道：若 $n$ 与 $m$ 互质 $(n &gt; m)$，则 $n$ 与 $n - m$ 互质。<br>$$<br>\begin{align}<br>&amp;\gcd(n,m)=1\<br>&amp;\gcd(n,m)=\gcd(n,n-m)\<br>\end{align}<br>$$<br>显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n)\ (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}$。</p>
-<h3 id="程序："><a href="#程序：" class="headerlink" title="程序："></a>程序：</h3><p>如何求出 $\varphi(n)$ ？</p>
-<p>根据欧拉函数的公式我们能够得到以下代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i)<span class="comment">//枚举因数</span></span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);<span class="comment">//将质因数 i 除完</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在最坏情况下（$n$ 是质数），该代码的时间复杂度为 $O(n)$，这显然不够优秀，考虑如何优化。</p>
-<p>任何一个整数 $n$ 都不可能存在 $2$ 个大于 $\sqrt n$ 的质因子，所以我们枚举因数时只需要遍历到 $O(\sqrt n)$ 即可，如果将小于 $\sqrt n$ 的质因子除完后，剩下的数不为 $1$，说明还有 $1$ 个大于 $\sqrt n$ 的质因子，最后要算进去。这种做法的时间复杂度为 $O(\sqrt n)$ 。</p>
-<p>优化后的代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>) res -= res / n;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>如果需要求 $\varphi(1)\sim \varphi(n)$ 的值，用上述方法逐个求的时间复杂度为 $O(n\sqrt n)$，有没有更快的做法呢？</p>
-<h2 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h2><h3 id="定义：-1"><a href="#定义：-1" class="headerlink" title="定义："></a>定义：</h3><p>莫比乌斯函数，属于 <strong>积性函数</strong>，但不是完全积性函数。常用 $\mu$ 表示，读作 <strong>miu</strong> 。</p>
-<p>莫比乌斯函数的定义域是全体自然数 $n$ 。</p>
-<p>若 $n = 1$，则 $\mu(1)=1$；</p>
-<p>若 $n$ 存在大于 $1$ 的平方因子，则 $\mu(n)=0$（平方因子即 $4\ ,\ 9\ ,\ 25$ 等）；</p>
-<p>若 $n$ 是偶数个互不相同的质数之积，则 $\mu(n)=1$；</p>
-<p>若 $n$ 是奇数个互不相同的质数之积，则 $\mu(n)=-1$ 。</p>
-<h3 id="公式：-1"><a href="#公式：-1" class="headerlink" title="公式："></a>公式：</h3><p>$$<br>\mu(n)=\left{\begin{matrix}<br> 1&amp; n=1\<br> (-1)^m&amp; n=p_1\times p_2 \times \cdots \times p_m = \prod\limits_{i=1}^{m}p_i(\forall p_i \neq p_j)\<br> 0&amp; others\<br>\end{matrix}\right.<br>$$</p>
-<h3 id="性质-amp-证明：-1"><a href="#性质-amp-证明：-1" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
-<p>若 $n\ ,\ m$ <strong>互质</strong>，则 $\mu(nm)=\mu(n) \times \mu(m)$ 。</p>
-<p><strong>证明：</strong></p>
-<p>积性函数特有性质。</p>
-<p><strong>性质 2：</strong></p>
-<p>若 $n \neq 1$，则 $n$ 所有因子的莫比乌斯函数值的和为 $0$，即<br>$$<br>\sum\limits_{d\mid n}\mu(d)=\left{\begin{matrix}<br> 1&amp; n=1\<br> 0&amp; n&gt;1<br>\end{matrix}\right.<br>$$</p>
-<p><strong>证明：</strong></p>
-<h2 id="除数函数"><a href="#除数函数" class="headerlink" title="除数函数"></a>除数函数</h2><h3 id="定义：-2"><a href="#定义：-2" class="headerlink" title="定义："></a>定义：</h3><p>除数函数，属于 <strong>积性函数</strong>，但不是完全积性函数。常用 $\sigma$ 表示，读作 <strong>sigma</strong> 。</p>
-<p>$\sigma_x(n)$ 定义为 $n$ 的正约数的 $x$ 次幂之和，即<br>$$<br>\sigma_x(n)=\sum\limits_{d\mid n}d^x<br>$$</p>
-<h3 id="公式：-2"><a href="#公式：-2" class="headerlink" title="公式："></a>公式：</h3><p>若 $p_1\ ,\ p_2\ ,\ldots, p_m$ 为 $x$ 的所有质因数，$n$ 和 $x$ 都是 <strong>自然数</strong> 。<br>$$<br>\begin{align}<br>\sigma_x(n) &amp;= (1 + p_1^x+p_1^{2x}+\cdots+p_1^{a_1x})\<br>&amp;\times (1 + p_2^x+p_2^{2x}+\cdots+p_2^{a_2x})\<br>&amp;\times (1 + p_3^x+p_3^{2x}+\cdots+p_3^{a_3x})\<br>&amp;\times \cdots \cdots\<br>&amp;\times (1 + p_m^x+p_m^{2x}+\cdots+p_m^{a_mx})\<br>&amp;=\prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^{jx}\<br>&amp;=\prod\limits_{i=1}^{m}\frac{p_i^{(a_i+1)x}-1}{p_i^x-1}\<br>\end{align}<br>$$</p>
-<h3 id="性质-amp-证明：-2"><a href="#性质-amp-证明：-2" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
-<p>特殊地，$\sigma_0(n)$ 可以表示 $n$ 的正约数个数，$\sigma_1(n)$ 可以表示 $n$ 的正约数之和。</p>
-<p><strong>证明：</strong></p>
-<p>根据定义即能得到该结论。</p>
-<p><strong>性质 2：</strong></p>
-<p>若 $n\ ,\ m$ <strong>互质</strong>，且 $x$ 是自然数，则 $\sigma_x(nm)=\sigma_x(n) \times \sigma_x(m)$ 。</p>
-<p><strong>证明：</strong></p>
-<p>积性函数特有性质。</p>
-<h1 id="完全积性函数"><a href="#完全积性函数" class="headerlink" title="完全积性函数"></a>完全积性函数</h1>
+<p>通俗地讲：二叉查找树上点的权值，<strong>左儿子 &lt; 根节点 &lt; 右儿子</strong> 。</p>
+<p>根据这个性质，我们很容易发现二叉查找树的中序遍历是一个单调不减的序列。</p>
+<p>那么，二叉查找树有什么作用呢？</p>
+<p>对于一个长度为 $8​$ 的序列： $1, 15, 5, 3, 8, 10, 9, 12, 10​$，该如何找到这个序列第 $k​$ 大的数，并且支持插入与删除元素呢？如果我们将其排序再进行查询，时间复杂度为 $O(n \log n)​$，这显然不够优秀。因此我们考虑构造出一棵二叉查找树，如图。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9437e570088.png" alt="graph1.png"></p>
+<h2 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h2><p>假设我们要向上述序列插入一个数 $11​$，我们从根节点开始。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9437e587668.png" alt="graph2.png"></p>
+<p>我们发现 $11 &gt; 9$，因此我们把 $11$ 放到 $9$ 的右儿子。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9437e5b70cf.png" alt="graph3.png"></p>
+<p>此时 $12$ 比 $11$ 大了，为了保持二叉搜索树的性质，我们把 $11$ 放到 $12​$ 的左儿子。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9437e5b8c75.png" alt="graph4.png"></p>
+<p>$11 &gt; 10$，本来应该让 $11$ 和 $10$ 的右儿子继续比较，可是 $10$ 没有右儿子，因此我们把 $11$ 插入到该位置。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9437e5ba82c.png" alt="graph5.png"></p>
+<p><strong>小结：</strong>插入一个数时，从根节点开始，依次比较要插入的数和当前节点的值，如果大于当前节点，就放到该结点的右儿子，如果小于当前节点，就放到该结点的左儿子，重复上述操作，直到下放的位置没有结点。如果中途碰到与某个节点相等，我们再定义一个 $cnt$ 数组，表示当前节点值的个数，并且加上 $1$ 。这样我们就完成了一个数的插入过程。</p>
+<h2 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h2><p>类似插入的过程，还是依次比较要删除的数和当前节点的值，不断下放，当找到目标节点时，并不需要把该节点整个删掉，只需要给该节点值的个数减 $1$ 。对于节点 $x$，如果 $cnt[x] = 0$， 则表示当前位置没有节点。当一个位置没有节点时，这棵树依旧满足二叉查找树的性质。</p>
+<h2 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h2><h3 id="前驱"><a href="#前驱" class="headerlink" title="前驱"></a>前驱</h3><p>$x$ 的前驱定义为小于 $x$ 的最大的数。那么如何找 $x​$ 的前驱呢？</p>
+<p>这里以 $6$ 为例，从根节点开始。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c943e13d2aef.png" alt="graph6.png"></p>
+<p>从前驱的定义可知，$6$ 的前驱一定比 $6$ 小。而 $9 &gt; 6$，所以把 $6$ 放在 $9$ 的左儿子。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c943e13d44f3.png" alt="graph7.png"></p>
+<p>$8$ 还是比 $6$ 大，因此我们把 $6$ 放到 $8$ 的左儿子。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c943e13d0dc0.png" alt="graph8.png"></p>
+<p>我们发现 $3 &lt; 6$，但是并不知道 $3$ 是不是小于 $6$ 的数中最大的，我们还要去找比 $3$ 大的数，因为这些数也有可能成为答案。所以记录当前答案为 $3$，把 $6$ 放在 $3$ 的右儿子。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c943e13cf139.png" alt="graph9.png"></p>
+<p>$5$ 还是比 $6$ 小，更新当前答案为 $5$，而 $5$ 没有右儿子，所以最后答案 （$6$ 的前驱）就是 $5$ 。</p>
+<p><strong>小结：</strong>寻找 $x$ 的前驱时，从根节点开始，依次比较 $x$ 和当前节点的值。如果当前节点的值大于 $x$，则往该节点的左儿子找，直到出现小于 $x$ 的节点。此时我们记录当前答案为这个节点的值，往这个节点的右儿子找，如果途中遇到的节点的值小于 $x$，就更新当前答案，否则结束查询，当前答案就是 $x$ 的前驱。</p>
+<h3 id="后继"><a href="#后继" class="headerlink" title="后继"></a>后继</h3><p>$x​$ 的后继定义为大于 $x​$ 的最小的数。</p>
+<p>与前驱的操作恰恰相反，依次比较 $x​$ 和当前节点的值。如果当前节点的值小于 $x​$，则往该节点的右儿子找，直到出现大于 $x​$ 的节点。此时我们记录当前答案为这个节点的值，往这个节点的左儿子找，如果途中遇到的节点的值大于 $x​$，就更新当前答案，否则结束查询，当前答案就是 $x​$ 的后继。</p>
+<h3 id="已知排名求值"><a href="#已知排名求值" class="headerlink" title="已知排名求值"></a>已知排名求值</h3><p>排名定义为比当前数小的数的个数 $+1​$，现在需要寻找排名为 $x​$ 的数。</p>
+<p>我们新定义一个数组 $size$，对于一个节点 $x$，$size[x]$ 表示 $x$ 以及它的子树大小之和，需要递归预处理出每个节点的 $size$，当然，插入与删除操作时也要更新 $size$ 数组。假设我们要寻找排名为 $7$ 的数是多少，从根节点开始，如图（红色的数字即为节点的 $size$）。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9461701897e.png" alt="graph10.png"></p>
+<p>$9​$ 的左儿子的 $size​$ 为 $4​$，所以 $9​$ 的排名为 $5​$，而要寻找的数的排名为 $7​$，所以该数一定比 $9​$ 大，因此我们到 $9​$ 的右子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c94617017000.png" alt="graph11.png"></p>
+<p>此时到了一棵新的子树上，因为排名为 $5$ 以及 $5$ 之前的节点都不要了，所以我们需要在该子树上找排名为 $2$ 的数。$12$ 的左儿子的 $size$ 为 $2$，因此 $12$ 在该子树上的排名为 $3$，排名为 $2$ 的数一定比 $12$ 小，应该到 $12$ 的左子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c94616fc8407.png" alt="graph12.png"></p>
+<p>现在所在的子树又少了 $2$ 个节点，但这 $2$ 个节点的排名都比 $2$ 大，所以仍然在新子树中找排名为 $2$ 的数。因为 $10$ 没有左儿子（即 $size$ 为 $0$），所以 $10$ 的排名为 $1$，而要查询的数排名为 $2$，大于 $10$，应该到 $10$ 的右子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9461701570e.png" alt="graph13.png"></p>
+<p>排名为 $1​$ 的节点已经不要了，因此要在新子树中找排名为 $1​$ 的节点。而 $11​$ 没有左儿子（即 $size​$ 为 $0​$），所以 $11​$ 的排名为 $1​$ 。最后的答案就是 $11​$ 。</p>
+<p><strong>小结：</strong>已知排名求值时，先预处理出每个节点的子树大小 $size$，从根节点开始，依次检查每个节点的排名，每个节点 $x$ 的排名为它 <strong>左儿子的</strong> $size$ 加上 $cnt[x]$ (该节点值的数量) 。如果该节点的排名比要查询的排名小，则在该节点的右子树中查询 <strong>当前要查询的排名 - 该节点排名</strong> 的数。如果该节点排名更大，就在左子树中继续查询这个排名的数。如果排名相等，则该节点的值就是答案。</p>
+<h3 id="已知值求排名"><a href="#已知值求排名" class="headerlink" title="已知值求排名"></a>已知值求排名</h3><p>与已知排名求值的过程相似，以查询 $11$ 的排名为例，从根节点开始，初始没有数比 $11$ 小，所以 $11$ 的排名为 $1​$ 。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9461701897e.png" alt="graph10.png"></p>
+<p>$9​$ 的排名为它左儿子的 $size​$ 加上它的 $cnt​$，也就是 $5​$，显然 $9 &lt; 11​$，所以 $11​$ 的排名变为 $1 + 5 = 6​$，并且往 $9​$ 的右子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c94617017000.png" alt="graph11.png"></p>
+<p>因为 $12 &gt; 11$，没有数比 $11$ 小，所以往 $12$ 的左子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c94616fc8407.png" alt="graph12.png"></p>
+<p>$10$ 比 $11$ 小，因为 $10$ 没有左儿子（左儿子 $size$ 为 $0$），所以 $10$ 在该子树中的排名为 $1$ 。$11$ 的排名更新为 $6 + 1 = 7$，并往 $10$ 的右子树找。</p>
+<p><img src="https://i.loli.net/2019/03/22/5c9461701570e.png" alt="graph13.png"></p>
+<p>与目标节点重合，停止查询，$7$ 即为 $11$ 的排名。</p>
+<p><strong>小结：</strong>已知值求排名时，初始化已知值的排名为 $1$ 。从根节点开始，依次检查每个节点的值，如果该节点的值比已知值小，则排名更新为 <strong>它当前的排名</strong> 加上 <strong>该节点的排名</strong>，每个节点 $x$ 的排名为它 <strong>左儿子的</strong> $size$ 加上 $cnt[x]$ (该节点值的数量) ，往该节点的右子树走。如果该节点的值比已知值大，则往该节点的左子树走。如果与已知值相等，则停止查询，当前排名就是这个值最终的排名。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>普通的二叉查找树在数据随机的情况下所有操作的时间复杂度都是 $O(\log n)$ 的，但是在最劣情况下会变成一条链，时间复杂度为 $O(n)$，因此我们需要旋转，分裂等操作来维护二叉查找树，使其时间复杂度稳定为 $O(\log n)$，这种二叉查找树称作平衡二叉树，简称平衡树。平衡树的常见实现方法有 <strong>Treap</strong> , <strong>Splay</strong> , <strong>AVL</strong> , <strong>替罪羊树</strong> , <strong>红黑树</strong> 等，这里不作介绍。</p>
+
       
     </div>
 
@@ -573,11 +610,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数学/" rel="tag"># 数学</a>
-          
-            <a href="/tags/数论/" rel="tag"># 数论</a>
-          
             <a href="/tags/笔记/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/平衡树/" rel="tag"># 平衡树</a>
           
         </div>
       
@@ -590,8 +625,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/04/04/常用的质数相关定理/" rel="next" title="常用的质数相关定理">
-                <i class="fa fa-chevron-left"></i> 常用的质数相关定理
+              <a href="/2019/03/21/shen-zhan-shu-splay-xiao-jie/" rel="next" title="伸展树(Splay)小结">
+                <i class="fa fa-chevron-left"></i> 伸展树(Splay)小结
               </a>
             
           </div>
@@ -599,6 +634,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/01/AT2364/" rel="prev" title="「AtCoder AGC012-D」Colorful Balls">
+                「AtCoder AGC012-D」Colorful Balls <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -833,7 +872,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#积性函数"><span class="nav-number">2.</span> <span class="nav-text">积性函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#欧拉函数"><span class="nav-number">2.1.</span> <span class="nav-text">欧拉函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义："><span class="nav-number">2.1.1.</span> <span class="nav-text">定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公式："><span class="nav-number">2.1.2.</span> <span class="nav-text">公式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质-amp-证明："><span class="nav-number">2.1.3.</span> <span class="nav-text">性质 &amp; 证明：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#程序："><span class="nav-number">2.1.4.</span> <span class="nav-text">程序：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#莫比乌斯函数"><span class="nav-number">2.2.</span> <span class="nav-text">莫比乌斯函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义：-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公式：-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">公式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质-amp-证明：-1"><span class="nav-number">2.2.3.</span> <span class="nav-text">性质 &amp; 证明：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#除数函数"><span class="nav-number">2.3.</span> <span class="nav-text">除数函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义：-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">定义：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#公式：-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">公式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性质-amp-证明：-2"><span class="nav-number">2.3.3.</span> <span class="nav-text">性质 &amp; 证明：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#完全积性函数"><span class="nav-number">3.</span> <span class="nav-text">完全积性函数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入"><span class="nav-number">2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除"><span class="nav-number">3.</span> <span class="nav-text">删除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询"><span class="nav-number">4.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前驱"><span class="nav-number">4.1.</span> <span class="nav-text">前驱</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后继"><span class="nav-number">4.2.</span> <span class="nav-text">后继</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已知排名求值"><span class="nav-number">4.3.</span> <span class="nav-text">已知排名求值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#已知值求排名"><span class="nav-number">4.4.</span> <span class="nav-text">已知值求排名</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
