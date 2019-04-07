@@ -106,18 +106,18 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47565.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47571.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47609.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47570.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47570.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47624.png">
-<meta property="og:image" content="https://cdn.luogu.org/upload/pic/47626.png">
-<meta property="og:updated_time" content="2019-04-07T04:36:42.526Z">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9ba8828.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c5f2bd.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c2a7ed.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c10e88.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c10e88.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c4199a.png">
+<meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c125a9.png">
+<meta property="og:updated_time" content="2019-04-07T05:45:50.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
 <meta name="twitter:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
-<meta name="twitter:image" content="https://cdn.luogu.org/upload/pic/47565.png">
+<meta name="twitter:image" content="https://i.loli.net/2019/04/07/5ca98a9ba8828.png">
 
 
 
@@ -460,7 +460,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 12:36:42" itemprop="dateModified" datetime="2019-04-07T12:36:42+08:00">2019-04-07</time>
+                <time title="修改时间：2019-04-07 13:45:50" itemprop="dateModified" datetime="2019-04-07T13:45:50+08:00">2019-04-07</time>
               
             
           </span>
@@ -525,37 +525,46 @@
 <h2 id="一、欧氏距离（欧几里得度量）"><a href="#一、欧氏距离（欧几里得度量）" class="headerlink" title="一、欧氏距离（欧几里得度量）"></a>一、欧氏距离（欧几里得度量）</h2><p><strong>欧氏距离</strong>，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距离）。在二维和三维空间中的欧氏距离就是两点之间的实际距离。—— _<strong>来源：<a href="https://baike.baidu.com/item/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E5%BA%A6%E9%87%8F/1274107?fromtitle=%E6%AC%A7%E6%B0%8F%E8%B7%9D%E7%A6%BB&amp;fromid=1798948" target="_blank" rel="noopener">百度百科</a></strong>_ </p>
 <p><strong>欧氏距离</strong> 是最易于理解的一种距离算法。在数学的平面直角坐标系中，设点 $A,B$ 的坐标分别为 $A(x_1,y_1),B(x_2,y_2)$，求点 $A,B$ 之间的距离，我们一般会使用如下公式：</p>
 <script type="math/tex; mode=display">
-\left | AB \right | = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}</script><p>实际上这就是平面<strong>（二维空间）</strong>中两点欧氏距离的距离公式，除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：</p>
+\left \mid  AB \right \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}</script><p>实际上这就是平面<strong>（二维空间）</strong>中两点欧氏距离的距离公式，除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：</p>
 <script type="math/tex; mode=display">
-|P| = \sqrt{x^2+y^2}</script><p>举个栗子，在下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。<br><img src="https://cdn.luogu.org/upload/pic/47565.png" alt></p>
+\mid P\mid  = \sqrt{x^2+y^2}</script><p>举个栗子，在下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。</p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9ba8828.png" alt="1.png"></p>
 <p>通过公式，我们很容易得到 $A,B$ 两点间的欧氏距离：</p>
 <script type="math/tex; mode=display">
-\left | AB \right | = \sqrt{\left ( 2 - 6 \right )^2 + \left ( 2 - 5 \right )^2} = \sqrt{4^2+3^2} = 5</script><p>那么，<strong>三维空间</strong> 中两点的欧氏距离公式呢？<br>我们来观察下图。</p>
-<p><img src="https://cdn.luogu.org/upload/pic/47571.png" alt></p>
-<p>我们很容易发现，在$\triangle ADC$中，$\angle ADC = 90^\circ$；在$\triangle ACB$中，$\angle ACB = 90^\circ$ 。</p>
+\left \mid  AB \right \mid  = \sqrt{\left ( 2 - 6 \right )^2 + \left ( 2 - 5 \right )^2} = \sqrt{4^2+3^2} = 5</script><p>那么，<strong>三维空间</strong> 中两点的欧氏距离公式呢？<br>我们来观察下图。</p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9c5f2bd.png" alt="2.png"></p>
+<p>我们很容易发现，在$\triangle ADC?$中，$\angle ADC = 90^\circ?$；在$\triangle ACB?$中，$\angle ACB = 90^\circ?$ 。</p>
 <script type="math/tex; mode=display">
-\therefore |AB|=\sqrt{|AC|^2+|BC|^2}</script><script type="math/tex; mode=display">
-=\sqrt{|AD|^2+|CD|^2+|BC|^2}</script><p>由此可得，<strong>三维空间</strong> 中欧氏距离的距离公式为：</p>
+\begin{aligned}
+\therefore \mid AB\mid &=\sqrt{\mid AC\mid ^2+\mid BC\mid ^2}\\
+&=\sqrt{\mid AD\mid ^2+\mid CD\mid ^2+\mid BC\mid ^2}\\
+\end{aligned}</script><p>由此可得，<strong>三维空间</strong> 中欧氏距离的距离公式为：</p>
 <script type="math/tex; mode=display">
-\left | AB \right | = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2 + \left ( z_2 - z_1 \right )^2}</script><script type="math/tex; mode=display">
-|P| = \sqrt{x^2+y^2+z^2}</script><p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P3958" target="_blank" rel="noopener">[Luogu]P3958</a></strong></p>
-<p>以此类推，我们就得到了 $n$ <strong>维空间</strong> 中欧氏距离的距离公式：</p>
-<script type="math/tex; mode=display">d(x,y) = \sqrt{\left ( x_1 - y_1 \right )^2 + \left ( x_2 - y_2 \right )^2 + \cdot \cdot \cdot +\left ( x_n - y_n \right )^2}</script><script type="math/tex; mode=display">= \sqrt{\sum\limits_{i = 1}^{n}(x_i - y_i)^2}</script><p>欧氏距离虽然很有用，但也有明显的缺点。两个整点计算其欧氏距离时，往往答案是浮点型，会存在一定误差。</p>
+\left \mid  AB \right \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2 + \left ( z_2 - z_1 \right )^2}</script><script type="math/tex; mode=display">
+\mid P\mid  = \sqrt{x^2+y^2+z^2}</script><p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P3958" target="_blank" rel="noopener">[Luogu]P3958</a></strong></p>
+<p>以此类推，我们就得到了 $n?$ <strong>维空间</strong> 中欧氏距离的距离公式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+d(x,y) &= \sqrt{\left ( x_1 - y_1 \right )^2 + \left ( x_2 - y_2 \right )^2 + \cdots +\left ( x_n - y_n \right )^2}\\
+&= \sqrt{\sum\limits_{i = 1}^{n}(x_i - y_i)^2}\\
+\end{aligned}</script><p>欧氏距离虽然很有用，但也有明显的缺点。两个整点计算其欧氏距离时，往往答案是浮点型，会存在一定误差。</p>
 <hr>
 <h2 id="二、曼哈顿距离"><a href="#二、曼哈顿距离" class="headerlink" title="二、曼哈顿距离"></a>二、曼哈顿距离</h2><p><strong>曼哈顿距离</strong> 是种使用在几何度量空间的几何学用语，用以标明两个点在标准坐标系上的绝对轴距总和。曼哈顿距离不是距离不变量，当坐标轴变动时，点间的距离就会不同。—— _<strong>来源：<a href="https://baike.baidu.com/item/%E6%9B%BC%E5%93%88%E9%A1%BF%E8%B7%9D%E7%A6%BB/743092?fr=aladdin" target="_blank" rel="noopener">百度百科</a></strong>_ </p>
-<p>在 <strong>二维空间</strong> 内，两个点之间的曼哈顿距离为它们横坐标之差的绝对值与纵坐标之差的绝对值之和。设点 $A(x_1,y_1),B(x_2,y_2)​$，则 $A,B​$ 之间的曼哈顿距离用公式可以表示为：</p>
+<p>在 <strong>二维空间</strong> 内，两个点之间的曼哈顿距离为它们横坐标之差的绝对值与纵坐标之差的绝对值之和。设点 $A(x_1,y_1),B(x_2,y_2)?$，则 $A,B?$ 之间的曼哈顿距离用公式可以表示为：</p>
 <script type="math/tex; mode=display">
-d(A,B) = |x_1 - x_2| + |y_1 - y_2|</script><p>观察下图：</p>
-<p><img src="https://cdn.luogu.org/upload/pic/47609.png" alt></p>
+d(A,B) = \mid x_1 - x_2\mid  + \mid y_1 - y_2\mid</script><p>观察下图：</p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9c2a7ed.png" alt="3.png"></p>
 <p>在 $A,B$ 间，<br>$\color{yellow}{黄线}$，<br>$\color{orange}{橙线}$ 都表示曼哈顿距离，而<br>$\color{red}{红线}$，$\color{blue}{蓝线}$表示 <strong>等价</strong> 的曼哈顿距离，$\color{green}{绿线}$表示欧氏距离。</p>
-<p>同样的栗子，在下图中 $A,B​$ 的坐标分别为 $A(6,5),B(2,2)​$。</p>
-<p><img src="https://cdn.luogu.org/upload/pic/47570.png" alt></p>
+<p>同样的栗子，在下图中 $A,B?$ 的坐标分别为 $A(6,5),B(2,2)?$。</p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9c10e88.png" alt="4 &amp; 5.png"></p>
 <p>通过公式，我们很容易得到 $A,B$ 两点间的曼哈顿距离：</p>
 <script type="math/tex; mode=display">
-d(A,B) = |6 - 2| + |5 - 2| = 4 + 3 = 7</script><p>经过推导，我们得到 $n$ <strong>维空间</strong> 的曼哈顿距离公式为：</p>
+d(A,B) = \mid 6 - 2\mid  + \mid 5 - 2\mid  = 4 + 3 = 7</script><p>经过推导，我们得到 $n$ <strong>维空间</strong> 的曼哈顿距离公式为：</p>
 <script type="math/tex; mode=display">
-d(A,B) = |x_1 - y_1| + |x_2 - y_2| + \cdot \cdot \cdot + |x_n - y_n|</script><script type="math/tex; mode=display">
-=\sum\limits_{i = 1}^{n}|x_i - y_i|</script><p>除了公式之外，曼哈顿距离还具有以下 <strong>数学性质</strong>：</p>
+\begin{aligned}
+d(A,B) &= \mid x_1 - y_1\mid  + \mid x_2 - y_2\mid  + \cdot \cdot \cdot + \mid x_n - y_n\mid \\
+&=\sum\limits_{i = 1}^{n}\mid x_i - y_i\mid \\
+\end{aligned}</script><p>除了公式之外，曼哈顿距离还具有以下 <strong>数学性质</strong>：</p>
 <ul>
 <li><p><strong>非负性</strong></p>
 <p>曼哈顿距离是一个非负数。</p>
@@ -577,45 +586,48 @@ d(A,B) = |x_1 - y_1| + |x_2 - y_2| + \cdot \cdot \cdot + |x_n - y_n|</script><sc
 <p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong></p>
 <p><strong>解析：</strong></p>
 <p><del>（不要被难度吓住，是假的）</del></p>
-<p>根据题意，对于式子$|x_1-x_2|+|y_1-y_2|$，我们可以假设 $x_1 - x_2 \geq 0$，根据 $y_1 - y_2$ 的符号分成两种情况：</p>
+<p>根据题意，对于式子 $\mid x_1-x_2\mid +\mid y_1-y_2\mid $，我们可以假设 $x_1 - x_2 \geq 0$，根据 $y_1 - y_2$ 的符号分成两种情况：</p>
 <ul>
-<li><p>$(y_1 - y_2 \geq 0)\rightarrow |x_1-x_2|+|y_1-y_2|=x_1 + y_1 - (x_2 + y_2)$</p>
+<li><p>$(y_1 - y_2 \geq 0)\rightarrow \mid x_1-x_2\mid +\mid y_1-y_2\mid =x_1 + y_1 - (x_2 + y_2)$</p>
 </li>
-<li><p>$(y_1 - y_2&lt; 0)\rightarrow |x_1-x_2|+|y_1-y_2|=x_1 - y_1 - (x_2 - y_2)$</p>
+<li><p>$(y_1 - y_2&lt; 0)\rightarrow \mid x_1-x_2\mid +\mid y_1-y_2\mid =x_1 - y_1 - (x_2 - y_2)$</p>
 </li>
 </ul>
-<p>只要分别求出 $x+y, x-y$ 的最大值和最小值即能得出答案。</p>
-<p><strong>Code</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, x, y, minx = <span class="number">0x7fffffff</span>, maxx, miny = <span class="number">0x7fffffff</span>, maxy;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        read(x), read(y);</span><br><span class="line">        minx = min(minx, x + y), maxx = max(maxx, x + y);</span><br><span class="line">        miny = min(miny, x - y), maxy = max(maxy, x - y);</span><br><span class="line">    &#125;</span><br><span class="line">    write(max(maxx - minx, maxy - miny));</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>只要分别求出 $x+y, x-y?$ 的最大值和最小值即能得出答案。</p>
+<p><strong>Code</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, x, y, minx = <span class="number">0x7fffffff</span>, maxx, miny = <span class="number">0x7fffffff</span>, maxy;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        read(x), read(y);</span><br><span class="line">        minx = min(minx, x + y), maxx = max(maxx, x + y);</span><br><span class="line">        miny = min(miny, x - y), maxy = max(maxy, x - y);</span><br><span class="line">    &#125;</span><br><span class="line">    write(max(maxx - minx, maxy - miny));</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其实还有第二种做法，那就是把 <strong>曼哈顿距离</strong> 转化为 <strong>切比雪夫距离</strong> 求解，后面会讲到。</p>
 <hr>
 <h2 id="三、切比雪夫距离"><a href="#三、切比雪夫距离" class="headerlink" title="三、切比雪夫距离"></a>三、切比雪夫距离</h2><p><strong>切比雪夫距离</strong> 是向量空间中的一种度量，二个点之间的距离定义是其各坐标数值差绝对值的最大值。—— _<strong>来源：<a href="https://baike.baidu.com/item/%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB" target="_blank" rel="noopener">百度百科</a></strong>_ </p>
 <p>在 <strong>二维空间</strong> 内，两个点之间的切比雪夫距离为它们横坐标之差的绝对值与纵坐标之差的绝对值的最大值。设点 $A(x_1,y_1),B(x_2,y_2)$，则 $A,B$ 之间的切比雪夫距离用公式可以表示为：</p>
 <script type="math/tex; mode=display">
-d(A,B) = max(|x_1 - x_2|, |y_1 - y_2|)</script><p>仍然是这个栗子，下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。<br><img src="https://cdn.luogu.org/upload/pic/47570.png" alt></p>
+d(A,B) = max(\mid x_1 - x_2\mid , \mid y_1 - y_2\mid )</script><p>仍然是这个栗子，下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。<br><img src="https://i.loli.net/2019/04/07/5ca98a9c10e88.png" alt="4 &amp; 5.png"></p>
 <script type="math/tex; mode=display">
-d(A,B) = \max(|6 - 2|, |5 - 2|)=\max(4,3)=4</script><p> $n$ <strong>维空间</strong> 中切比雪夫距离的距离公式：</p>
+d(A,B) = \max(\mid 6 - 2\mid , \mid 5 - 2\mid )=\max(4,3)=4</script><p> $n$ <strong>维空间</strong> 中切比雪夫距离的距离公式：</p>
 <script type="math/tex; mode=display">
-d(x,y) = \max\begin{Bmatrix} |x_1 - y_1|,|x_2 - y_2|,\cdot \cdot \cdot,|x_n - y_n|\end{Bmatrix}</script><script type="math/tex; mode=display">
-= \max\begin{Bmatrix} |x_i - y_i|\end{Bmatrix}(i \in  n)</script><hr>
-<h2 id="四、（拓展）曼哈顿距离与切比雪夫距离的相互转化"><a href="#四、（拓展）曼哈顿距离与切比雪夫距离的相互转化" class="headerlink" title="四、（拓展）曼哈顿距离与切比雪夫距离的相互转化"></a>四、（拓展）曼哈顿距离与切比雪夫距离的相互转化</h2><p>首先，我们考虑画出平面直角坐标系上所有到原点的 <strong>曼哈顿距离</strong> 为 $1$ 的点。</p>
-<p>通过公式，我们很容易得到方程 $|x| + |y| = 1$。</p>
-<p>将绝对值展开，得到 $4$ 个 <strong>一次函数</strong> ，分别是：</p>
+\begin{aligned}
+d(x,y) &= \max\begin{Bmatrix} \mid x_1 - y_1\mid ,\mid x_2 - y_2\mid ,\ldots,\mid x_n - y_n\mid \end{Bmatrix}\\
+&= \max\begin{Bmatrix} \mid x_i - y_i\mid \end{Bmatrix}(i \in  n)\\
+\end{aligned}</script><hr>
+<h2 id="四、（拓展）曼哈顿距离与切比雪夫距离的相互转化"><a href="#四、（拓展）曼哈顿距离与切比雪夫距离的相互转化" class="headerlink" title="四、（拓展）曼哈顿距离与切比雪夫距离的相互转化"></a>四、（拓展）曼哈顿距离与切比雪夫距离的相互转化</h2><p>首先，我们考虑画出平面直角坐标系上所有到原点的 <strong>曼哈顿距离</strong> 为 $1?$ 的点。</p>
+<p>通过公式，我们很容易得到方程 $\mid x\mid  + \mid y\mid  = 1​$。</p>
+<p>将绝对值展开，得到 $4​$ 个 <strong>一次函数</strong> ，分别是：</p>
 <script type="math/tex; mode=display">
 y = x + 1(x \geq 0, y \geq 0)</script><script type="math/tex; mode=display">
 y = -x + 1(x \leq 0, y \geq 0)</script><script type="math/tex; mode=display">
 y = x - 1(x \geq 0, y \leq 0)</script><script type="math/tex; mode=display">
-y = -x - 1(x \leq 0, y \leq 0)</script><p>将这 $4$ 个函数画到平面直角坐标系上，得到一个边长为 $\sqrt{2}$ 的正方形，如下图所示：</p>
-<p><img src="https://cdn.luogu.org/upload/pic/47624.png" alt></p>
+y = -x - 1(x \leq 0, y \leq 0)</script><p>将这 $4?​$ 个函数画到平面直角坐标系上，得到一个边长为 $\sqrt{2}?​$ 的正方形，如下图所示：</p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9c4199a.png" alt="6.png"></p>
 <p>正方形边界上所有的点到原点的 <strong>曼哈顿距离</strong> 都是 $1$ 。</p>
 <p>同理，我们再考虑画出平面直角坐标系上所有到原点的 <strong>切比雪夫距离</strong> 为 $1$ 的点。</p>
-<p>通过公式，我们知道 $\max(|x|,|y|)=1$。</p>
+<p>通过公式，我们知道 $\max(\mid x\mid ,\mid y\mid )=1$。</p>
 <p>我们将式子展开，也同样可以得到可以得到 $4$ 条 <strong>线段</strong>，分别是：</p>
 <script type="math/tex; mode=display">
 y = 1(-1\leq x \leq 1)</script><script type="math/tex; mode=display">
 y = -1(-1\leq x \leq 1)</script><script type="math/tex; mode=display">
 x = 1,(-1\leq y \leq 1)</script><script type="math/tex; mode=display">
 x = -1,(-1\leq y \leq 1)</script><p>画到平面直角坐标系上，可以得到一个边长为 $2$ 的正方形，如下图所示：</p>
-<p><img src="https://cdn.luogu.org/upload/pic/47626.png" alt></p>
+<p><img src="https://i.loli.net/2019/04/07/5ca98a9c125a9.png" alt="7.png"></p>
 <p>正方形边界上所有的点到原点的 <strong>切比雪夫距离</strong> 都是 $1$ 。</p>
 <p>将这两幅图对比，我们会神奇地发现：</p>
 <p>这 $2$ 个正方形是 <strong>相似图形</strong> 。</p>
@@ -624,16 +636,19 @@ x = -1,(-1\leq y \leq 1)</script><p>画到平面直角坐标系上，可以得�
 <p>假设 $A(x_1,y_1),B(x_2,y_2)$，</p>
 <p>$A,B$ 两点的 <strong>曼哈顿距离</strong> 为：</p>
 <script type="math/tex; mode=display">
-d(A,B)=|x_1 - x_2| + |y_1 - y_2|</script><script type="math/tex; mode=display">
-=|x_1 - x_2| + |y_1 - y_2|</script><script type="math/tex; mode=display">
-= \max\begin{Bmatrix} x_1 - x_2 + y_1 - y_2, x_1 - x_2 + y_2 - y_1,x_2 - x_1 + y_1 - y_2, x_2 - x_1 + y_2 - y_1\end{Bmatrix}</script><p>   （ 把绝对值拆开，能够得到四个值，这四个值中的最大值是两个 <strong>非负数</strong> 之和，即 <strong>曼哈顿距离</strong> ）</p>
-<script type="math/tex; mode=display">
-= \max\begin{Bmatrix}|(x_1 + y_1) - (x_2 + y_2)|, |(x_1 - y_2) - (x_2 - y_2)|\end{Bmatrix}</script><p>我们很容易发现，这就是 $(x_1 + y_1,x_1 - y_1), (x_2 + y_2,x_2 - y_2)$ 两点之间的 <strong>切比雪夫距离</strong>。</p>
+\begin{aligned}
+d(A,B)&=\mid x_1 - x_2\mid  + \mid y_1 - y_2\mid \\
+&= \max\begin{Bmatrix} x_1 - x_2 + y_1 - y_2, x_1 - x_2 + y_2 - y_1,x_2 - x_1 + y_1 - y_2, x_2 - x_1 + y_2 - y_1\end{Bmatrix}\\
+&（把绝对值拆开，能够得到四个值，这四个值中的最大值是两个 非负数 之和，即 曼哈顿距离）\\
+&= \max\begin{Bmatrix}\mid (x_1 + y_1) - (x_2 + y_2)\mid , \mid (x_1 - y_2) - (x_2 - y_2)\mid \end{Bmatrix}\\
+\end{aligned}</script><p>我们很容易发现，这就是 $(x_1 + y_1,x_1 - y_1), (x_2 + y_2,x_2 - y_2)?$ 两点之间的 <strong>切比雪夫距离</strong>。</p>
 <p>所以将每一个点 $(x,y)$ 转化为 $(x + y, x - y)$，新坐标系下的  <strong>切比雪夫距离</strong> 即为原坐标系下的 <strong>曼哈顿距离</strong>。</p>
-<p>同理，$A,B$ 两点的 <strong>切比雪夫距离</strong> 为：</p>
+<p>同理，$A,B?$ 两点的 <strong>切比雪夫距离</strong> 为：</p>
 <script type="math/tex; mode=display">
-d(A,B)=\max\begin{Bmatrix} |x_1 - x_2|,|y_1 - y_2|\end{Bmatrix}</script><script type="math/tex; mode=display">
-=\max\begin{Bmatrix} |\frac{x_1 + y_1}{2}-\frac{x_2 + y_2}{2}|+|\frac{x_1 - y_1}{2}-\frac{x_2 - y_2}{2}|\end{Bmatrix}</script><p>而这就是 $(\frac{x_1 + y_1}{2},\frac{x_1 - y_1}{2}), (\frac{x_2 + y_2}{2},\frac{x_2 - y_2}{2})$ 两点之间的 <strong>曼哈顿距离</strong>。</p>
+\begin{aligned}
+d(A,B)&=\max\begin{Bmatrix} \mid x_1 - x_2\mid ,\mid y_1 - y_2\mid \end{Bmatrix}\\
+&=\max\begin{Bmatrix} \mid \frac{x_1 + y_1}{2}-\frac{x_2 + y_2}{2}\mid +\mid \frac{x_1 - y_1}{2}-\frac{x_2 - y_2}{2}\mid \end{Bmatrix}\\
+\end{aligned}</script><p>而这就是 $(\frac{x_1 + y_1}{2},\frac{x_1 - y_1}{2}), (\frac{x_2 + y_2}{2},\frac{x_2 - y_2}{2})$ 两点之间的 <strong>曼哈顿距离</strong>。</p>
 <p>所以将每一个点 $(x,y)$ 转化为 $(\frac{x + y}{2},\frac{x - y}{2})$，新坐标系下的 <strong>曼哈顿距离</strong> 即为原坐标系下的 <strong>切比雪夫距离</strong>。</p>
 <p><strong>结论：</strong></p>
 <ul>
@@ -653,7 +668,7 @@ d(A,B)=\max\begin{Bmatrix} |x_1 - x_2|,|y_1 - y_2|\end{Bmatrix}</script><script 
 <p><strong><a href="https://www.luogu.org/problemnew/show/P3964" target="_blank" rel="noopener">[Luogu]P3964</a></strong>（切比雪夫距离转曼哈顿距离）</p>
 <p>最后给出 <strong><a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong> 的第二种解法：</p>
 <p>我们考虑将题目所求的 <strong>曼哈顿距离</strong> 转化为 <strong>切比雪夫距离</strong>，即把每个点的坐标 $(x,y)$ 变为 $(x + y, x - y)$。</p>
-<p>所求的答案就变为 $\max_{\forall i,j\in n}\begin{Bmatrix} \max\begin{Bmatrix} |x_i - x_j|,|y_i - y_j|\end{Bmatrix}\end{Bmatrix}$</p>
+<p>所求的答案就变为 $\max_{\forall i,j\in n}\begin{Bmatrix} \max\begin{Bmatrix} \mid x_i - x_j\mid ,\mid y_i - y_j\mid \end{Bmatrix}\end{Bmatrix}$</p>
 <p>现要使得横坐标之差和纵坐标之差最大，只需要预处理出 $x,y$ 的最大值和最小值即可。</p>
 <p><strong>Code</strong><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> n, x, y, a, b, minx = <span class="number">0x7fffffff</span>, maxx, miny = <span class="number">0x7fffffff</span>, maxy;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        read(a), read(b);</span><br><span class="line">        x = a + b, y = a - b;</span><br><span class="line">        minx = min(minx, x), maxx = max(maxx, x);</span><br><span class="line">        miny = min(miny, y), maxy = max(maxy, y);</span><br><span class="line">    &#125;</span><br><span class="line">    write(max(maxx - minx, maxy - miny));</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>对比两份代码，我们又能够发现，两种不同的思路，写出来的代码却是完全等价的，是不是很神奇呢？当然，更高深的东西需要大家另行研究。</p>
