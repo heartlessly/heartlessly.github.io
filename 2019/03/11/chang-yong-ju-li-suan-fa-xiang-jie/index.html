@@ -99,7 +99,7 @@
 
 
   <meta name="description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
-<meta name="keywords" content="Luogu,数学,笔记,距离">
+<meta name="keywords" content="数学,Luogu,笔记,距离">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用距离算法详解">
 <meta property="og:url" content="https://heartlessly.github.io/2019/03/11/chang-yong-ju-li-suan-fa-xiang-jie/index.html">
@@ -113,7 +113,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c10e88.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c4199a.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c125a9.png">
-<meta property="og:updated_time" content="2019-04-07T05:45:50.277Z">
+<meta property="og:updated_time" content="2019-04-07T05:53:23.656Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
 <meta name="twitter:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
@@ -460,7 +460,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 13:45:50" itemprop="dateModified" datetime="2019-04-07T13:45:50+08:00">2019-04-07</time>
+                <time title="修改时间：2019-04-07 13:53:23" itemprop="dateModified" datetime="2019-04-07T13:53:23+08:00">2019-04-07</time>
               
             
           </span>
@@ -525,13 +525,13 @@
 <h2 id="一、欧氏距离（欧几里得度量）"><a href="#一、欧氏距离（欧几里得度量）" class="headerlink" title="一、欧氏距离（欧几里得度量）"></a>一、欧氏距离（欧几里得度量）</h2><p><strong>欧氏距离</strong>，是一个通常采用的距离定义，指在$m$维空间中两个点之间的真实距离，或者向量的自然长度（即该点到原点的距离）。在二维和三维空间中的欧氏距离就是两点之间的实际距离。—— _<strong>来源：<a href="https://baike.baidu.com/item/%E6%AC%A7%E5%87%A0%E9%87%8C%E5%BE%97%E5%BA%A6%E9%87%8F/1274107?fromtitle=%E6%AC%A7%E6%B0%8F%E8%B7%9D%E7%A6%BB&amp;fromid=1798948" target="_blank" rel="noopener">百度百科</a></strong>_ </p>
 <p><strong>欧氏距离</strong> 是最易于理解的一种距离算法。在数学的平面直角坐标系中，设点 $A,B$ 的坐标分别为 $A(x_1,y_1),B(x_2,y_2)$，求点 $A,B$ 之间的距离，我们一般会使用如下公式：</p>
 <script type="math/tex; mode=display">
-\left \mid  AB \right \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}</script><p>实际上这就是平面<strong>（二维空间）</strong>中两点欧氏距离的距离公式，除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：</p>
+\mid AB \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}</script><p>实际上这就是平面<strong>（二维空间）</strong>中两点欧氏距离的距离公式，除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：</p>
 <script type="math/tex; mode=display">
 \mid P\mid  = \sqrt{x^2+y^2}</script><p>举个栗子，在下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。</p>
 <p><img src="https://i.loli.net/2019/04/07/5ca98a9ba8828.png" alt="1.png"></p>
-<p>通过公式，我们很容易得到 $A,B$ 两点间的欧氏距离：</p>
+<p>通过公式，我们很容易得到 $A,B​$ 两点间的欧氏距离：</p>
 <script type="math/tex; mode=display">
-\left \mid  AB \right \mid  = \sqrt{\left ( 2 - 6 \right )^2 + \left ( 2 - 5 \right )^2} = \sqrt{4^2+3^2} = 5</script><p>那么，<strong>三维空间</strong> 中两点的欧氏距离公式呢？<br>我们来观察下图。</p>
+\mid  AB \mid  = \sqrt{\left ( 2 - 6 \right )^2 + \left ( 2 - 5 \right )^2} = \sqrt{4^2+3^2} = 5</script><p>那么，<strong>三维空间</strong> 中两点的欧氏距离公式呢？<br>我们来观察下图。</p>
 <p><img src="https://i.loli.net/2019/04/07/5ca98a9c5f2bd.png" alt="2.png"></p>
 <p>我们很容易发现，在$\triangle ADC?$中，$\angle ADC = 90^\circ?$；在$\triangle ACB?$中，$\angle ACB = 90^\circ?$ 。</p>
 <script type="math/tex; mode=display">
@@ -540,7 +540,7 @@
 &=\sqrt{\mid AD\mid ^2+\mid CD\mid ^2+\mid BC\mid ^2}\\
 \end{aligned}</script><p>由此可得，<strong>三维空间</strong> 中欧氏距离的距离公式为：</p>
 <script type="math/tex; mode=display">
-\left \mid  AB \right \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2 + \left ( z_2 - z_1 \right )^2}</script><script type="math/tex; mode=display">
+\mid  AB  \mid  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2 + \left ( z_2 - z_1 \right )^2}</script><script type="math/tex; mode=display">
 \mid P\mid  = \sqrt{x^2+y^2+z^2}</script><p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P3958" target="_blank" rel="noopener">[Luogu]P3958</a></strong></p>
 <p>以此类推，我们就得到了 $n?$ <strong>维空间</strong> 中欧氏距离的距离公式：</p>
 <script type="math/tex; mode=display">
@@ -695,9 +695,9 @@ d(A,B)&=\max\begin{Bmatrix} \mid x_1 - x_2\mid ,\mid y_1 - y_2\mid \end{Bmatrix}
       
         <div class="post-tags">
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
-          
             <a href="/tags/数学/" rel="tag"># 数学</a>
+          
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/笔记/" rel="tag"># 笔记</a>
           
