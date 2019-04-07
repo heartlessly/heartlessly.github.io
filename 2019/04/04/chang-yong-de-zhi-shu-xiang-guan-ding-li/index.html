@@ -99,14 +99,14 @@
 
 
   <meta name="description" content="许多与质数相关的定理都是数论的基础，想要学好数论，必须掌握这些定理并且能够熟练运用。">
-<meta name="keywords" content="数论,数学,笔记">
+<meta name="keywords" content="数学,数论,笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用的质数相关定理">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/04/chang-yong-de-zhi-shu-xiang-guan-ding-li/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="许多与质数相关的定理都是数论的基础，想要学好数论，必须掌握这些定理并且能够熟练运用。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-07T05:02:44.600Z">
+<meta property="og:updated_time" content="2019-04-07T05:18:15.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用的质数相关定理">
 <meta name="twitter:description" content="许多与质数相关的定理都是数论的基础，想要学好数论，必须掌握这些定理并且能够熟练运用。">
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-07 13:02:44" itemprop="dateModified" datetime="2019-04-07T13:02:44+08:00">2019-04-07</time>
+                <time title="修改时间：2019-04-07 13:18:15" itemprop="dateModified" datetime="2019-04-07T13:18:15+08:00">2019-04-07</time>
               
             
           </span>
@@ -497,17 +497,17 @@
 <a id="more"></a>
 <h2 id="唯一分解定理（算数基本定理）"><a href="#唯一分解定理（算数基本定理）" class="headerlink" title="唯一分解定理（算数基本定理）"></a>唯一分解定理（算数基本定理）</h2><p>任何一个大于 $1$ 的自然数都可以表示为有限个（包括 $1$ 个）质数的乘积。</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 n &= p_1^{a_1} \times p_2^{a_2} \times p_3^{a_3} \times \cdots \times p_m^{a_m}\\
 &= \prod\limits_{i=1}^{m}p_i^{a_i}\\
-\end{align}</script><p>其中 $p_i (1 \leq i \leq m)$ 为质数，且都是 $n$ 的质因子。</p>
+\end{aligned}</script><p>其中 $p_i (1 \leq i \leq m)$ 为质数，且都是 $n$ 的质因子。</p>
 <p>当 $p_1 &lt; p_2 &lt; \cdot \cdot \cdot &lt; p_m$ 时，该式又称为 $n$ 的 <strong>标准分解式</strong> 。</p>
 <h2 id="约数个数定理"><a href="#约数个数定理" class="headerlink" title="约数个数定理"></a>约数个数定理</h2><p>若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的约数个数可以表示为：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 \sigma_0(n) &= (a_1 + 1) \times (a_2+1) \times \cdots \times (a_m+1)\\
 &=\prod\limits_{i=1}^{m}(a_i+1)\\
-\end{align}</script><blockquote>
+\end{aligned}</script><blockquote>
 <p>$\sigma$ 是 <strong>除数函数</strong> 。具体内容请见 <strong><a href="https://heartlessly.github.io/2019/04/05/chang-jian-ji-xing-han-shu/">常见积性函数 - 除数函数</a></strong> 。</p>
 </blockquote>
 <p><strong>证明：</strong></p>
@@ -520,14 +520,14 @@ p_i^0\ ,\ p_i^1\ ,\ p_i^2\ ,\ldots,\ p_i^{a_i}</script><p>一共 $a_i+1$ 个。�
 =\prod\limits_{i=1}^{m}(a_i+1)</script><p>种选法，即 $n$ 的约数个数。</p>
 <h2 id="约数和定理"><a href="#约数和定理" class="headerlink" title="约数和定理"></a>约数和定理</h2><p>若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的所有正约数之和可以表示为：</p>
 <script type="math/tex; mode=display">
-\begin{align}
+\begin{aligned}
 \sigma_1(n) &= (p_1^0 + p_1^1+p_1^2+\cdots+p_1^{a_1})\\
 &\times (p_2^0 + p_2^1+p_2^2+\cdots+p_2^{a_2})\\
 &\times (p_3^0 + p_3^1+p_3^2+\cdots+p_3^{a_3})\\
 &\times \cdots \cdots\\
 &\times (p_m^0 + p_m^1+p_m^2+\cdots+p_m^{a_m})\\
 &= \prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^j\\
-\end{align}</script><p>其实 $\sum\limits_{j=0}^{a_i}p_i^j$ 是一个公比为 $p_i$ 的 <strong>等比数列</strong> 的和，因此该式子也能表示为：</p>
+\end{aligned}</script><p>其实 $\sum\limits_{j=0}^{a_i}p_i^j$ 是一个公比为 $p_i$ 的 <strong>等比数列</strong> 的和，因此该式子也能表示为：</p>
 <script type="math/tex; mode=display">
 \sigma_1(n) = \prod\limits_{i=1}^{m}\frac{p_i^{a_i+1}-1}{p_i-1}</script><blockquote>
 <p>$\sigma$ 是 <strong>除数函数</strong> 。具体内容请见 <strong><a href="https://heartlessly.github.io/2019/04/05/chang-jian-ji-xing-han-shu/">常见积性函数 - 除数函数</a></strong> 。</p>
@@ -589,9 +589,9 @@ a^b \equiv a^{b \mod\varphi(p)} \pmod p</script><p><strong>证明：</strong></p
       
         <div class="post-tags">
           
-            <a href="/tags/数论/" rel="tag"># 数论</a>
-          
             <a href="/tags/数学/" rel="tag"># 数学</a>
+          
+            <a href="/tags/数论/" rel="tag"># 数论</a>
           
             <a href="/tags/笔记/" rel="tag"># 笔记</a>
           

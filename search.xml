@@ -3,20 +3,20 @@
   <entry>
     <title><![CDATA[常见积性函数]]></title>
     <url>%2F2019%2F04%2F05%2Fchang-jian-ji-xing-han-shu%2F</url>
-    <content type="text"><![CDATA[定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。 积性函数欧拉函数定义：欧拉函数，属于 积性函数，但不是完全积性函数。常用 $\varphi$ 表示，读作 fai 。 $\varphi(n)$ 定义为小于等于 $n$ 的正整数中与 $n$ 互质的数的个数。 公式：若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有 互不相同 的质因数，$n$ 是一个不为 $0$ 的整数，则 \begin{align} \varphi(n)&=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\\ &=n\prod\limits_{i=1}^{m}\left ( 1-\frac{1}{p_i}\right )\\ \end{align}性质 &amp; 证明：性质 1： 若 $n , m$ 互质，则 $\varphi(nm)=\varphi(n) \times \varphi(m)$ 。 证明： 积性函数特有性质。 性质 2： 若 $n$ 为 质数，则 $\varphi(n)=n-1$ 。 证明： 所有小于 $n$ 的正整数都与 $n$ 互质，一共 $n - 1$ 个。 性质 3： 若 $n$ 为 奇数，则 $\varphi(2n)=\varphi(n)$ 。 证明： 显然 $n$ 与 $2$ 互质，且 $\varphi(2) = 1$，所以根据 性质 1，可得 \begin{align} \varphi(2n)&=\varphi(2) \times \varphi(n)\\ &=1\times \varphi(n)\\ &=\varphi(n) \end{align}性质 4： 若 $p$ 为质数，$n = p^k$，则 \varphi(n)=p^k-p^{k-1}证明： 由 $n=p^k$，得 $n$ 的质因数只有 $p$，再通过公式，可知 \begin{align} \varphi(n)&=n\times\left(1-\frac{1}{p}\right)\\ &=p^k \times \left(1-\frac{1}{p}\right)\\ &= p^k - p^{k-1} \end{align}性质 5： 若 $n &gt; 2$，则 $\varphi(n)$ 为偶数。 若 $n &gt; 1$，则小于等于 $n$ 且与 $n$ 互质的数的和为 \frac{n \times \varphi(n)}{2}证明： 首先需要知道：若 $n$ 与 $m$ 互质 $(n &gt; m)$，则 $n$ 与 $n - m$ 互质。 \begin{align} &\gcd(n,m)=1\\ &\gcd(n,m)=\gcd(n,n-m)\\ \end{align}显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n) (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}$。 程序：如何求出 $\varphi(n)$ ？ 根据欧拉函数的公式我们能够得到以下代码： 123456789inline int getPhi(int n) &#123; int res = n; for (int i = 2; i &lt;= n; ++i)//枚举因数 if (n % i == 0) &#123; res -= res / i; for (; n % i == 0; n /= i);//将质因数 i 除完 &#125; return res;&#125; 在最坏情况下（$n$ 是质数），该代码的时间复杂度为 $O(n)$，这显然不够优秀，考虑如何优化。 任何一个整数 $n$ 都不可能存在 $2$ 个大于 $\sqrt n$ 的质因子，所以我们枚举因数时只需要遍历到 $O(\sqrt n)$ 即可，如果将小于 $\sqrt n$ 的质因子除完后，剩下的数不为 $1$，说明还有 $1$ 个大于 $\sqrt n$ 的质因子，最后要算进去。这种做法的时间复杂度为 $O(\sqrt n)$ 。 优化后的代码如下： 12345678910inline int getPhi(int n) &#123; int res = n; for (int i = 2; i * i &lt;= n; ++i) if (n % i == 0) &#123; res -= res / i; for (; n % i == 0; n /= i); &#125; if (n &gt; 1) res -= res / n; return res;&#125; 如果需要求 $\varphi(1)\sim \varphi(n)$ 的值，用上述方法逐个求的时间复杂度为 $O(n\sqrt n)$，有没有更快的做法呢？ 莫比乌斯函数定义：莫比乌斯函数，属于 积性函数，但不是完全积性函数。常用 $\mu$ 表示，读作 miu 。 莫比乌斯函数的定义域是全体自然数 $n$ 。 若 $n = 1$，则 $\mu(1)=1$； 若 $n$ 存在大于 $1$ 的平方因子，则 $\mu(n)=0$（平方因子即 $4 , 9 , 25$ 等）； 若 $n$ 是偶数个互不相同的质数之积，则 $\mu(n)=1$； 若 $n$ 是奇数个互不相同的质数之积，则 $\mu(n)=-1$ 。 公式： \mu(n)=\left\{\begin{matrix} 1& n=1\\ (-1)^m& n=p_1\times p_2 \times \cdots \times p_m = \prod\limits_{i=1}^{m}p_i(\forall p_i \neq p_j)\\ 0& others\\ \end{matrix}\right.性质 &amp; 证明：性质 1： 若 $n , m$ 互质，则 $\mu(nm)=\mu(n) \times \mu(m)$ 。 证明： 积性函数特有性质。 性质 2： 若 $n \neq 1$，则 $n$ 所有因子的莫比乌斯函数值的和为 $0$，即 \sum\limits_{d\mid n}\mu(d)=\left\{\begin{matrix} 1& n=1\\ 0& n>1 \end{matrix}\right.证明： 除数函数定义：除数函数，属于 积性函数，但不是完全积性函数。常用 $\sigma$ 表示，读作 sigma 。 $\sigma_x(n)$ 定义为 $n$ 的正约数的 $x$ 次幂之和，即 \sigma_x(n)=\sum\limits_{d\mid n}d^x公式：若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有质因数，$n$ 和 $x$ 都是 自然数 。 \begin{align} \sigma_x(n) &= (1 + p_1^x+p_1^{2x}+\cdots+p_1^{a_1x})\\ &\times (1 + p_2^x+p_2^{2x}+\cdots+p_2^{a_2x})\\ &\times (1 + p_3^x+p_3^{2x}+\cdots+p_3^{a_3x})\\ &\times \cdots \cdots\\ &\times (1 + p_m^x+p_m^{2x}+\cdots+p_m^{a_mx})\\ &=\prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^{jx}\\ &=\prod\limits_{i=1}^{m}\frac{p_i^{(a_i+1)x}-1}{p_i^x-1}\\ \end{align}性质 &amp; 证明：性质 1： 特殊地，$\sigma_0(n)$ 可以表示 $n$ 的正约数个数，$\sigma_1(n)$ 可以表示 $n$ 的正约数之和。 证明： 根据定义即能得到该结论。 性质 2： 若 $n , m$ 互质，且 $x$ 是自然数，则 $\sigma_x(nm)=\sigma_x(n) \times \sigma_x(m)$ 。 证明： 积性函数特有性质。 完全积性函数]]></content>
+    <content type="text"><![CDATA[定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。 积性函数欧拉函数定义：欧拉函数，属于 积性函数，但不是完全积性函数。常用 $\varphi$ 表示，读作 fai 。 $\varphi(n)$ 定义为小于等于 $n$ 的正整数中与 $n$ 互质的数的个数。 公式：若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有 互不相同 的质因数，$n$ 是一个不为 $0$ 的整数，则 \begin{aligned} \varphi(n)&=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\\ &=n\prod\limits_{i=1}^{m}\left ( 1-\frac{1}{p_i}\right )\\ \end{aligned}性质 &amp; 证明：性质 1： 若 $n , m$ 互质，则 $\varphi(nm)=\varphi(n) \times \varphi(m)$ 。 证明： 积性函数特有性质。 性质 2： 若 $n​$ 为 质数，则 $\varphi(n)=n-1​$ 。 证明： 所有小于 $n$ 的正整数都与 $n$ 互质，一共 $n - 1$ 个。 性质 3： 若 $n$ 为 奇数，则 $\varphi(2n)=\varphi(n)$ 。 证明： 显然 $n$ 与 $2$ 互质，且 $\varphi(2) = 1$，所以根据 性质 1，可得 \begin{aligned} \varphi(2n)&=\varphi(2) \times \varphi(n)\\ &=1\times \varphi(n)\\ &=\varphi(n) \end{aligned}性质 4： 若 $p$ 为质数，$n = p^k$，则 \varphi(n)=p^k-p^{k-1}证明： 由 $n=p^k$，得 $n$ 的质因数只有 $p$，再通过公式，可知 \begin{aligned} \varphi(n)&=n\times\left(1-\frac{1}{p}\right)\\ &=p^k \times \left(1-\frac{1}{p}\right)\\ &= p^k - p^{k-1} \end{aligned}性质 5： 若 $n &gt; 2$，则 $\varphi(n)$ 为偶数。 若 $n &gt; 1$，则小于等于 $n$ 且与 $n$ 互质的数的和为 \frac{n \times \varphi(n)}{2}证明： 首先需要知道：若 $n$ 与 $m$ 互质 $(n &gt; m)$，则 $n$ 与 $n - m$ 互质。 \begin{aligned} &\gcd(n,m)=1\\ &\gcd(n,m)=\gcd(n,n-m)\\ \end{aligned}显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n) (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}​$。 程序：如何求出 $\varphi(n)​$ ？ 根据欧拉函数的公式我们能够得到以下代码： 123456789inline int getPhi(int n) &#123; int res = n; for (int i = 2; i &lt;= n; ++i)//枚举因数 if (n % i == 0) &#123; res -= res / i; for (; n % i == 0; n /= i);//将质因数 i 除完 &#125; return res;&#125; 在最坏情况下（$n$ 是质数），该代码的时间复杂度为 $O(n)$，这显然不够优秀，考虑如何优化。 任何一个整数 $n$ 都不可能存在 $2$ 个大于 $\sqrt n$ 的质因子，所以我们枚举因数时只需要遍历到 $O(\sqrt n)$ 即可，如果将小于 $\sqrt n$ 的质因子除完后，剩下的数不为 $1$，说明还有 $1$ 个大于 $\sqrt n$ 的质因子，最后要算进去。这种做法的时间复杂度为 $O(\sqrt n)$ 。 优化后的代码如下： 12345678910inline int getPhi(int n) &#123; int res = n; for (int i = 2; i * i &lt;= n; ++i) if (n % i == 0) &#123; res -= res / i; for (; n % i == 0; n /= i); &#125; if (n &gt; 1) res -= res / n; return res;&#125; 如果需要求 $\varphi(1)\sim \varphi(n)$ 的值，用上述方法逐个求的时间复杂度为 $O(n\sqrt n)$，有没有更快的做法呢？ 莫比乌斯函数定义：莫比乌斯函数，属于 积性函数，但不是完全积性函数。常用 $\mu$ 表示，读作 miu 。 莫比乌斯函数的定义域是全体自然数 $n$ 。 若 $n = 1$，则 $\mu(1)=1$； 若 $n$ 存在大于 $1$ 的平方因子，则 $\mu(n)=0$（平方因子即 $4 , 9 , 25$ 等）； 若 $n$ 是偶数个互不相同的质数之积，则 $\mu(n)=1$； 若 $n$ 是奇数个互不相同的质数之积，则 $\mu(n)=-1$ 。 公式： \mu(n)=\left\{\begin{matrix} 1& n=1\\ (-1)^m& n=p_1\times p_2 \times \cdots \times p_m = \prod\limits_{i=1}^{m}p_i(\forall p_i \neq p_j)\\ 0& others\\ \end{matrix}\right.性质 &amp; 证明：性质 1： 若 $n , m$ 互质，则 $\mu(nm)=\mu(n) \times \mu(m)$ 。 证明： 积性函数特有性质。 性质 2： 若 $n \neq 1$，则 $n$ 所有因子的莫比乌斯函数值的和为 $0$，即 \sum\limits_{d\mid n}\mu(d)=\left\{\begin{matrix} 1& n=1\\ 0& n>1 \end{matrix}\right.证明： 除数函数定义：除数函数，属于 积性函数，但不是完全积性函数。常用 $\sigma$ 表示，读作 sigma 。 $\sigma_x(n)$ 定义为 $n$ 的正约数的 $x$ 次幂之和，即 \sigma_x(n)=\sum\limits_{d\mid n}d^x公式：若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有质因数，$n$ 和 $x$ 都是 自然数 。 \begin{aligned} \sigma_x(n) &= (1 + p_1^x+p_1^{2x}+\cdots+p_1^{a_1x})\\ &\times (1 + p_2^x+p_2^{2x}+\cdots+p_2^{a_2x})\\ &\times (1 + p_3^x+p_3^{2x}+\cdots+p_3^{a_3x})\\ &\times \cdots \cdots\\ &\times (1 + p_m^x+p_m^{2x}+\cdots+p_m^{a_mx})\\ &=\prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^{jx}\\ &=\prod\limits_{i=1}^{m}\frac{p_i^{(a_i+1)x}-1}{p_i^x-1}\\ \end{aligned}性质 &amp; 证明：性质 1： 特殊地，$\sigma_0(n)$ 可以表示 $n$ 的正约数个数，$\sigma_1(n)$ 可以表示 $n​$ 的正约数之和。 证明： 根据定义即能得到该结论。 性质 2： 若 $n , m$ 互质，且 $x$ 是自然数，则 $\sigma_x(nm)=\sigma_x(n) \times \sigma_x(m)$ 。 证明： 积性函数特有性质。 完全积性函数]]></content>
       <tags>
-        <tag>数论</tag>
         <tag>数学</tag>
+        <tag>数论</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[常用的质数相关定理]]></title>
     <url>%2F2019%2F04%2F04%2Fchang-yong-de-zhi-shu-xiang-guan-ding-li%2F</url>
-    <content type="text"><![CDATA[许多与质数相关的定理都是数论的基础，想要学好数论，必须掌握这些定理并且能够熟练运用。 唯一分解定理（算数基本定理）任何一个大于 $1$ 的自然数都可以表示为有限个（包括 $1$ 个）质数的乘积。 \begin{align} n &= p_1^{a_1} \times p_2^{a_2} \times p_3^{a_3} \times \cdots \times p_m^{a_m}\\ &= \prod\limits_{i=1}^{m}p_i^{a_i}\\ \end{align}其中 $p_i (1 \leq i \leq m)$ 为质数，且都是 $n$ 的质因子。 当 $p_1 &lt; p_2 &lt; \cdot \cdot \cdot &lt; p_m$ 时，该式又称为 $n$ 的 标准分解式 。 约数个数定理若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的约数个数可以表示为： \begin{align} \sigma_0(n) &= (a_1 + 1) \times (a_2+1) \times \cdots \times (a_m+1)\\ &=\prod\limits_{i=1}^{m}(a_i+1)\\ \end{align} $\sigma$ 是 除数函数 。具体内容请见 常见积性函数 - 除数函数 。 证明： 对于这个 $n$，显然 $p_i^{a_i}(1 \leq i \leq m)$ 的约数有： p_i^0\ ,\ p_i^1\ ,\ p_i^2\ ,\ldots,\ p_i^{a_i}一共 $a_i+1$ 个。而 $n$ 的约数肯定是 $p_1^{a_1} , p_2^{a_2} , p_3^{a_3} ,\cdots, p_m^{a_m}$ 每一个数各选出一个约数的乘积。 根据 乘法原理，一共有 (a_1 + 1) \times (a_2+1) \times \cdots \times (a_m+1) =\prod\limits_{i=1}^{m}(a_i+1)种选法，即 $n$ 的约数个数。 约数和定理若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的所有正约数之和可以表示为： \begin{align} \sigma_1(n) &= (p_1^0 + p_1^1+p_1^2+\cdots+p_1^{a_1})\\ &\times (p_2^0 + p_2^1+p_2^2+\cdots+p_2^{a_2})\\ &\times (p_3^0 + p_3^1+p_3^2+\cdots+p_3^{a_3})\\ &\times \cdots \cdots\\ &\times (p_m^0 + p_m^1+p_m^2+\cdots+p_m^{a_m})\\ &= \prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^j\\ \end{align}其实 $\sum\limits_{j=0}^{a_i}p_i^j$ 是一个公比为 $p_i$ 的 等比数列 的和，因此该式子也能表示为： \sigma_1(n) = \prod\limits_{i=1}^{m}\frac{p_i^{a_i+1}-1}{p_i-1} $\sigma$ 是 除数函数 。具体内容请见 常见积性函数 - 除数函数 。 证明： 咕 威尔逊定理若 $p$ 为质数，则 (p-1)! \equiv -1\pmod p威尔逊定理的 逆定理 也成立，即： 对于某一个正整数 $p$，若 $(p-1)! \equiv -1\pmod p$，则 $p$ 一定是一个质数。 证明： 咕 二次探测定理若 $p$ 是质数，$x$ 是小于 $p$ 的正整数，且 $x^2 \equiv 1\pmod p$，则 x_1=1\ ,\ x_2=p-1证明： 根据同余式的性质，两边同时减去 $1$，得到 x^2 - 1 \equiv 0\pmod p左边显然可以用 平方差公式 因式分解，得到 (x+1)(x-1)\equiv 0\pmod p这个式子等价于 p\mid (x+1)(x-1)显然 $p$ 的因子来自 $x + 1$ 和 $x - 1$，但是因为 $p$ 是一个质数，所以 $p$ 的因子只有 $1$ 和 $p$，因此一定满足 $p\mid x+1$ 或 $p\mid x-1$ 。又因为 $0 &lt; x &lt; p$，所以 $x$ 的值为 $1$ 或 $p - 1$ 。 二次探测定理的 逆定理 也成立，即： $x$ 是小于 $p$ 的正整数，若 $x^2 \equiv 1\pmod p$，且 $x\neq 1 , x\neq p-1$，则这个 $p$ 一定不是质数。 费马小定理若 $a$ 为正整数，$p$ 为质数，且 $a$ 与 $p$ 互质，则 a^{p-1}\equiv 1\pmod p证明： 咕 欧拉定理若 $a$ 和 $p$ 都是正整数，且 $a$ 与 $p$ 互质，则 a^{\varphi(p)} \equiv 1\pmod p $\varphi$ 是 欧拉函数 。具体内容请见 常见积性函数 - 欧拉函数 。 推论： 若正整数 $a$ 与 $p$ 互质，则对于任意正整数 $b$，有 a^b \equiv a^{b \mod\varphi(p)} \pmod p证明： 咕]]></content>
+    <content type="text"><![CDATA[许多与质数相关的定理都是数论的基础，想要学好数论，必须掌握这些定理并且能够熟练运用。 唯一分解定理（算数基本定理）任何一个大于 $1$ 的自然数都可以表示为有限个（包括 $1$ 个）质数的乘积。 \begin{aligned} n &= p_1^{a_1} \times p_2^{a_2} \times p_3^{a_3} \times \cdots \times p_m^{a_m}\\ &= \prod\limits_{i=1}^{m}p_i^{a_i}\\ \end{aligned}其中 $p_i (1 \leq i \leq m)$ 为质数，且都是 $n$ 的质因子。 当 $p_1 &lt; p_2 &lt; \cdot \cdot \cdot &lt; p_m$ 时，该式又称为 $n$ 的 标准分解式 。 约数个数定理若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的约数个数可以表示为： \begin{aligned} \sigma_0(n) &= (a_1 + 1) \times (a_2+1) \times \cdots \times (a_m+1)\\ &=\prod\limits_{i=1}^{m}(a_i+1)\\ \end{aligned} $\sigma$ 是 除数函数 。具体内容请见 常见积性函数 - 除数函数 。 证明： 对于这个 $n$，显然 $p_i^{a_i}(1 \leq i \leq m)$ 的约数有： p_i^0\ ,\ p_i^1\ ,\ p_i^2\ ,\ldots,\ p_i^{a_i}一共 $a_i+1$ 个。而 $n$ 的约数肯定是 $p_1^{a_1} , p_2^{a_2} , p_3^{a_3} ,\cdots, p_m^{a_m}$ 每一个数各选出一个约数的乘积。 根据 乘法原理，一共有 (a_1 + 1) \times (a_2+1) \times \cdots \times (a_m+1) =\prod\limits_{i=1}^{m}(a_i+1)种选法，即 $n$ 的约数个数。 约数和定理若 $n = \prod\limits_{i=1}^{m}p_i^{a_i}$，则 $n$ 的所有正约数之和可以表示为： \begin{aligned} \sigma_1(n) &= (p_1^0 + p_1^1+p_1^2+\cdots+p_1^{a_1})\\ &\times (p_2^0 + p_2^1+p_2^2+\cdots+p_2^{a_2})\\ &\times (p_3^0 + p_3^1+p_3^2+\cdots+p_3^{a_3})\\ &\times \cdots \cdots\\ &\times (p_m^0 + p_m^1+p_m^2+\cdots+p_m^{a_m})\\ &= \prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^j\\ \end{aligned}其实 $\sum\limits_{j=0}^{a_i}p_i^j$ 是一个公比为 $p_i$ 的 等比数列 的和，因此该式子也能表示为： \sigma_1(n) = \prod\limits_{i=1}^{m}\frac{p_i^{a_i+1}-1}{p_i-1} $\sigma$ 是 除数函数 。具体内容请见 常见积性函数 - 除数函数 。 证明： 咕 威尔逊定理若 $p$ 为质数，则 (p-1)! \equiv -1\pmod p威尔逊定理的 逆定理 也成立，即： 对于某一个正整数 $p$，若 $(p-1)! \equiv -1\pmod p$，则 $p$ 一定是一个质数。 证明： 咕 二次探测定理若 $p$ 是质数，$x$ 是小于 $p$ 的正整数，且 $x^2 \equiv 1\pmod p$，则 x_1=1\ ,\ x_2=p-1证明： 根据同余式的性质，两边同时减去 $1$，得到 x^2 - 1 \equiv 0\pmod p左边显然可以用 平方差公式 因式分解，得到 (x+1)(x-1)\equiv 0\pmod p这个式子等价于 p\mid (x+1)(x-1)显然 $p$ 的因子来自 $x + 1$ 和 $x - 1$，但是因为 $p$ 是一个质数，所以 $p$ 的因子只有 $1$ 和 $p$，因此一定满足 $p\mid x+1$ 或 $p\mid x-1$ 。又因为 $0 &lt; x &lt; p$，所以 $x$ 的值为 $1$ 或 $p - 1$ 。 二次探测定理的 逆定理 也成立，即： $x$ 是小于 $p$ 的正整数，若 $x^2 \equiv 1\pmod p$，且 $x\neq 1 , x\neq p-1$，则这个 $p$ 一定不是质数。 费马小定理若 $a$ 为正整数，$p$ 为质数，且 $a$ 与 $p$ 互质，则 a^{p-1}\equiv 1\pmod p证明： 咕 欧拉定理若 $a$ 和 $p$ 都是正整数，且 $a$ 与 $p$ 互质，则 a^{\varphi(p)} \equiv 1\pmod p $\varphi$ 是 欧拉函数 。具体内容请见 常见积性函数 - 欧拉函数 。 推论： 若正整数 $a$ 与 $p$ 互质，则对于任意正整数 $b$，有 a^b \equiv a^{b \mod\varphi(p)} \pmod p证明： 咕]]></content>
       <tags>
-        <tag>数论</tag>
         <tag>数学</tag>
+        <tag>数论</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -30,11 +30,11 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>USACO</tag>
-        <tag>2008</tag>
+        <tag>数学</tag>
         <tag>BZOJ</tag>
         <tag>数论</tag>
-        <tag>数学</tag>
+        <tag>USACO</tag>
+        <tag>2008</tag>
       </tags>
   </entry>
   <entry>
@@ -47,9 +47,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>数学</tag>
         <tag>BZOJ</tag>
         <tag>数论</tag>
-        <tag>数学</tag>
         <tag>筛法</tag>
       </tags>
   </entry>
@@ -114,8 +114,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论</tag>
         <tag>数学</tag>
+        <tag>数论</tag>
         <tag>笔记</tag>
       </tags>
   </entry>
@@ -172,8 +172,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>数学</tag>
+        <tag>BZOJ</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
       </tags>
