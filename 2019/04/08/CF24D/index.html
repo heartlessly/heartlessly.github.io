@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Description现在有一个机器人，最初站在 $n \times m (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y) (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行">
+  <meta name="description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
 <meta name="keywords" content="题解,数论数学,高斯消元,概率期望,动态规划">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「Codeforces 24D」Broken robot">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/08/CF24D/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description现在有一个机器人，最初站在 $n \times m (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y) (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行">
+<meta property="og:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-08T00:50:38.338Z">
+<meta property="og:updated_time" content="2019-04-08T03:02:56.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「Codeforces 24D」Broken robot">
-<meta name="twitter:description" content="Description现在有一个机器人，最初站在 $n \times m (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y) (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行">
+<meta name="twitter:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
 
 
 
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-08 08:05:22 / 修改时间：08:50:38" itemprop="dateCreated datePublished" datetime="2019-04-08T08:05:22+08:00">2019-04-08</time>
+              <time title="创建时间：2019-04-08 08:05:22 / 修改时间：11:02:56" itemprop="dateCreated datePublished" datetime="2019-04-08T08:05:22+08:00">2019-04-08</time>
             
 
             
@@ -481,7 +481,8 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有一个机器人，最初站在 $n \times m (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y) (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 <strong>原地不动，向左移动，向右移动，向下移动</strong> 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行的期望步数，至少精确到 $10^{-4}$ 。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 <strong>原地不动，向左移动，向右移动，向下移动</strong> 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行的期望步数，至少精确到 $10^{-4}$ 。</p>
+<a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/CF24D" target="_blank" rel="noopener">[Luogu]CF24D</a></strong></p>
 <p><strong><a href="http://codeforces.com/problemset/problem/24/D" target="_blank" rel="noopener">[Codeforces]24D</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><script type="math/tex; mode=display">
@@ -638,7 +639,7 @@ f_{i,j}=\left\{\begin{matrix}
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

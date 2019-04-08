@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Description现在有 $N (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i (1 \leq c_i \leq N)$，重量为 $w_i (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X (1\leq X \leq 1">
+  <meta name="description" content="Description现在有 $N\ (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i\ (1 \leq c_i \leq N)$，重量为 $w_i\ (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X\ (1\leq X \l">
 <meta name="keywords" content="图论,AtCoder,Luogu,题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「AtCoder AGC012-D」Colorful Balls">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/01/AT2364/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description现在有 $N (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i (1 \leq c_i \leq N)$，重量为 $w_i (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X (1\leq X \leq 1">
+<meta property="og:description" content="Description现在有 $N\ (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i\ (1 \leq c_i \leq N)$，重量为 $w_i\ (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X\ (1\leq X \l">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-01T13:05:18.614Z">
+<meta property="og:updated_time" content="2019-04-08T03:20:00.981Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「AtCoder AGC012-D」Colorful Balls">
-<meta name="twitter:description" content="Description现在有 $N (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i (1 \leq c_i \leq N)$，重量为 $w_i (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X (1\leq X \leq 1">
+<meta name="twitter:description" content="Description现在有 $N\ (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i\ (1 \leq c_i \leq N)$，重量为 $w_i\ (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X\ (1\leq X \l">
 
 
 
@@ -435,12 +435,24 @@
                 
               
 
-              <time title="创建时间：2019-04-01 07:36:19 / 修改时间：21:05:18" itemprop="dateCreated datePublished" datetime="2019-04-01T07:36:19+08:00">2019-04-01</time>
+              <time title="创建时间：2019-04-01 07:36:19" itemprop="dateCreated datePublished" datetime="2019-04-01T07:36:19+08:00">2019-04-01</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-08 11:20:00" itemprop="dateModified" datetime="2019-04-08T11:20:00+08:00">2019-04-08</time>
               
             
           </span>
@@ -499,7 +511,7 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有 $N (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i (1 \leq c_i \leq N)$，重量为 $w_i (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X (1\leq X \leq 10^9)$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y (1\leq Y \leq 10^9)$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有 $N\ (1 \leq N \leq 2 \times 10^5)$ 个球，第 $i$ 个球的颜色为 $c_i\ (1 \leq c_i \leq N)$，重量为 $w_i\ (1 \leq w_i \leq 10^9)$ 。你可以交换球 $i$ 和球 $j$ 的位置，当且仅当 $c_i$ 与 $c_j$ 相等，$w_i+w_j \leq X\ (1\leq X \leq 10^9)$，或者 $c_i$ 与 $c_j$ 不等，$w_i+w_j \leq Y\ (1\leq Y \leq 10^9)$，求可能产生多少种不同的颜色序列。答案对 $10^9+7$ 取模。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/AT2364" target="_blank" rel="noopener">[Luogu]AT2364</a></strong></p>
 <p><strong><a href="https://agc012.contest.atcoder.jp/tasks/agc012_d" target="_blank" rel="noopener">[AtCoder]AGC012-D</a></strong></p>
@@ -640,7 +652,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

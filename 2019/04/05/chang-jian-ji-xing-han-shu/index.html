@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-08T00:08:31.589Z">
+<meta property="og:updated_time" content="2019-04-08T03:16:37.430Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见积性函数">
 <meta name="twitter:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-08 08:08:31" itemprop="dateModified" datetime="2019-04-08T08:08:31+08:00">2019-04-08</time>
+                <time title="修改时间：2019-04-08 11:16:37" itemprop="dateModified" datetime="2019-04-08T11:16:37+08:00">2019-04-08</time>
               
             
           </span>
@@ -505,7 +505,7 @@
 \varphi(n)&=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\\
 &=n\prod\limits_{i=1}^{m}\left ( 1-\frac{1}{p_i}\right )\\
 \end{aligned}</script><h3 id="性质-amp-证明："><a href="#性质-amp-证明：" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
-<p>若 $n , m$ <strong>互质</strong>，则 $\varphi(nm)=\varphi(n) \times \varphi(m)$ 。</p>
+<p>若 $n , m​$ <strong>互质</strong>，则 $\varphi(nm)=\varphi(n) \times \varphi(m)​$ 。</p>
 <p><strong>证明：</strong></p>
 <p>积性函数特有性质。</p>
 <p><strong>性质 2：</strong></p>
@@ -513,7 +513,7 @@
 <p><strong>证明：</strong></p>
 <p>所有小于 $n$ 的正整数都与 $n$ 互质，一共 $n - 1$ 个。</p>
 <p><strong>性质 3：</strong></p>
-<p>若 $n$ 为 <strong>奇数</strong>，则 $\varphi(2n)=\varphi(n)$ 。</p>
+<p>若 $n​$ 为 <strong>奇数</strong>，则 $\varphi(2n)=\varphi(n)​$ 。</p>
 <p><strong>证明：</strong></p>
 <p>显然 $n$ 与 $2$ 互质，且 $\varphi(2) = 1$，所以根据 <strong>性质 1</strong>，可得</p>
 <script type="math/tex; mode=display">
@@ -532,7 +532,7 @@
 &=p^k \times \left(1-\frac{1}{p}\right)\\
 &= p^k - p^{k-1}
 \end{aligned}</script><p><strong>性质 5：</strong></p>
-<p>若 $n &gt; 2$，则 $\varphi(n)$ 为偶数。</p>
+<p>若 $n &gt; 2​$，则 $\varphi(n)​$ 为偶数。</p>
 <p>若 $n &gt; 1$，则小于等于 $n$ 且与 $n$ 互质的数的和为</p>
 <script type="math/tex; mode=display">
 \frac{n \times \varphi(n)}{2}</script><p><strong>证明：</strong></p>
@@ -541,11 +541,11 @@
 \begin{aligned}
 &\gcd(n,m)=1\\
 &\gcd(n,m)=\gcd(n,n-m)\\
-\end{aligned}</script><p>显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n) (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}​$。</p>
+\end{aligned}</script><p>显然与 $n​$ 互质的数都是成对出现的，且相加的和为 $n​$，只有在 $\gcd(n,\frac{n}{2})=1​$ 时例外，但这种情况只会在 $n \leq 2​$ 时出现，所以 $\varphi(n)\ (n &gt; 2)​$ 为偶数得证。小于等于 $n​$ 的数中，与 $n​$ 互质的数的个数为 $\varphi(n)​$，所以一共有 $\frac{\varphi(n)}{2}​$ 对，总和为 $\frac{n \times \varphi(n)}{2}​$。</p>
 <h3 id="程序："><a href="#程序：" class="headerlink" title="程序："></a>程序：</h3><p>如何求出 $\varphi(n)​$ ？</p>
 <p>根据欧拉函数的公式我们能够得到以下代码：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i)<span class="comment">//枚举因数</span></span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);<span class="comment">//将质因数 i 除完</span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在最坏情况下（$n$ 是质数），该代码的时间复杂度为 $O(n)$，这显然不够优秀，考虑如何优化。</p>
+<p>在最坏情况下（$n​$ 是质数），该代码的时间复杂度为 $O(n)​$，这显然不够优秀，考虑如何优化。</p>
 <p>任何一个整数 $n$ 都不可能存在 $2$ 个大于 $\sqrt n$ 的质因子，所以我们枚举因数时只需要遍历到 $O(\sqrt n)$ 即可，如果将小于 $\sqrt n$ 的质因子除完后，剩下的数不为 $1$，说明还有 $1$ 个大于 $\sqrt n$ 的质因子，最后要算进去。这种做法的时间复杂度为 $O(\sqrt n)$ 。</p>
 <p>优化后的代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>) res -= res / n;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -590,7 +590,7 @@
 <p><strong>证明：</strong></p>
 <p>根据定义即能得到该结论。</p>
 <p><strong>性质 2：</strong></p>
-<p>若 $n , m$ <strong>互质</strong>，且 $x$ 是自然数，则 $\sigma_x(nm)=\sigma_x(n) \times \sigma_x(m)$ 。</p>
+<p>若 $n , m​$ <strong>互质</strong>，且 $x​$ 是自然数，则 $\sigma_x(nm)=\sigma_x(n) \times \sigma_x(m)​$ 。</p>
 <p><strong>证明：</strong></p>
 <p>积性函数特有性质。</p>
 <h1 id="完全积性函数"><a href="#完全积性函数" class="headerlink" title="完全积性函数"></a>完全积性函数</h1>
@@ -718,7 +718,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
