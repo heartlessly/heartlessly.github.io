@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「Codeforces 24D」Broken robot]]></title>
     <url>%2F2019%2F04%2F08%2FCF24D%2F</url>
-    <content type="text"><![CDATA[Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行的期望步数，至少精确到 $10^{-4}$ 。 Source[Luogu]CF24D [Codeforces]24D Solution f_{i,j}=\left\{\begin{matrix} \frac{1}{3}\left ( f_{i,j} + f_{i,j+1} + f_{i+1,j} \right )+1& (j=1)\\ \frac{1}{4}\left ( f_{i,j} + f_{i,j+1} + f_{i,j-1} + f_{i+1,j} \right )+1& (1< j< m) \\ \frac{1}{3}\left ( f_{i,j} + f_{i,j-1} + f_{i+1,j} \right )+1& (j=m) \\ \end{matrix}\right.这个方程是倒推的，所以在求 $f_{i,j}$ 时，$f_{i+1,j}$ 是已知的，把上述方程化简并移项，可以得到： \left\{\begin{matrix} -\frac{2}{3}f_{i,j}+\frac{1}{3}f_{i,j+1}=-\frac{1}{3}f_{i+1,j}-1 & (j=1)\\ \frac{1}{4}f_{i,j-1}-\frac{3}{4}f_{i,j}+\frac{1}{4}f_{i,j+1}=-\frac{1}{4}f_{i+1,j}-1& (1 < j < m)\\ \frac{1}{3}f_{i,j-1}-\frac{2}{3}f_{i,j}=-\frac{1}{3}f_{i+1,j}-1 & (j=m)\\ \end{matrix}\right.转化成矩阵就是： \begin{bmatrix} -\frac{2}{3} & \frac{1}{3} & 0 & 0 & 0\\ \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0 & 0\\ 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0\\ 0 & 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4}\\ 0 & 0 & 0 & \frac{1}{3} & -\frac{2}{3}\\ \end{bmatrix} =\begin{bmatrix} -\frac{1}{3}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{3}f_{i+1,j}-1\\ \end{bmatrix}Code12]]></content>
+    <content type="text"><![CDATA[Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行的期望步数，至少精确到 $10^{-4}$ 。 Source[Luogu]CF24D [Codeforces]24D Solution f_{i,j}=\left\{\begin{matrix} \frac{1}{3}\left ( f_{i,j} + f_{i,j+1} + f_{i+1,j} \right )+1& (j=1)\\ \frac{1}{4}\left ( f_{i,j} + f_{i,j+1} + f_{i,j-1} + f_{i+1,j} \right )+1& (1< j< m) \\ \frac{1}{3}\left ( f_{i,j} + f_{i,j-1} + f_{i+1,j} \right )+1& (j=m) \\ \end{matrix}\right.这个方程是倒推的，所以在求 $f_{i,j}$ 时，$f_{i+1,j}$ 是 已知 的，而 $f_{i,j-1},f_{i,j},f_{i,j+1}$ 都是 未知 的，我们把未知量移项到左边，把已知量移项到右边，可以得到： \left\{\begin{matrix} -\frac{2}{3}f_{i,j}+\frac{1}{3}f_{i,j+1}=-\frac{1}{3}f_{i+1,j}-1 & (j=1)\\ \frac{1}{4}f_{i,j-1}-\frac{3}{4}f_{i,j}+\frac{1}{4}f_{i,j+1}=-\frac{1}{4}f_{i+1,j}-1& (1 < j < m)\\ \frac{1}{3}f_{i,j-1}-\frac{2}{3}f_{i,j}=-\frac{1}{3}f_{i+1,j}-1 & (j=m)\\ \end{matrix}\right.转化成矩阵就是： \begin{bmatrix} -\frac{2}{3} & \frac{1}{3} & 0 & 0 & 0\\ \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0 & 0\\ 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0\\ 0 & 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4}\\ 0 & 0 & 0 & \frac{1}{3} & -\frac{2}{3}\\ \end{bmatrix} =\begin{bmatrix} -\frac{1}{3}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{4}f_{i+1,j}-1\\ -\frac{1}{3}f_{i+1,j}-1\\ \end{bmatrix}Code12]]></content>
       <tags>
         <tag>题解</tag>
         <tag>数论数学</tag>
@@ -40,10 +40,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -56,8 +56,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>数论数学</tag>
         <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>筛法</tag>
       </tags>
   </entry>
@@ -167,8 +167,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>数论数学</tag>
         <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
       </tags>
