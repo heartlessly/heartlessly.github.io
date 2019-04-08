@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
-<meta name="keywords" content="题解,数论数学,高斯消元,概率期望,动态规划">
+  <meta name="description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)​$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)​$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1​$ 列时不会选择向左移动，第 $m​$ 列时不会选择向右移动。求机器人到达第">
+<meta name="keywords" content="数论数学,题解,高斯消元,概率期望,动态规划">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「Codeforces 24D」Broken robot">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/08/CF24D/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
+<meta property="og:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)​$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)​$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1​$ 列时不会选择向左移动，第 $m​$ 列时不会选择向右移动。求机器人到达第">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-08T03:42:49.278Z">
+<meta property="og:updated_time" content="2019-04-08T10:49:51.497Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「Codeforces 24D」Broken robot">
-<meta name="twitter:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$">
+<meta name="twitter:description" content="Description现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)​$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)​$ 位置。每次它会等概率的选择 原地不动，向左移动，向右移动，向下移动 四种操作。当然，机器人在第 $1​$ 列时不会选择向左移动，第 $m​$ 列时不会选择向右移动。求机器人到达第">
 
 
 
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-08 08:05:22 / 修改时间：11:42:49" itemprop="dateCreated datePublished" datetime="2019-04-08T08:05:22+08:00">2019-04-08</time>
+              <time title="创建时间：2019-04-08 08:05:22 / 修改时间：18:49:51" itemprop="dateCreated datePublished" datetime="2019-04-08T08:05:22+08:00">2019-04-08</time>
             
 
             
@@ -481,29 +481,35 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)$ 位置。每次它会等概率的选择 <strong>原地不动，向左移动，向右移动，向下移动</strong> 四种操作。当然，机器人在第 $1$ 列时不会选择向左移动，第 $m$ 列时不会选择向右移动。求机器人到达第 $n$ 行的期望步数，至少精确到 $10^{-4}$ 。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>现在有一个机器人，最初站在 $n \times m\ (1 \leq n,m\leq 1000)​$ 矩阵中的 $(x,y)\ (1 \leq x \leq n, 1\leq y \leq m)​$ 位置。每次它会等概率的选择 <strong>原地不动，向左移动，向右移动，向下移动</strong> 四种操作。当然，机器人在第 $1​$ 列时不会选择向左移动，第 $m​$ 列时不会选择向右移动。求机器人到达第 $n​$ 行的期望步数，至少精确到 $10^{-4}​$ 。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/CF24D" target="_blank" rel="noopener">[Luogu]CF24D</a></strong></p>
 <p><strong><a href="http://codeforces.com/problemset/problem/24/D" target="_blank" rel="noopener">[Codeforces]24D</a></strong></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><script type="math/tex; mode=display">
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>求期望步数，很容易想到 <strong>期望DP</strong> 。我们用 $f_{i,j}$ 表示从 $(i,j)$ 走到最后一行的期望步数，那么初始状态就是 $f_{n,i} = 0\ (1 \leq i \leq m)$（从最后一行走到最后一行的期望步数为 $0$），要求的答案就是 $f_{x,y}$（根据状态即能得到），状态转移方程如下（分 $3​$ 种情况讨论）：</p>
+<script type="math/tex; mode=display">
 f_{i,j}=\left\{\begin{matrix}
  \frac{1}{3}\left ( f_{i,j} + f_{i,j+1} + f_{i+1,j} \right )+1& (j=1)\\ 
  \frac{1}{4}\left ( f_{i,j} + f_{i,j+1} + f_{i,j-1} + f_{i+1,j} \right )+1& (1< j< m)  \\ 
  \frac{1}{3}\left ( f_{i,j} + f_{i,j-1} + f_{i+1,j} \right )+1& (j=m) \\ 
-\end{matrix}\right.</script><p>这个方程是倒推的，所以在求 $f_{i,j}$ 时，$f_{i+1,j}$ 是 <strong>已知</strong> 的，而 $f_{i,j-1},f_{i,j},f_{i,j+1}$ 都是 <strong>未知</strong> 的，我们把未知量移项到左边，把已知量移项到右边，可以得到：</p>
+\end{matrix}\right.</script><p>值得注意的是：$m = 1​$ 时比较特殊，因为不能向左和向右移动，此时</p>
+<script type="math/tex; mode=display">
+f_{i,j}=\frac{1}{2} \left( f_{i,j} + f_{i+1,j} \right) + 1</script><p>这个方程是倒推的，并且有后效性，所以不能直接转移。在求 $f_{i,j}​$ 时，$f_{i+1,j}​$ 是 <strong>已知</strong> 的，而 $f_{i,j-1},f_{i,j},f_{i,j+1}​$ 都是 <strong>未知</strong> 的，我们把未知量移到左边，把已知量移到右边，可以得到：</p>
 <script type="math/tex; mode=display">
 \left\{\begin{matrix}
 -\frac{2}{3}f_{i,j}+\frac{1}{3}f_{i,j+1}=-\frac{1}{3}f_{i+1,j}-1 & (j=1)\\
 \frac{1}{4}f_{i,j-1}-\frac{3}{4}f_{i,j}+\frac{1}{4}f_{i,j+1}=-\frac{1}{4}f_{i+1,j}-1& (1 < j < m)\\
 \frac{1}{3}f_{i,j-1}-\frac{2}{3}f_{i,j}=-\frac{1}{3}f_{i+1,j}-1 & (j=m)\\
-\end{matrix}\right.</script><p>转化成矩阵就是：</p>
+\end{matrix}\right.</script><p>同理，$m = 1​$ 时，</p>
+<script type="math/tex; mode=display">
+-\frac{1}{2}f_{i,j} = -\frac{1}{2}f_{i+1,j} - 1</script><p>我们会发现一共有 $m​$ 个未知数和 $m​$ 个方程，很容易想到 <strong>高斯消元</strong> 求解未知量 $f_{i,1} \sim f_{i,m}\ (1 \leq i &lt; n)​$ 。</p>
+<p>比如说，当 $m = 5​$ 时，所构成的矩阵就是：</p>
 <script type="math/tex; mode=display">
 \begin{bmatrix}
--\frac{2}{3} & \frac{1}{3} & 0 & 0 & 0\\ 
- \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0 & 0\\ 
- 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4} & 0\\ 
- 0 & 0 & \frac{1}{4} & -\frac{3}{4} & \frac{1}{4}\\ 
-0 & 0 & 0 & \frac{1}{3} & -\frac{2}{3}\\ 
+-\frac{2}{3} & \color{blue}{\frac{1}{3}} & 0 & 0 & 0\\ 
+ \color{red}{\frac{1}{4}} & -\frac{3}{4} & \color{blue}{\frac{1}{4}} & 0 & 0\\ 
+ 0 &  \color{red}{\frac{1}{4}} & -\frac{3}{4} & \color{blue}{\frac{1}{4}} & 0\\ 
+ 0 & 0 &  \color{red}{\frac{1}{4}} & -\frac{3}{4} & \color{blue}{\frac{1}{4}}\\ 
+0 & 0 & 0 &  \color{red}{\frac{1}{3}} & -\frac{2}{3}\\ 
 \end{bmatrix}
 =\begin{bmatrix}
 -\frac{1}{3}f_{i+1,j}-1\\
@@ -511,7 +517,8 @@ f_{i,j}=\left\{\begin{matrix}
 -\frac{1}{4}f_{i+1,j}-1\\
 -\frac{1}{4}f_{i+1,j}-1\\
 -\frac{1}{3}f_{i+1,j}-1\\
-\end{bmatrix}</script><h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+\end{bmatrix}</script><p>本来 <strong>高斯消元</strong> 的时间复杂度应该是 $O(n^3)​$ 的。但是观察矩阵能够发现，其实这是一个稀疏矩阵，未知数全部集中在对角线上，$0​$ 的地方不需要消元，我们需要消元的只有 $m - 1​$ 个数（上图 $\color{red}{红色}​$ 的数字），回带时原方程中也只需要消去 $m - 1​$ 个数（上图 $\color{blue}{蓝色}​$ 的数字），所以本题中 <strong>高斯消元</strong> 时间复杂度为 $O(m)​$ 。总时间复杂度为 $O(nm)​$ 。</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">int</span> n, m, x, y;</span><br><span class="line"><span class="keyword">double</span> a[MAXN + <span class="number">5</span>][MAXN + <span class="number">5</span>], f[MAXN + <span class="number">5</span>][MAXN + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">Gauss</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; m; ++i) &#123;</span><br><span class="line">        <span class="keyword">double</span> t = a[i][i];</span><br><span class="line">        a[i][i] = <span class="number">1</span>;</span><br><span class="line">        a[i][i + <span class="number">1</span>] /= t;</span><br><span class="line">        a[i][m + <span class="number">1</span>] /= t;</span><br><span class="line">        t = a[i + <span class="number">1</span>][i];</span><br><span class="line">        a[i + <span class="number">1</span>][i] = <span class="number">0</span>;</span><br><span class="line">        a[i + <span class="number">1</span>][i + <span class="number">1</span>] -= t * a[i][i + <span class="number">1</span>];</span><br><span class="line">        a[i + <span class="number">1</span>][m + <span class="number">1</span>] -= t * a[i][m + <span class="number">1</span>];</span><br><span class="line">    &#125;<span class="comment">//消元，消去下一行方程开头的未知数 </span></span><br><span class="line">    a[m][m + <span class="number">1</span>] /= a[m][m];</span><br><span class="line">    a[m][m] = <span class="number">1</span>;<span class="comment">//求出最后一个未知数的解 </span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = m - <span class="number">1</span>; i; --i)</span><br><span class="line">        a[i][m + <span class="number">1</span>] -= a[i + <span class="number">1</span>][m + <span class="number">1</span>] * a[i][i + <span class="number">1</span>];<span class="comment">//回带，消去下一行方程末尾的未知数</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    freopen(<span class="string">"eat.in"</span>, <span class="string">"r"</span>, <span class="built_in">stdin</span>);</span><br><span class="line">    freopen(<span class="string">"eat.out"</span>, <span class="string">"w"</span>, <span class="built_in">stdout</span>);</span><br><span class="line">    read(n), read(m), read(x), read(y);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = n - <span class="number">1</span>; i &gt;= x; --i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (m == <span class="number">1</span>) &#123;</span><br><span class="line">            a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">-1.0</span> / <span class="number">2</span>;</span><br><span class="line">            a[<span class="number">1</span>][m + <span class="number">1</span>] = -f[i + <span class="number">1</span>][<span class="number">1</span>] / <span class="number">2.0</span> - <span class="number">1</span>;<span class="comment">//特判 m = 1 </span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            a[<span class="number">1</span>][<span class="number">1</span>] = <span class="number">-2.0</span> / <span class="number">3</span>;</span><br><span class="line">            a[<span class="number">1</span>][<span class="number">2</span>] = <span class="number">1.0</span> / <span class="number">3</span>;</span><br><span class="line">            a[<span class="number">1</span>][m + <span class="number">1</span>] = -f[i + <span class="number">1</span>][<span class="number">1</span>] / <span class="number">3.0</span> - <span class="number">1.0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">2</span>; j &lt; m; ++j) &#123;</span><br><span class="line">                a[j][j] = <span class="number">-3.0</span> / <span class="number">4</span>;</span><br><span class="line">                a[j][j - <span class="number">1</span>] = a[j][j + <span class="number">1</span>] = <span class="number">1.0</span> / <span class="number">4</span>;</span><br><span class="line">                a[j][m + <span class="number">1</span>] = -f[i + <span class="number">1</span>][j] / <span class="number">4.0</span> - <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            a[m][m] = <span class="number">-2.0</span> / <span class="number">3</span>;</span><br><span class="line">            a[m][m - <span class="number">1</span>] = <span class="number">1.0</span> / <span class="number">3</span>;</span><br><span class="line">            a[m][m + <span class="number">1</span>] = -f[i + <span class="number">1</span>][m] / <span class="number">3.0</span> - <span class="number">1</span>;</span><br><span class="line">        &#125;<span class="comment">//构造矩阵 </span></span><br><span class="line">        Gauss();<span class="comment">//高斯消元 </span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= m; ++j) f[i][j] = a[j][m + <span class="number">1</span>];<span class="comment">//赋值求出的解 </span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%.10lf\n"</span>, f[x][y]);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -535,9 +542,9 @@ f_{i,j}=\left\{\begin{matrix}
       
         <div class="post-tags">
           
-            <a href="/tags/题解/" rel="tag"># 题解</a>
-          
             <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
+          
+            <a href="/tags/题解/" rel="tag"># 题解</a>
           
             <a href="/tags/高斯消元/" rel="tag"># 高斯消元</a>
           
