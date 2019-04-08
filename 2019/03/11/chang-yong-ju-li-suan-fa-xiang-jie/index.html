@@ -113,7 +113,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c10e88.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c4199a.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c125a9.png">
-<meta property="og:updated_time" content="2019-04-08T03:29:44.106Z">
+<meta property="og:updated_time" content="2019-04-08T04:46:26.851Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
 <meta name="twitter:description" content="在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
@@ -460,7 +460,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-08 11:29:44" itemprop="dateModified" datetime="2019-04-08T11:29:44+08:00">2019-04-08</time>
+                <time title="修改时间：2019-04-08 12:46:26" itemprop="dateModified" datetime="2019-04-08T12:46:26+08:00">2019-04-08</time>
               
             
           </span>
@@ -565,24 +565,18 @@ d(A,B) = \mid 6 - 2\mid  + \mid 5 - 2\mid  = 4 + 3 = 7</script><p>经过推导�
 d(A,B) &= \mid x_1 - y_1\mid  + \mid x_2 - y_2\mid  + \cdot \cdot \cdot + \mid x_n - y_n\mid \\
 &=\sum\limits_{i = 1}^{n}\mid x_i - y_i\mid \\
 \end{aligned}</script><p>除了公式之外，曼哈顿距离还具有以下 <strong>数学性质</strong>：</p>
-<ul>
-<li><p><strong>非负性</strong></p>
+<p><strong>非负性</strong></p>
 <p>曼哈顿距离是一个非负数。</p>
 <p>$d(i,j)\geq 0$</p>
-</li>
-<li><p><strong>统一性</strong></p>
+<p><strong>统一性</strong></p>
 <p>点到自身的曼哈顿距离为 $0$。</p>
 <p>$d(i,i) = 0$</p>
-</li>
-<li><p><strong>对称性</strong></p>
+<p><strong>对称性</strong></p>
 <p>$A$ 到 $B$ 与 $B$ 到 $A$ 的曼哈顿距离相等，且是对称函数。</p>
 <p>$d(i,j) = d(j,i)$</p>
-</li>
-<li><p><strong>三角不等式</strong></p>
+<p><strong>三角不等式</strong></p>
 <p>从点 $i$ 到 $j$ 的直接距离不会大于途经的任何其它点 $k$ 的距离。</p>
 <p>$d(i,j)\leq d(i,k)+d(k,j)$</p>
-</li>
-</ul>
 <p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong></p>
 <p><strong>解析：</strong></p>
 <p><del>（不要被难度吓住，是假的）</del></p>
@@ -651,16 +645,10 @@ d(A,B)&=\max\begin{Bmatrix} \mid x_1 - x_2\mid ,\mid y_1 - y_2\mid \end{Bmatrix}
 \end{aligned}</script><p>而这就是 $(\frac{x_1 + y_1}{2},\frac{x_1 - y_1}{2}), (\frac{x_2 + y_2}{2},\frac{x_2 - y_2}{2})$ 两点之间的 <strong>曼哈顿距离</strong>。</p>
 <p>所以将每一个点 $(x,y)$ 转化为 $(\frac{x + y}{2},\frac{x - y}{2})$，新坐标系下的 <strong>曼哈顿距离</strong> 即为原坐标系下的 <strong>切比雪夫距离</strong>。</p>
 <p><strong>结论：</strong></p>
-<ul>
-<li><p>将切比雪夫坐标系旋转 $45^\circ$，再缩小到原来的一半，即可得到曼哈顿坐标系。</p>
-</li>
-<li><p>将点 $(x,y)$ 的坐标变为 $(x + y, x - y)$，</p>
-</li>
-</ul>
+<p>将切比雪夫坐标系旋转 $45^\circ$，再缩小到原来的一半，即可得到曼哈顿坐标系。</p>
+<p>将点 $(x,y)$ 的坐标变为 $(x + y, x - y)$，</p>
 <p>原坐标系中的 <strong>曼哈顿距离</strong> $=$ 新坐标系中的 <strong>切比雪夫距离</strong></p>
-<ul>
-<li>将点 $(x,y)$ 的坐标变为 $(\frac{x + y}{2},\frac{x - y}{2})$，</li>
-</ul>
+<p>将点 $(x,y)$ 的坐标变为 $(\frac{x + y}{2},\frac{x - y}{2})$，</p>
 <p>原坐标系中的 <strong>切比雪夫距离</strong> $=$ 新坐标系中的 <strong>曼哈顿距离</strong></p>
 <p>碰到求 <strong>切比雪夫距离</strong> 或 <strong>曼哈顿距离</strong> 的题目时，我们往往可以相互转化来求解。两种距离在不同的题目中有不同的优缺点，应该灵活运用。</p>
 <p><strong>例题：</strong></p>
