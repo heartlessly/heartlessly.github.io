@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「BZOJ1477」青蛙的约会]]></title>
+    <url>%2F2019%2F04%2F09%2FBZOJ1477%2F</url>
+    <content type="text"><![CDATA[Descripion环形数轴长 $L\ (0 &lt; L &lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，出发点分别为 $x$ 和 $y\ (0 &lt; x \neq y &lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &lt; m,n &lt; 2 \times 10^9)​$，两只青蛙跳一次所花的时间相同，求最少跳几次才能相遇。若永远不能相遇，输出 Impossible 。 Source[Luogu]P1516 [BZOJ]1477 Solution假设两只青蛙跳 $a$ 步能够相遇，则有方程 x + am \equiv y + an \pmod L根据同余式的性质，化简得到 (m-n)a \equiv y - x \pmod L这个方程等价于 (m - n)a + L \times b = y - x我们只有 $a​$ 和 $b​$ 未知，其它量都已知，这不就是一个形如 $ax + by = c​$ 的 不定方程 吗？ 我们可以用 exgcd（扩展欧几里得） 算法求出方程 $(m-n)a + L \times b = \gcd(m - n, L)$ 中 $a$ 的一个解 ${a}’​$ 。 值得注意的是，$\gcd$ 只对 非负整数 有意义。所以一定要保证 $m \geq n$，若 $m &lt; n$，则在 exgcd 前交换两只青蛙的信息即可。 如果方程 $(m - n)a + L \times b = y - x​$ 有解，则一定满足 $y - x \mid \gcd(m - n, L)​$，否则无解（输出 Impossible）。 若方程有解，则 $a$ 实际的解为 ${a}’ \times \frac{y-x}{\gcd(m - n, L)}$，可这只是这个不定方程的特解，不一定是最小正整数解。 我们让 $L = \frac{L}{\gcd(m - n, L)}$，最小正整数解即为 $\left( a \mod L + L\right) \mod L​$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;void exGcd(LL a, LL b, LL &amp;d, LL &amp;x, LL &amp;y) &#123; if (b == 0) d = a, x = 1, y = 0; else &#123; exGcd(b, a % b, d, y, x); y -= a / b * x; &#125;&#125;LL x, y, m, n, l, d, a, b;int main() &#123; read(x), read(y), read(m), read(n), read(l); if (m &lt; n) &#123; swap(m, n); swap(x, y); &#125;//m &lt; n，则交换两只青蛙的信息 exGcd(m - n, l, d, a, b);//扩展欧几里得求解不定方程，其中 d = gcd(m - n, L) if ((y - x) % d == 0) &#123; a *= (y - x) / d;//a 实际的解 l /= d; write((a % l + l) % l); putchar('\n'); &#125; else puts("Impossible");//无解 return 0;&#125;]]></content>
+      <tags>
+        <tag>数论数学</tag>
+        <tag>BZOJ</tag>
+        <tag>Luogu</tag>
+        <tag>题解</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ2705」「SDOI2012」Longge的问题]]></title>
     <url>%2F2019%2F04%2F09%2FBZOJ2705%2F</url>
     <content type="text"><![CDATA[Descrption给定一个正整数 $n\ (0 &lt; n \leq 2^{32})$，求 $\sum\limits_{i=1}^{n}\gcd(i,n)​$ 。 Source[Luogu]P2303 [BZOJ]2705 Solution前置知识：常见积性函数 - 欧拉函数 - 求一个数的欧拉函数值 假设 $\gcd(i,n) = d\ (1 \leq i \leq n) ​$，则 $\gcd(\frac{i}{d},\frac{n}{d}) = 1​$ 。 因为 $d \mid n$，所以 $d$ 一定是 $n$ 的因数。对于某一个 $d$，我们设 $i = d \times x\ (\frac{1}{d} \leq x \leq \frac{n}{d})$，则 \gcd(\frac{i}{d},\frac{n}{d}) = \gcd(x,\frac{n}{d}) = 1有多少个符合条件的 $x$ 与 $\frac{n}{d}$ 互质呢？显然有 $\varphi(\frac{n}{d})$ 个。而 $d$ 是一个定值，所以也同样有 $\varphi(\frac{n}{d})$ 个 $i$ 满足 $\gcd(i,n) = d$，这个 $d$ 所产生的贡献即为 $\varphi(\frac{n}{d}) \times d$ 。枚举每一个因数 $d$，把它们的贡献加起来就能得到答案，即 \sum\limits_{d \mid n} \left[ \varphi \left(\frac{n}{d} \right) \times d \right]枚举因数 $d$，只需要 $O(\sqrt n)$ 的时间复杂度。$n$ 最大为 $2^{32}$，肯定不能 $O(n)$ 预处理出 $\varphi(1) \sim \varphi(n)$，所以可以用 $O(\sqrt n)$ 的时间复杂度求出一个数的欧拉函数值。总时间复杂度为 $O(n\ 的因数个数 \times \sqrt n)$ Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;inline LL getPhi(LL n) &#123; LL res = n; for (LL i = 2; i * i &lt;= n; ++i) if (n % i == 0) &#123; res -= res / i; for (; n % i == 0; n /= i); &#125; if (n &gt; 1) res -= res / n; return res;&#125;//求一个数的欧拉函数值 LL ans, n;int main() &#123; read(n); for (LL i = 1; i * i &lt;= n; ++i)//枚举 n 的约数 d if (n % i == 0) &#123; LL d1 = i, d2 = n / i;//得到因数 i 和 n / i ans += d1 * getPhi(n / d1); if (d1 != d2) ans += d2 * getPhi(n / d2);//d1 = d2 时只能加一次答案 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
@@ -8,10 +19,10 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论数学</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
@@ -24,10 +35,10 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论数学</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
-        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -38,9 +49,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论数学</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>数论数学</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
         <tag>概率期望</tag>
@@ -79,12 +90,12 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论数学</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>BZOJ</tag>
-        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -95,10 +106,10 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>数论数学</tag>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>筛法</tag>
       </tags>
   </entry>
@@ -149,9 +160,9 @@
         <category>OI</category>
       </categories>
       <tags>
+        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
@@ -192,12 +203,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>题解</tag>
-        <tag>BZOJ</tag>
         <tag>数论数学</tag>
+        <tag>BZOJ</tag>
+        <tag>Luogu</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
+        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -208,8 +219,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
         <tag>笔记</tag>
         <tag>距离</tag>
       </tags>
