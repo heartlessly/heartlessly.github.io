@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)​$，两只青蛙跳一次所花的时间相同">
-<meta name="keywords" content="数论数学,BZOJ,Luogu,题解">
+  <meta name="description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，向正方向跳跃，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)$，两只青蛙跳一次所">
+<meta name="keywords" content="Luogu,BZOJ,数论数学,题解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「BZOJ1477」青蛙的约会">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/09/BZOJ1477/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)​$，两只青蛙跳一次所花的时间相同">
+<meta property="og:description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，向正方向跳跃，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)$，两只青蛙跳一次所">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-09T11:08:56.516Z">
+<meta property="og:updated_time" content="2019-04-09T22:52:32.364Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「BZOJ1477」青蛙的约会">
-<meta name="twitter:description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)​$，两只青蛙跳一次所花的时间相同">
+<meta name="twitter:description" content="Descripion环形数轴长 $L\ (0 &amp;lt; L &amp;lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，向正方向跳跃，出发点分别为 $x$ 和 $y\ (0 &amp;lt; x \neq y &amp;lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &amp;lt; m,n &amp;lt; 2 \times 10^9)$，两只青蛙跳一次所">
 
 
 
@@ -435,12 +435,24 @@
                 
               
 
-              <time title="创建时间：2019-04-09 16:40:03 / 修改时间：19:08:56" itemprop="dateCreated datePublished" datetime="2019-04-09T16:40:03+08:00">2019-04-09</time>
+              <time title="创建时间：2019-04-09 16:40:03" itemprop="dateCreated datePublished" datetime="2019-04-09T16:40:03+08:00">2019-04-09</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-10 06:52:32" itemprop="dateModified" datetime="2019-04-10T06:52:32+08:00">2019-04-10</time>
               
             
           </span>
@@ -481,7 +493,7 @@
       
 
       
-        <h2 id="Descripion"><a href="#Descripion" class="headerlink" title="Descripion"></a>Descripion</h2><p>环形数轴长 $L\ (0 &lt; L &lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，出发点分别为 $x$ 和 $y\ (0 &lt; x \neq y &lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &lt; m,n &lt; 2 \times 10^9)​$，两只青蛙跳一次所花的时间相同，求最少跳几次才能相遇。若永远不能相遇，输出 <strong>Impossible</strong> 。</p>
+        <h2 id="Descripion"><a href="#Descripion" class="headerlink" title="Descripion"></a>Descripion</h2><p>环形数轴长 $L\ (0 &lt; L &lt; 2.1 \times 10^9)$ 米（单位长度 $1$ 米），上面有两只青蛙，向正方向跳跃，出发点分别为 $x$ 和 $y\ (0 &lt; x \neq y &lt; 2 \times 10^9)$，一次分别能跳 $m$ 米 和 $n$ 米 $(0 &lt; m,n &lt; 2 \times 10^9)$，两只青蛙跳一次所花的时间相同，求最少跳几次才能相遇。若永远不能相遇，输出 <strong>Impossible</strong> 。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P1516" target="_blank" rel="noopener">[Luogu]P1516</a></strong></p>
 <p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1477" target="_blank" rel="noopener">[BZOJ]1477</a></strong></p>
@@ -521,11 +533,11 @@ x + am \equiv y + an \pmod L</script><p>根据同余式的性质，化简得到<
       
         <div class="post-tags">
           
-            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
           
             <a href="/tags/题解/" rel="tag"># 题解</a>
           
