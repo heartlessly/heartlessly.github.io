@@ -388,6 +388,177 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/04/09/BZOJ2705/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Heartlessly">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Heartlessly's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/04/09/BZOJ2705/" class="post-title-link" itemprop="url">「BZOJ2705」「SDOI2012」Longge的问题</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-09 09:40:58 / 修改时间：13:32:28" itemprop="dateCreated datePublished" datetime="2019-04-09T09:40:58+08:00">2019-04-09</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OI/" itemprop="url" rel="index"><span itemprop="name">OI</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Descrption"><a href="#Descrption" class="headerlink" title="Descrption"></a>Descrption</h2><p>给定一个正整数 $n\ (0 &lt; n \leq 2^{32})$，求 $\sum\limits_{i=1}^{n}\gcd(i,n)​$ 。</p>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P2568" target="_blank" rel="noopener">[Luogu]P2568</a></strong></p>
+<p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=2705" target="_blank" rel="noopener">[BZOJ]2705</a></strong></p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p><strong>前置知识：<a href="https://heartlessly.github.io/2019/04/05/chang-jian-ji-xing-han-shu/">常见积性函数 - 欧拉函数 - 求一个数的欧拉函数值</a></strong></p>
+<p>假设 $\gcd(i,n) = d\ (1 \leq i \leq n) ​$，则 $\gcd(\frac{i}{d},\frac{n}{d}) = 1​$ 。</p>
+<p>因为 $d \mid n$，所以 $d$ 一定是 $n$ 的因数。对于某一个 $d$，我们设 $i = d \times x\ (\frac{1}{d} \leq x \leq \frac{n}{d})$，则</p>
+<script type="math/tex; mode=display">
+\gcd(\frac{i}{d},\frac{n}{d}) = \gcd(x,\frac{n}{d}) = 1</script><p>有多少个符合条件的 $x$ 与 $\frac{n}{d}$ 互质呢？显然有 $\varphi(\frac{n}{d})$ 个。而 $d$ 是一个定值，所以也同样有 $\varphi(\frac{n}{d})$ 个 $i$ 满足 $\gcd(i,n) = d$，这个 $d$ 所产生的贡献即为 $\varphi(\frac{n}{d}) \times d$ 。枚举每一个因数 $d$，把它们的贡献加起来就能得到答案，即</p>
+<script type="math/tex; mode=display">
+\sum\limits_{d \mid n} \left[ \varphi \left(\frac{n}{d} \right) \times d \right]</script><p>枚举因数 $d$，只需要 $O(\sqrt n)$ 的时间复杂度。$n$ 最大为 $2^{32}$，肯定不能 $O(n)$ 预处理出 $\varphi(1) \sim \varphi(n)$，所以可以用 $O(\sqrt n)$ 的时间复杂度求出一个数的欧拉函数值。总时间复杂度为 $O(n\ 的因数个数 \times \sqrt n)$</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">getPhi</span><span class="params">(LL n)</span> </span>&#123;</span><br><span class="line">    LL res = n;</span><br><span class="line">    <span class="keyword">for</span> (LL i = <span class="number">2</span>; i * i &lt;= n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>) res -= res / n;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;<span class="comment">//求一个数的欧拉函数值 </span></span><br><span class="line"></span><br><span class="line">LL ans, n;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (LL i = <span class="number">1</span>; i * i &lt;= n; ++i)<span class="comment">//枚举 n 的约数 d</span></span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            LL d1 = i, d2 = n / i;<span class="comment">//得到因数 i 和 n / i </span></span><br><span class="line">            ans += d1 * getPhi(n / d1);</span><br><span class="line">            <span class="keyword">if</span> (d1 != d2) ans += d2 * getPhi(n / d2);<span class="comment">//d1 = d2 时只能加一次答案 </span></span><br><span class="line">        &#125;</span><br><span class="line">    write(ans);</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/04/09/BZOJ2818/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -433,7 +604,7 @@
                 
               
 
-              <time title="创建时间：2019-04-09 07:20:55 / 修改时间：09:36:05" itemprop="dateCreated datePublished" datetime="2019-04-09T07:20:55+08:00">2019-04-09</time>
+              <time title="创建时间：2019-04-09 07:20:55 / 修改时间：11:10:24" itemprop="dateCreated datePublished" datetime="2019-04-09T07:20:55+08:00">2019-04-09</time>
             
 
             
@@ -796,7 +967,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-09 09:22:57" itemprop="dateModified" datetime="2019-04-09T09:22:57+08:00">2019-04-09</time>
+                <time title="修改时间：2019-04-09 10:00:08" itemprop="dateModified" datetime="2019-04-09T10:00:08+08:00">2019-04-09</time>
               
             
           </span>
@@ -1986,188 +2157,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/2019/03/13/SPOJ2713/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Heartlessly">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Heartlessly's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/03/13/SPOJ2713/" class="post-title-link" itemprop="url">「SPOJ2713」GSS4 - Can you answer these queries Ⅳ</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-03-13 15:20:45" itemprop="dateCreated datePublished" datetime="2019-03-13T15:20:45+08:00">2019-03-13</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-04-08 11:19:03" itemprop="dateModified" datetime="2019-04-08T11:19:03+08:00">2019-04-08</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OI/" itemprop="url" rel="index"><span itemprop="name">OI</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $n\ (n \leq 10^5)​$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}​$。</p>
-<p>$m\ (m \leq 10^5)$ 个操作（操作有 $2$ 种）：</p>
-<p><code>0 x y</code>：将区间 $[x,y]\ (1 \leq x,y \leq n)$ 内的每一个数开 <strong>平方根（下取整）</strong> 。</p>
-<p><code>1 x y</code>：询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。</p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/03/13/SPOJ2713/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2216,7 +2205,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
