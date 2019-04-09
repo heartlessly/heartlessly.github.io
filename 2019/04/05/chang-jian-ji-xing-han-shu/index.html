@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-08T11:39:42.105Z">
+<meta property="og:updated_time" content="2019-04-08T23:51:23.914Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见积性函数">
 <meta name="twitter:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
@@ -452,11 +452,29 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-08 19:39:42" itemprop="dateModified" datetime="2019-04-08T19:39:42+08:00">2019-04-08</time>
+                <time title="修改时间：2019-04-09 07:51:23" itemprop="dateModified" datetime="2019-04-09T07:51:23+08:00">2019-04-09</time>
               
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/OI/" itemprop="url" rel="index"><span itemprop="name">OI</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -552,6 +570,8 @@
 <p>优化后的代码如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = n;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i * i &lt;= n; ++i)</span><br><span class="line">        <span class="keyword">if</span> (n % i == <span class="number">0</span>) &#123;</span><br><span class="line">            res -= res / i;</span><br><span class="line">            <span class="keyword">for</span> (; n % i == <span class="number">0</span>; n /= i);</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">if</span> (n &gt; <span class="number">1</span>) res -= res / n;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果需要求 $\varphi(1)\sim \varphi(n)$ 的值，用上述方法逐个求的时间复杂度为 $O(n\sqrt n)$，有没有更快的做法呢？</p>
+<p><strong>线性筛求欧拉函数：</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    isNotPrime[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!isNotPrime[i]) &#123;</span><br><span class="line">            prime[++cnt] = i;</span><br><span class="line">            phi[i] = i - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; i * prime[j] &lt;= n; ++j) &#123;</span><br><span class="line">            isNotPrime[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">                phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> phi[i * prime[j]] = phi[i] * (prime[j] - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="莫比乌斯函数"><a href="#莫比乌斯函数" class="headerlink" title="莫比乌斯函数"></a>莫比乌斯函数</h2><h3 id="定义：-1"><a href="#定义：-1" class="headerlink" title="定义："></a>定义：</h3><p>莫比乌斯函数，属于 <strong>积性函数</strong>，但不是完全积性函数。常用 $\mu$ 表示，读作 <strong>miu</strong> 。</p>
 <p>莫比乌斯函数的定义域是全体自然数 $n$ 。</p>
 <p>若 $n = 1$，则 $\mu(1)=1$；</p>
@@ -720,7 +740,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
