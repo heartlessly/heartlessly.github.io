@@ -8,10 +8,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
+        <tag>SDOI</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -22,10 +24,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -36,9 +38,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>数论数学</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
         <tag>概率期望</tag>
@@ -77,12 +79,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -93,10 +95,10 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>筛法</tag>
       </tags>
   </entry>
@@ -110,8 +112,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>线段树</tag>
         <tag>Codeforces</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -147,9 +149,9 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
         <tag>题解</tag>
+        <tag>BZOJ</tag>
         <tag>线段树</tag>
         <tag>SPOJ</tag>
       </tags>
@@ -190,12 +192,12 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>BZOJ</tag>
         <tag>Luogu</tag>
+        <tag>题解</tag>
+        <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
         <tag>2009</tag>
-        <tag>题解</tag>
       </tags>
   </entry>
   <entry>
@@ -206,8 +208,8 @@
         <category>OI</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
         <tag>笔记</tag>
         <tag>距离</tag>
       </tags>
