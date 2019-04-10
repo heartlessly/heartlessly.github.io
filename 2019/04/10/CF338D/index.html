@@ -98,18 +98,18 @@
 
 
 
-  <meta name="description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在 $x,y\ (1 \leq x \leq n">
-<meta name="keywords" content="数论数学,Luogu,题解,Codeforces,中国剩余定理">
+  <meta name="description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在  $x,y\ (1 \leq x \leq">
+<meta name="keywords" content="Luogu,题解,数论数学,Codeforces,中国剩余定理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「Codeforces 338D」GCD Table">
 <meta property="og:url" content="https://heartlessly.github.io/2019/04/10/CF338D/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在 $x,y\ (1 \leq x \leq n">
+<meta property="og:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在  $x,y\ (1 \leq x \leq">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-10T08:26:10.337Z">
+<meta property="og:updated_time" content="2019-04-10T08:31:58.606Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「Codeforces 338D」GCD Table">
-<meta name="twitter:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在 $x,y\ (1 \leq x \leq n">
+<meta name="twitter:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在  $x,y\ (1 \leq x \leq">
 
 
 
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-10 15:27:04 / 修改时间：16:26:10" itemprop="dateCreated datePublished" datetime="2019-04-10T15:27:04+08:00">2019-04-10</time>
+              <time title="创建时间：2019-04-10 15:27:04 / 修改时间：16:31:58" itemprop="dateCreated datePublished" datetime="2019-04-10T15:27:04+08:00">2019-04-10</time>
             
 
             
@@ -499,7 +499,9 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在 $x,y\ (1 \leq x \leq n,1 \leq y \leq m - k +1)$，满足对于任意一个 $l$，都有 $\gcd(x,y+l-1) = a_l\ (1 \leq l \leq k)$（即这个序列在表格的某一行中出现）。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})$ 的表 格，其中 第 $i$ 行，第 $j$ 列 的元素是 $\gcd(i,j)$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)$ 的序列 $a\ (1 \leq a_i \leq 10^{12})$，询问在表格内是否存在</p>
+<p> $x,y\ (1 \leq x \leq n,1 \leq y \leq m - k +1)$，满足对于任意一个 $l$，</p>
+<p>都有 $\gcd(x,y+l-1) = a_l (1 \leq l \leq k)$（即这个序列在表格的某一行中出现过）。</p>
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/CF338D" target="_blank" rel="noopener">[Luogu]CF338D</a></strong></p>
 <p><strong><a href="http://codeforces.com/problemset/problem/338/D" target="_blank" rel="noopener">[Codeforces]338D</a></strong></p>
@@ -568,11 +570,11 @@ y &\equiv 1-k \pmod {a_k}
       
         <div class="post-tags">
           
-            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
-          
             <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/题解/" rel="tag"># 题解</a>
+          
+            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
           
             <a href="/tags/Codeforces/" rel="tag"># Codeforces</a>
           
