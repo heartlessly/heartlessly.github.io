@@ -99,14 +99,14 @@
 
 
   <meta name="description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
-<meta name="keywords" content="Luogu,BZOJ,数论数学,NOI,2002">
+<meta name="keywords" content="Luogu,BZOJ,NOI,2002,数论数学">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「BZOJ1407」「NOI2002」Savage">
 <meta property="og:url" content="https://heartlessly.github.io/problems/BZOJ1407/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-11T10:55:02.358Z">
+<meta property="og:updated_time" content="2019-04-11T11:48:03.185Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「BZOJ1407」「NOI2002」Savage">
 <meta name="twitter:description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-11 15:16:03 / 修改时间：18:55:02" itemprop="dateCreated datePublished" datetime="2019-04-11T15:16:03+08:00">2019-04-11</time>
+              <time title="创建时间：2019-04-11 15:16:03 / 修改时间：19:48:03" itemprop="dateCreated datePublished" datetime="2019-04-11T15:16:03+08:00">2019-04-11</time>
             
 
             
@@ -513,9 +513,9 @@ c_i + p_ix \equiv c_j + p_jx \pmod m</script><p>化简方程，得到</p>
 <p>如果 $\gcd(p_i-p_j,m) \nmid c_j-c_i$，说明 $x$ 无解，野人 $i,j​$ 永远不会相遇。</p>
 <p>若有解，我们求出 $x$ 的最小正整数解，即</p>
 <script type="math/tex; mode=display">
-x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \mod  \frac{m}{\gcd(p_i-p_j,m)} + \frac{m}{\gcd(p_i-p_j,m)} \right) \mod \frac{m}{\gcd(p_i-p_j,m)}</script><p>如果 $x &gt; \min(l_i,l_j)$，说明在他们相遇之前，$i, j$ 中会有至少一个野人死亡，所以也是可行的。</p>
+x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \bmod  \frac{m}{\gcd(p_i-p_j,m)} + \frac{m}{\gcd(p_i-p_j,m)} \right) \bmod \frac{m}{\gcd(p_i-p_j,m)}</script><p>如果 $x &gt; \min(l_i,l_j)$，说明在他们相遇之前，$i, j$ 中会有至少一个野人死亡，所以也是可行的。</p>
 <p>如果 $x \leq \min(l_i,l_j)​$，说明 野人 $i,j​$ 会在死亡前相遇，这个 $m​$ 不可行。</p>
-<p>我们只需要枚举每一个可能的 $m$（题目保证 $m \leq 10^6$），枚举每一对野人 $(i,j)$，用 <strong>exgcd</strong> 求解 $x$ 并判断这个 $m$ 是否满足要求。还有一些小细节：用 <strong>exgcd</strong> 时必须保证 $p_i \geq p_j$，因为 $\gcd$ 只对 <strong>非负整数</strong> 有意义。总时间复杂度为 $O( n^2m\log p_i)$ 。</p>
+<p>我们只需要枚举每一个可能的 $m$（题目保证 $m \leq 10^6$），枚举每一对野人 $(i,j)$，用 <strong>exgcd</strong> 求解 $x$ 并判断这个 $m$ 是否满足要求。还有一些小细节：用 <strong>exgcd</strong> 时必须保证 $p_i \geq p_j$，因为 $\gcd$ 只对 <strong>非负整数</strong> 有意义。总时间复杂度为 $O( n^2m\log p_i)​$ 。</p>
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">15</span>, MAXM = <span class="number">1e6</span>;</span><br><span class="line"><span class="keyword">int</span> n, maxn, c[MAXN + <span class="number">5</span>], p[MAXN + <span class="number">5</span>], l[MAXN + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">exGcd</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> &amp;x, <span class="keyword">int</span> &amp;y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> d = exGcd(b, a % b, y, x);</span><br><span class="line">    y -= a / b * x;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">bool</span> <span class="title">judge</span><span class="params">(<span class="keyword">int</span> m)</span> </span>&#123;<span class="comment">//判断这个 m 是否可行</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n; ++i)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt;= n; ++j) &#123;<span class="comment">//枚举每一对野人 </span></span><br><span class="line">            <span class="keyword">int</span> pi = p[i], pj = p[j], ci = c[i], cj = c[j], x, y, d;</span><br><span class="line">            <span class="keyword">if</span> (pi &lt; pj) &#123;</span><br><span class="line">                swap(pi, pj);</span><br><span class="line">                swap(ci, cj);</span><br><span class="line">            &#125; <span class="comment">//如果 pi &lt; pj，不满足 gcd 要求，交换 </span></span><br><span class="line">            d = exGcd(pi - pj, m, x, y);<span class="comment">//d = gcd(pi - pj, m)</span></span><br><span class="line">            <span class="keyword">if</span> ((cj - ci) % d != <span class="number">0</span>) <span class="keyword">continue</span>;<span class="comment">//x 无解，野人 i,j 不可能相遇 </span></span><br><span class="line">            <span class="keyword">int</span> p = m / d;</span><br><span class="line">            x *= (cj - ci) / d;</span><br><span class="line">            x = (x % p + p) % p;<span class="comment">//x 的最小整数解 </span></span><br><span class="line">            <span class="keyword">if</span> (x &lt;= min(l[i], l[j])) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//这个 m 不符合题意 </span></span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        read(c[i]), read(p[i]), read(l[i]);</span><br><span class="line">        maxn = max(maxn, c[i]);<span class="comment">//已有洞穴中的编号最大的洞穴 </span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = maxn; i &lt;= MAXM; ++i)<span class="comment">//枚举洞穴个数，注意最小值为编号最大的洞穴 </span></span><br><span class="line">        <span class="keyword">if</span> (judge(i)) &#123;</span><br><span class="line">            write(i);</span><br><span class="line">            <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
@@ -544,11 +544,11 @@ x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \mod  \frac{m}{\gcd(p_i
           
             <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
-            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
-          
             <a href="/tags/NOI/" rel="tag"># NOI</a>
           
             <a href="/tags/2002/" rel="tag"># 2002</a>
+          
+            <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
           
         </div>
       
@@ -570,6 +570,10 @@ x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \mod  \frac{m}{\gcd(p_i
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/problems/BZOJ3884/" rel="prev" title="「BZOJ3884」上帝与集合的正确用法">
+                「BZOJ3884」上帝与集合的正确用法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -644,7 +648,7 @@ x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \mod  \frac{m}{\gcd(p_i
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">18</span>
+                    <span class="site-state-item-count">19</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -732,7 +736,9 @@ x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \mod  \frac{m}{\gcd(p_i
                     
                       
                     
-                    <span class="site-state-item-count">22</span>
+                      
+                    
+                    <span class="site-state-item-count">23</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
