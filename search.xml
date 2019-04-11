@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[「BZOJ1303」「NOI2002」Savage]]></title>
-    <url>%2Funcategorized%2FBZOJ1407%2F</url>
+    <title><![CDATA[「BZOJ1407」「NOI2002」Savage]]></title>
+    <url>%2FOI%2FBZOJ1407%2F</url>
     <content type="text"><![CDATA[Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_i$ 年。没有 $2$ 个野人能在有生之年生存在同一个洞穴中，求洞穴个数 $m\ (m \leq 10^6)$ 的最小值。 Source[Luogu]P2421 [BZOJ]1407 Solution对于 野人 $i$ 和 野人 $j$ $(i \neq j)$，假设经过 $x$ 天之后他们会在同一个洞穴相遇，那么可以得出方程： c_i + p_ix \equiv c_j + p_jx \pmod m化简方程，得到 (p_i - p_j)x \equiv c_j - c_i \pmod m这个方程等价于 (p_i - p_j)x + m \times y = c_j - c_i显然我们可以用 exgcd(扩展欧几里得) 算法求出方程 $(p_i - p_j)x + m \times y = \gcd(p_i-p_j,m)​$ 的一个解 $x’​$ 。 如果 $\gcd(p_i-p_j,m) \nmid c_j-c_i$，说明 $x$ 无解，野人 $i,j​$ 永远不会相遇。 若有解，我们求出 $x$ 的最小正整数解，即 x = \left( x' \times \frac{c_j - c_i}{\gcd(p_i-p_j,m)} \mod \frac{m}{\gcd(p_i-p_j,m)} + \frac{m}{\gcd(p_i-p_j,m)} \right) \mod \frac{m}{\gcd(p_i-p_j,m)}如果 $x &gt; \min(l_i,l_j)$，说明在他们相遇之前，$i, j$ 中会有至少一个野人死亡，所以也是可行的。 如果 $x \leq \min(l_i,l_j)​$，说明 野人 $i,j​$ 会在死亡前相遇，这个 $m​$ 不可行。 我们只需要枚举每一个可能的 $m$（题目保证 $m \leq 10^6$），枚举每一对野人 $(i,j)$，用 exgcd 求解 $x$ 并判断这个 $m$ 是否满足要求。还有一些小细节：用 exgcd 时必须保证 $p_i \geq p_j$，因为 $\gcd$ 只对 非负整数 有意义。总时间复杂度为 $O( n^2m\log p_i)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 15, MAXM = 1e6;int n, maxn, c[MAXN + 5], p[MAXN + 5], l[MAXN + 5];int exGcd(int a, int b, int &amp;x, int &amp;y) &#123; if (b == 0) &#123; x = 1, y = 0; return a; &#125; int d = exGcd(b, a % b, y, x); y -= a / b * x; return d;&#125;inline bool judge(int m) &#123;//判断这个 m 是否可行 for (int i = 1; i &lt; n; ++i) for (int j = i + 1; j &lt;= n; ++j) &#123;//枚举每一对野人 int pi = p[i], pj = p[j], ci = c[i], cj = c[j], x, y, d; if (pi &lt; pj) &#123; swap(pi, pj); swap(ci, cj); &#125; //如果 pi &lt; pj，不满足 gcd 要求，交换 d = exGcd(pi - pj, m, x, y);//d = gcd(pi - pj, m) if ((cj - ci) % d != 0) continue;//x 无解，野人 i,j 不可能相遇 int p = m / d; x *= (cj - ci) / d; x = (x % p + p) % p;//x 的最小整数解 if (x &lt;= min(l[i], l[j])) return 0;//这个 m 不符合题意 &#125; return 1;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(c[i]), read(p[i]), read(l[i]); maxn = max(maxn, c[i]);//已有洞穴中的编号最大的洞穴 &#125; for (int i = maxn; i &lt;= MAXM; ++i)//枚举洞穴个数，注意最小值为编号最大的洞穴 if (judge(i)) &#123; write(i); putchar('\n'); return 0; &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>OI</category>
+      </categories>
       <tags>
         <tag>BZOJ</tag>
         <tag>Luogu</tag>
@@ -154,8 +157,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>题解</tag>
-        <tag>Codeforces</tag>
         <tag>线段树</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
