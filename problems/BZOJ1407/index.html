@@ -99,14 +99,14 @@
 
 
   <meta name="description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
-<meta name="keywords" content="数论数学,BZOJ,Luogu,NOI,2002">
+<meta name="keywords" content="Luogu,数论数学,BZOJ,NOI,2002">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「BZOJ1407」「NOI2002」Savage">
 <meta property="og:url" content="https://heartlessly.github.io/problems/BZOJ1407/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-11T13:32:27.704Z">
+<meta property="og:updated_time" content="2019-04-12T00:10:52.647Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「BZOJ1407」「NOI2002」Savage">
 <meta name="twitter:description" content="Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_">
@@ -435,12 +435,24 @@
                 
               
 
-              <time title="创建时间：2019-04-11 15:16:03 / 修改时间：21:32:27" itemprop="dateCreated datePublished" datetime="2019-04-11T15:16:03+08:00">2019-04-11</time>
+              <time title="创建时间：2019-04-11 15:16:03" itemprop="dateCreated datePublished" datetime="2019-04-11T15:16:03+08:00">2019-04-11</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-12 08:10:52" itemprop="dateModified" datetime="2019-04-12T08:10:52+08:00">2019-04-12</time>
               
             
           </span>
@@ -503,7 +515,11 @@
 <a id="more"></a>
 <h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P2421" target="_blank" rel="noopener">[Luogu]P2421</a></strong></p>
 <p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1407" target="_blank" rel="noopener">[BZOJ]1407</a></strong></p>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>对于 野人 $i$ 和 野人 $j$ $(i \neq j)$，假设经过 $x$ 天之后他们会在同一个洞穴相遇，那么可以得出方程：</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><blockquote>
+<p><strong>前置知识：</strong></p>
+<p><strong>扩展欧几里得(exgcd)算法</strong></p>
+</blockquote>
+<p>对于 野人 $i$ 和 野人 $j$ $(i \neq j)$，假设经过 $x$ 天之后他们会在同一个洞穴相遇，那么可以得出方程：</p>
 <script type="math/tex; mode=display">
 c_i + p_ix \equiv c_j + p_jx \pmod m</script><p>化简方程，得到</p>
 <script type="math/tex; mode=display">
@@ -540,11 +556,11 @@ x = \left( x' \times  \frac{c_j - c_i}{\gcd(p_i-p_j,m)}  \bmod  \frac{m}{\gcd(p_
       
         <div class="post-tags">
           
+            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+          
             <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
           
             <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
-          
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/NOI/" rel="tag"># NOI</a>
           
