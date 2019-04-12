@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-11T10:55:18.618Z">
+<meta property="og:updated_time" content="2019-04-12T05:25:51.232Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常见积性函数">
 <meta name="twitter:description" content="定义积性函数 指对于 任意互质的整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 完全积性函数 指对于 任意整数 $a$ 和 $b$ 有性质 $f(ab)=f(a)\times f(b)$ 的数论函数。 很显然 完全积性函数 是 积性函数 的一个子集。">
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-11 18:55:18" itemprop="dateModified" datetime="2019-04-11T18:55:18+08:00">2019-04-11</time>
+                <time title="修改时间：2019-04-12 13:25:51" itemprop="dateModified" datetime="2019-04-12T13:25:51+08:00">2019-04-12</time>
               
             
           </span>
@@ -520,7 +520,7 @@
 <h3 id="公式："><a href="#公式：" class="headerlink" title="公式："></a>公式：</h3><p>若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有 <strong>互不相同</strong> 的质因数，$n$ 是一个不为 $0$ 的整数，则</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\varphi(n)&=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\\
+\varphi(n)&=n\times\left ( 1-\frac{1}{p_1}\right )\times \left ( 1-\frac{1}{p_2}\right )\times \cdots \times \left ( 1-\frac{1}{p_m}\right )\\[2ex]
 &=n\prod\limits_{i=1}^{m}\left ( 1-\frac{1}{p_i}\right )\\
 \end{aligned}</script><h3 id="性质-amp-证明："><a href="#性质-amp-证明：" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
 <p>若 $n , m​$ <strong>互质</strong>，则 $\varphi(nm)=\varphi(n) \times \varphi(m)​$ 。</p>
@@ -536,8 +536,8 @@
 <p>显然 $n$ 与 $2$ 互质，且 $\varphi(2) = 1$，所以根据 <strong>性质 1</strong>，可得</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\varphi(2n)&=\varphi(2) \times \varphi(n)\\
-&=1\times \varphi(n)\\
+\varphi(2n)&=\varphi(2) \times \varphi(n)\\[1ex]
+&=1\times \varphi(n)\\[1ex]
 &=\varphi(n)
 \end{aligned}</script><p><strong>性质 4：</strong></p>
 <p>若 $p$ 为质数，$n = p^k$，则 </p>
@@ -546,8 +546,8 @@
 <p>由 $n=p^k$，得 $n$ 的质因数只有 $p$，再通过公式，可知</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\varphi(n)&=n\times\left(1-\frac{1}{p}\right)\\
-&=p^k \times \left(1-\frac{1}{p}\right)\\
+\varphi(n)&=n\times\left(1-\frac{1}{p}\right)\\[2ex]
+&=p^k \times \left(1-\frac{1}{p}\right)\\[2ex]
 &= p^k - p^{k-1}
 \end{aligned}</script><p><strong>性质 5：</strong></p>
 <p>若 $n &gt; 2​$，则 $\varphi(n)​$ 为偶数。</p>
@@ -557,9 +557,9 @@
 <p>首先需要知道：若 $n$ 与 $m$ 互质 $(n &gt; m)$，则 $n$ 与 $n - m$ 互质。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-&\gcd(n,m)=1\\
+&\gcd(n,m)=1\\[1ex]
 &\gcd(n,m)=\gcd(n,n-m)\\
-\end{aligned}</script><p>显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n)\ (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}$。</p>
+\end{aligned}</script><p>显然与 $n$ 互质的数都是成对出现的，且相加的和为 $n$，只有在 $\gcd(n,\frac{n}{2})=1$ 时例外，但这种情况只会在 $n \leq 2$ 时出现，所以 $\varphi(n)\ (n &gt; 2)$ 为偶数得证。小于等于 $n$ 的数中，与 $n$ 互质的数的个数为 $\varphi(n)$，所以一共有 $\frac{\varphi(n)}{2}$ 对，总和为 $\frac{n \times \varphi(n)}{2}​$。</p>
 <p><strong>性质 6：</strong></p>
 <p>若正整数 $x$ 与质数 $p$ 不互质</p>
 <h3 id="程序："><a href="#程序：" class="headerlink" title="程序："></a>程序：</h3><p>如何求出 $\varphi(n)​$ ？</p>
@@ -580,8 +580,8 @@
 <p>若 $n$ 是奇数个互不相同的质数之积，则 $\mu(n)=-1$ 。</p>
 <h3 id="公式：-1"><a href="#公式：-1" class="headerlink" title="公式："></a>公式：</h3><script type="math/tex; mode=display">
 \mu(n)=\left\{\begin{matrix}
- 1& n=1\\ 
- (-1)^m& n=p_1\times p_2 \times \cdots \times p_m = \prod\limits_{i=1}^{m}p_i(\forall p_i \neq p_j)\\ 
+ 1& n=1\\[2ex] 
+ (-1)^m& n=p_1\times p_2 \times \cdots \times p_m = \prod\limits_{i=1}^{m}p_i(\forall p_i \neq p_j)\\[2ex] 
  0& others\\ 
 \end{matrix}\right.</script><h3 id="性质-amp-证明：-1"><a href="#性质-amp-证明：-1" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
 <p>若 $n , m$ <strong>互质</strong>，则 $\mu(nm)=\mu(n) \times \mu(m)$ 。</p>
@@ -591,7 +591,7 @@
 <p>若 $n \neq 1$，则 $n$ 所有因子的莫比乌斯函数值的和为 $0$，即</p>
 <script type="math/tex; mode=display">
 \sum\limits_{d\mid n}\mu(d)=\left\{\begin{matrix}
- 1& n=1\\ 
+ 1& n=1\\[2ex] 
  0& n>1
 \end{matrix}\right.</script><p><strong>证明：</strong></p>
 <h2 id="除数函数"><a href="#除数函数" class="headerlink" title="除数函数"></a>除数函数</h2><h3 id="定义：-2"><a href="#定义：-2" class="headerlink" title="定义："></a>定义：</h3><p>除数函数，属于 <strong>积性函数</strong>，但不是完全积性函数。常用 $\sigma$ 表示，读作 <strong>sigma</strong> 。</p>
@@ -600,12 +600,12 @@
 \sigma_x(n)=\sum\limits_{d\mid n}d^x</script><h3 id="公式：-2"><a href="#公式：-2" class="headerlink" title="公式："></a>公式：</h3><p>若 $p_1 , p_2 ,\ldots, p_m$ 为 $x$ 的所有质因数，$n$ 和 $x$ 都是 <strong>自然数</strong> 。</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
-\sigma_x(n) &= (1 + p_1^x+p_1^{2x}+\cdots+p_1^{a_1x})\\
-&\times (1 + p_2^x+p_2^{2x}+\cdots+p_2^{a_2x})\\
-&\times (1 + p_3^x+p_3^{2x}+\cdots+p_3^{a_3x})\\
-&\times \cdots \cdots\\
-&\times (1 + p_m^x+p_m^{2x}+\cdots+p_m^{a_mx})\\
-&=\prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^{jx}\\
+\sigma_x(n) &= (1 + p_1^x+p_1^{2x}+\cdots+p_1^{a_1x})\\[1ex]
+&\times (1 + p_2^x+p_2^{2x}+\cdots+p_2^{a_2x})\\[1ex]
+&\times (1 + p_3^x+p_3^{2x}+\cdots+p_3^{a_3x})\\[1ex]
+&\times \cdots \cdots\\[1ex]
+&\times (1 + p_m^x+p_m^{2x}+\cdots+p_m^{a_mx})\\[2ex]
+&=\prod\limits_{i=1}^{m}\sum\limits_{j=0}^{a_i}p_i^{jx}\\[2ex]
 &=\prod\limits_{i=1}^{m}\frac{p_i^{(a_i+1)x}-1}{p_i^x-1}\\
 \end{aligned}</script><h3 id="性质-amp-证明：-2"><a href="#性质-amp-证明：-2" class="headerlink" title="性质 &amp; 证明："></a>性质 &amp; 证明：</h3><p><strong>性质 1：</strong></p>
 <p>特殊地，$\sigma_0(n)$ 可以表示 $n$ 的正约数个数，$\sigma_1(n)$ 可以表示 $n​$ 的正约数之和。</p>
@@ -738,7 +738,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">19</span>
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -759,7 +759,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -828,7 +830,17 @@
                     
                       
                     
-                    <span class="site-state-item-count">23</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
