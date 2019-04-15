@@ -99,14 +99,14 @@
 
 
   <meta name="description" content="Descripion给定 $n\ (1 \leq n \leq 10^5)$ 个正整数 $a_i\ (1 \leq a_i \leq 10^6)$ 。对于每一个数 $a_i$，求有多少个数 $j\ (1 \leq j \leq n)$ 满足 $a_i \mid  a_j$ 且 $i \neq j$ 。">
-<meta name="keywords" content="Luogu,BZOJ,数论数学,USACO,2008">
+<meta name="keywords" content="BZOJ,数论数学,USACO,2008">
 <meta property="og:type" content="article">
 <meta property="og:title" content="「BZOJ 1607」「USACO2008 Dec」Patting Heads 轻拍牛头">
 <meta property="og:url" content="https://heartlessly.github.io/problems/bzoj-1607/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Descripion给定 $n\ (1 \leq n \leq 10^5)$ 个正整数 $a_i\ (1 \leq a_i \leq 10^6)$ 。对于每一个数 $a_i$，求有多少个数 $j\ (1 \leq j \leq n)$ 满足 $a_i \mid  a_j$ 且 $i \neq j$ 。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-15T00:39:52.354Z">
+<meta property="og:updated_time" content="2019-04-15T07:59:50.401Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「BZOJ 1607」「USACO2008 Dec」Patting Heads 轻拍牛头">
 <meta name="twitter:description" content="Descripion给定 $n\ (1 \leq n \leq 10^5)$ 个正整数 $a_i\ (1 \leq a_i \leq 10^6)$ 。对于每一个数 $a_i$，求有多少个数 $j\ (1 \leq j \leq n)$ 满足 $a_i \mid  a_j$ 且 $i \neq j$ 。">
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-15 08:39:52" itemprop="dateModified" datetime="2019-04-15T08:39:52+08:00">2019-04-15</time>
+                <time title="修改时间：2019-04-15 15:59:50" itemprop="dateModified" datetime="2019-04-15T15:59:50+08:00">2019-04-15</time>
               
             
           </span>
@@ -513,8 +513,7 @@
       
         <h2 id="Descripion"><a href="#Descripion" class="headerlink" title="Descripion"></a>Descripion</h2><p>给定 $n\ (1 \leq n \leq 10^5)$ 个正整数 $a_i\ (1 \leq a_i \leq 10^6)$ 。对于每一个数 $a_i$，求有多少个数 $j\ (1 \leq j \leq n)$ 满足 $a_i \mid  a_j$ 且 $i \neq j$ 。</p>
 <a id="more"></a>
-<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P2926" target="_blank" rel="noopener">[Luogu]P2926</a></strong></p>
-<p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1607" target="_blank" rel="noopener">[BZOJ]1607</a></strong></p>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1607" target="_blank" rel="noopener">[BZOJ]1607</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>看完题目很容易想到 $O(n^2)​$ 的暴力算法，枚举所有 $i​$ 和 $j​$，显然会超时。但我们发现 $a_i​$ 并不大，所以考虑另一种方法。</p>
 <p>我们用一个桶 $cnt​$ 记录 $a_i​$ 出现的次数，$ans_i​$ 表示 $a_i=i​$ 时的答案，枚举 $i=1 \sim \max \begin{Bmatrix}a_i\end{Bmatrix}​$ ，接着枚举 $i​$ 以及 $i​$ 的倍数，凡是等于 $i​$ 或是 $i​$ 的倍数的数，答案都应该加上 $i​$ 出现的次数。同时因为会把自己算进去，所以答案要减 $1​$ 。时间复杂度为 $O(n\log\log n)​$，类似 <strong>埃拉托斯特尼筛法</strong> 。</p>
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e5</span>, MAXM = <span class="number">1e6</span>;</span><br><span class="line"><span class="keyword">int</span> n, maxn, a[MAXN + <span class="number">5</span>], cnt[MAXM + <span class="number">5</span>], ans[MAXM + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        read(a[i]);</span><br><span class="line">        ++cnt[a[i]];</span><br><span class="line">        maxn = max(maxn, a[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= maxn; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!cnt[i]) <span class="keyword">continue</span>;<span class="comment">//小优化：判断 i 是否出现过</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt;= maxn; j += i)<span class="comment">//枚举 i 以及 i 的倍数</span></span><br><span class="line">            ans[j] += cnt[i];<span class="comment">//如果 i | j，则让 ans[j] 增加 i 出现的次数</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        write(ans[a[i]] - <span class="number">1</span>);<span class="comment">//因为 a[i] | a[i]，多算了一次自己，要减 1</span></span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -541,8 +540,6 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
-          
             <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
             <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
@@ -562,8 +559,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/problems/bzoj-2721/" rel="next" title="「BZOJ 2721」「Violet 5」樱花">
-                <i class="fa fa-chevron-left"></i> 「BZOJ 2721」「Violet 5」樱花
+              <a href="/problems/luogu-p2926/" rel="next" title="「Luogu P2926」「USACO08DEC」拍头 Patting Heads">
+                <i class="fa fa-chevron-left"></i> 「Luogu P2926」「USACO08DEC」拍头 Patting Heads
               </a>
             
           </div>
@@ -649,7 +646,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-count">32</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
