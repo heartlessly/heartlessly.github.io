@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「Luogu P2458」「SDOI2006」保安站岗]]></title>
     <url>%2Fproblems%2Fluogu-p2458%2F</url>
-    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 1500)$ 个节点的树，点 $i\ (1 \leq i \leq n)$ 的花费是 $val_i\ (1 \leq val_i \leq 10^4)$，现在需要从中选择若干个点，这些点能够覆盖与它们相连的点，求将覆盖树上所有点的最小代价是多少。 Source[Luogu]P2458 Solution考虑 树形DP 。 状态： 用 $f_{0,u}​$ 表示在节点 $u​$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被自己覆盖的最小代价； 用 $f_{1,u}$ 表示在节点 $u$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被它儿子覆盖的最小代价； 用 $f_{2,u}​$ 表示在节点 $u​$ 的子树中，除节点 $u​$ 外的点都已经被覆盖，其中节点 $u​$ 将被它父亲覆盖的最小代价。 初始： 无 转移： \large { f_{0,u} = val_u + \sum\limits_{v \in son_u} \min \begin{Bmatrix} f_{0,v},f_{1,v},f_{2,v} \end{Bmatrix} }若节点 $u$ 被自己覆盖，则至少要花费 $val_u$ 的代价，同时子节点 $v$ 的状态不需要考虑，因为无论怎样 $v$ 都会被 $u$ 覆盖，所以还需要加上 子节点所有状态的最小值 。 \large {f_{1,u}=\left\{\begin{matrix}\begin{aligned} &\sum\limits_{v \in son_u} \min \left(f_{0,v}, f_{1,v}\right) \\[2ex] &\sum\limits_{v \in son_u} \min \left(f_{0,v}, f_{1,v}\right) + \min \begin{Bmatrix} f_{0,v} - f_{1,v} \end{Bmatrix} & (\operatorname{if} \ \forall f_{0,v} > f_{1,v}) \end{aligned}\end{matrix}\right.}若节点 $u$ 被它儿子覆盖，则子节点 $v$ 不可能被它的父节点 $u$ 覆盖，因此需要取子节点 被自己覆盖 和 被其儿子 覆盖的较小值。但是所取的子节点肯定不能全部被自己的儿子覆盖，否则节点 $u$ 将不会被覆盖。因此如果所有的 $f_{1,v}$ 都比 $f_{0,v}$ 更优，那么需要从中挑出一个 $f_{1,v}$，把它变成 $f_{0,v}$，这样才能满足 $u$ 被 $v$ 覆盖。为了让变化所花费的代价更小，我们需要找到 $f_{0,v}$ 与 $f_{1,v}$ 的最小差值，加上原来的代价即可。 \large { f_{2,u} = \sum\limits_{v \in son_u} \min \left( f_{0,v}, f_{1,v} \right) }若节点 $u​$ 被它父亲覆盖，则子节点 $v​$ 不可能被它的父节点 $u​$ 覆盖，所以只需要加上子节点 被自己覆盖 和 被其儿子 覆盖的较小值即可。 答案： \large{\begin{aligned} &\min \left(f_{0,root},f_{1,root} \right) && (root\ 表示根节点) \end{aligned}}因为根节点没有父亲，所以不需要考虑根节点被父亲覆盖的情况，答案应该取根节点 被自己覆盖 和 被儿子覆盖 的较小值。因为本题是棵无根树，所以直接设 $1$ 号节点为根，连无向边即可。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1500, MAXM = 3000;int n, m, tot, val[MAXN + 5], head[MAXN + 5], f[3][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u, int fa) &#123; f[0][u] = val[u]; bool flag = 1; int minn = 0x7fffffff; for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; dfs(v, u); f[0][u] += min(f[0][v], min(f[1][v], f[2][v])); f[1][u] += min(f[0][v], f[1][v]); f[2][u] += min(f[0][v], f[1][v]);//转移 if (f[0][v] &lt;= f[1][v]) flag = 0;//检查是否所有的 f[0][v] 都大于 f[1][v] if (flag) minn = min(minn, f[0][v] - f[1][v]);//如果是，记录最小其差值 &#125; if (flag) f[1][u] += minn;//如果全部选择了 f[1][v]，还要加上最小差值 &#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; int u, v; read(u), read(val[u]), read(m);//注意读入的是节点 u 的点权而不是 i 的点权 for (int j = 1; j &lt;= m; ++j) &#123; read(v); addEdge(u, v), addEdge(v, u); &#125;//连无向边 &#125; dfs(1, 0);//以 1 号节点作为根节点 write(min(f[0][1], f[1][1])); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 1500)$ 个节点的树，点 $i\ (1 \leq i \leq n)$ 的花费是 $val_i\ (1 \leq val_i \leq 10^4)$，现在需要从中选择若干个点，这些点能够覆盖与它们相连的点，求覆盖树上所有点的最小代价是多少。 Source[Luogu]P2458 Solution考虑 树形DP 。 状态： 用 $f_{0,u}​$ 表示在节点 $u​$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被自己覆盖的最小代价； 用 $f_{1,u}$ 表示在节点 $u$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被它儿子覆盖的最小代价； 用 $f_{2,u}​$ 表示在节点 $u​$ 的子树中，除节点 $u​$ 外的点都已经被覆盖，其中节点 $u​$ 将被它父亲覆盖的最小代价。 初始： 无 转移： \large { f_{0,u} = val_u + \sum\limits_{v \in son_u} \min \begin{Bmatrix} f_{0,v},f_{1,v},f_{2,v} \end{Bmatrix} }若节点 $u$ 被自己覆盖，则至少要花费 $val_u$ 的代价，同时子节点 $v$ 的状态不需要考虑，因为无论怎样 $v$ 都会被 $u$ 覆盖，所以还需要加上 子节点所有状态的最小值 。 \large {f_{1,u}=\left\{\begin{matrix}\begin{aligned} &\sum\limits_{v \in son_u} \min \left(f_{0,v}, f_{1,v}\right) \\[2ex] &\sum\limits_{v \in son_u} \min \left(f_{0,v}, f_{1,v}\right) + \min \begin{Bmatrix} f_{0,v} - f_{1,v} \end{Bmatrix} & (\operatorname{if} \ \forall f_{0,v} > f_{1,v}) \end{aligned}\end{matrix}\right.}若节点 $u$ 被它儿子覆盖，则子节点 $v$ 不可能被它的父节点 $u$ 覆盖，因此需要取子节点 被自己覆盖 和 被其儿子 覆盖的较小值。但是所取的子节点肯定不能全部被自己的儿子覆盖，否则节点 $u$ 将不会被覆盖。因此如果所有的 $f_{1,v}$ 都比 $f_{0,v}$ 更优，那么需要从中挑出一个 $f_{1,v}$，把它变成 $f_{0,v}$，这样才能满足 $u$ 被 $v$ 覆盖。为了让变化所花费的代价更小，我们需要找到 $f_{0,v}$ 与 $f_{1,v}$ 的最小差值，加上原来的代价即可。 \large { f_{2,u} = \sum\limits_{v \in son_u} \min \left( f_{0,v}, f_{1,v} \right) }若节点 $u​$ 被它父亲覆盖，则子节点 $v​$ 不可能被它的父节点 $u​$ 覆盖，所以只需要加上子节点 被自己覆盖 和 被其儿子 覆盖的较小值即可。 答案： \large{\begin{aligned} &\min \left(f_{0,root},f_{1,root} \right) && (root\ 表示根节点) \end{aligned}}因为根节点没有父亲，所以不需要考虑根节点被父亲覆盖的情况，答案应该取根节点 被自己覆盖 和 被儿子覆盖 的较小值。因为本题是棵无根树，所以直接设 $1$ 号节点为根，连无向边即可。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1500, MAXM = 3000;int n, m, tot, val[MAXN + 5], head[MAXN + 5], f[3][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u, int fa) &#123; f[0][u] = val[u]; bool flag = 1; int minn = 0x7fffffff; for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; dfs(v, u); f[0][u] += min(f[0][v], min(f[1][v], f[2][v])); f[1][u] += min(f[0][v], f[1][v]); f[2][u] += min(f[0][v], f[1][v]);//转移 if (f[0][v] &lt;= f[1][v]) flag = 0;//检查是否所有的 f[0][v] 都大于 f[1][v] if (flag) minn = min(minn, f[0][v] - f[1][v]);//如果是，记录最小其差值 &#125; if (flag) f[1][u] += minn;//如果全部选择了 f[1][v]，还要加上最小差值 &#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; int u, v; read(u), read(val[u]), read(m);//注意读入的是节点 u 的点权而不是 i 的点权 for (int j = 1; j &lt;= m; ++j) &#123; read(v); addEdge(u, v), addEdge(v, u); &#125;//连无向边 &#125; dfs(1, 0);//以 1 号节点作为根节点 write(min(f[0][1], f[1][1])); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -75,9 +75,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -89,9 +89,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -103,8 +103,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
