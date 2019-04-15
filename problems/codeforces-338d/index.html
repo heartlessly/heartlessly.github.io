@@ -98,25 +98,25 @@
 
 
 
-  <meta name="description" content="Description给定 $T\ (T\leq 10^3)$ 组数据，每组数据包含一个正整数 $p\ (1 \leq p \leq 10^7)$，求 $2^{2^{2 \cdots}}(无限个 2) \bmod p$ 的值。">
-<meta name="keywords" content="BZOJ,Luogu,数论数学,欧拉定理">
+  <meta name="description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})​$ 的表 格，其中 第 $i​$ 行，第 $j​$ 列 的元素是 $\gcd(i,j)​$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)​$ 的序列 $a\ (1 \leq a_i \leq 10^{12})​$，询问在表格内是否存在  $x,y\ (1 \leq x">
+<meta name="keywords" content="Luogu,数论数学,中国剩余定理,Codeforces">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「BZOJ 3884」上帝与集合的正确用法">
-<meta property="og:url" content="https://heartlessly.github.io/problems/BZOJ3884/index.html">
+<meta property="og:title" content="「Codeforces 338D」GCD Table">
+<meta property="og:url" content="https://heartlessly.github.io/problems/codeforces-338d/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
-<meta property="og:description" content="Description给定 $T\ (T\leq 10^3)$ 组数据，每组数据包含一个正整数 $p\ (1 \leq p \leq 10^7)$，求 $2^{2^{2 \cdots}}(无限个 2) \bmod p$ 的值。">
+<meta property="og:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})​$ 的表 格，其中 第 $i​$ 行，第 $j​$ 列 的元素是 $\gcd(i,j)​$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)​$ 的序列 $a\ (1 \leq a_i \leq 10^{12})​$，询问在表格内是否存在  $x,y\ (1 \leq x">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-14T12:35:24.635Z">
+<meta property="og:updated_time" content="2019-04-12T05:31:10.848Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="「BZOJ 3884」上帝与集合的正确用法">
-<meta name="twitter:description" content="Description给定 $T\ (T\leq 10^3)$ 组数据，每组数据包含一个正整数 $p\ (1 \leq p \leq 10^7)$，求 $2^{2^{2 \cdots}}(无限个 2) \bmod p$ 的值。">
+<meta name="twitter:title" content="「Codeforces 338D」GCD Table">
+<meta name="twitter:description" content="Description给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})​$ 的表 格，其中 第 $i​$ 行，第 $j​$ 列 的元素是 $\gcd(i,j)​$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)​$ 的序列 $a\ (1 \leq a_i \leq 10^{12})​$，询问在表格内是否存在  $x,y\ (1 \leq x">
 
 
 
 
 
 
-  <link rel="canonical" href="https://heartlessly.github.io/problems/BZOJ3884/">
+  <link rel="canonical" href="https://heartlessly.github.io/problems/codeforces-338d/">
 
 
 
@@ -126,7 +126,7 @@
   };
 </script>
 
-  <title>「BZOJ 3884」上帝与集合的正确用法 | Heartlessly's Blog</title>
+  <title>「Codeforces 338D」GCD Table | Heartlessly's Blog</title>
   
 
 
@@ -392,7 +392,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/problems/BZOJ3884/">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/problems/codeforces-338d/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Heartlessly">
@@ -409,7 +409,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">「BZOJ 3884」上帝与集合的正确用法
+          <h1 class="post-title" itemprop="name headline">「Codeforces 338D」GCD Table
 
               
             
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-11 19:47:19" itemprop="dateCreated datePublished" datetime="2019-04-11T19:47:19+08:00">2019-04-11</time>
+              <time title="创建时间：2019-04-10 15:27:04" itemprop="dateCreated datePublished" datetime="2019-04-10T15:27:04+08:00">2019-04-10</time>
             
 
             
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-14 20:35:24" itemprop="dateModified" datetime="2019-04-14T20:35:24+08:00">2019-04-14</time>
+                <time title="修改时间：2019-04-12 13:31:10" itemprop="dateModified" datetime="2019-04-12T13:31:10+08:00">2019-04-12</time>
               
             
           </span>
@@ -511,26 +511,61 @@
       
 
       
-        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $T\ (T\leq 10^3)$ 组数据，每组数据包含一个正整数 $p\ (1 \leq p \leq 10^7)$，求 $2^{2^{2 \cdots}}(无限个 2) \bmod p$ 的值。</p>
+        <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定一个 $n \times m\ (1 \leq n,m \leq 10^{12})​$ 的表 格，其中 第 $i​$ 行，第 $j​$ 列 的元素是 $\gcd(i,j)​$ 。现在有一个长度为 $k\ (1\leq k \leq 10^4)​$ 的序列 $a\ (1 \leq a_i \leq 10^{12})​$，询问在表格内是否存在</p>
+<p> $x,y\ (1 \leq x \leq n,1 \leq y \leq m - k +1)$，满足对于任意一个 $l$，</p>
+<p>都有 $\gcd(x,y+l-1) = a_l\ (1 \leq l \leq k)​$（即这个序列在表格的某一行中出现过）。</p>
 <a id="more"></a>
-<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=3884" target="_blank" rel="noopener">[BZOJ]3884</a></strong></p>
-<p><strong><a href="https://www.luogu.org/problemnew/show/P4139" target="_blank" rel="noopener">[Luogu]P4139</a></strong></p>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/CF338D" target="_blank" rel="noopener">[Luogu]CF338D</a></strong></p>
+<p><strong><a href="http://codeforces.com/problemset/problem/338/D" target="_blank" rel="noopener">[Codeforces]338D</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><blockquote>
 <p><strong>前置知识：</strong></p>
-<p><strong><a href="https://heartlessly.github.io/notes/chang-jian-ji-xing-han-shu/">常见积性函数 - 欧拉函数 - 线性筛求欧拉函数</a></strong></p>
-<p><strong><a href="https://heartlessly.github.io/notes/chang-yong-de-zhi-shu-xiang-guan-ding-li/">常用的质数相关定理 - 扩展欧拉定理</a></strong></p>
+<p><strong>扩展中国剩余定理(exCRT)</strong></p>
 </blockquote>
-<p>在此题中，指数 $b = 2^{2^{2\cdots}}$ 一定满足 $b \geq \varphi(p)​$，所以我们通过 <strong>扩展欧拉定理</strong>：</p>
+<p>由题意得</p>
 <script type="math/tex; mode=display">
+\left\{\begin{matrix}
 \begin{aligned}
-a^b &\equiv a^{b \bmod \varphi(p) + \varphi(p)} \pmod p & b \geq \varphi(p)\\
-\end{aligned}</script><p>得到</p>
+\gcd(x,y)&=a_1\\[1ex]
+\gcd(x,y+1)&=a_2\\[1ex]
+\gcd(x,y+2)&=a_3\\[1ex]
+&\cdots\\[1ex]
+\gcd(x,y + k - 1) &= a_k
+\end{aligned}
+\end{matrix}\right.</script><p>显然对于所有的 $a_i\ (1 \leq i \leq k)$ 都满足 $a_i \mid x$，所以 ${\rm lcm}\begin{Bmatrix}a_1,a_2,a_3,\ldots,a_k\end{Bmatrix} \mid x$ 。假设 $x = k \times lcm$（$k$ 是正整数），那么 $\gcd(k \times lcm,y+i-1) = a_i$，也就是说要限制 $\gcd\left( k \times \frac{lcm}{a_i},\frac{y+i-1}{a_i} \right) = 1$ 。取 $k = 1$ 时，对该式子的影响最小，由此能够得到 $x={\rm lcm}\begin{Bmatrix}a_1,a_2,a_3,\ldots,a_k\end{Bmatrix}$ 。</p>
+<p>至于 $y​$ 呢？由上述方程组能够得到</p>
 <script type="math/tex; mode=display">
-2^{2^{2\cdots} } \bmod p=2^{\left(2^{2 \cdots} \bmod \varphi(p)+\varphi(p)\right)} \bmod p</script><p>设 $f(p) = 2^{2^{2\cdots}} \bmod p​$，则有</p>
+\left\{\begin{matrix}
+\begin{aligned}
+a_1 &\mid y\\[1ex]
+a_2 &\mid y + 1\\[1ex]
+a_3 &\mid y + 2\\[1ex]
+&\cdots\\[1ex]
+a_k &\mid y + k - 1
+\end{aligned}
+\end{matrix}\right.\\[10ex]
+\Leftrightarrow
+\left\{\begin{matrix}
+\begin{aligned}
+y &\equiv 0 \pmod {a_1}\\[1ex]
+y + 1 &\equiv 0 \pmod {a_2}\\[1ex]
+y + 2 &\equiv 0 \pmod {a_3}\\[1ex]
+&\cdots\\[1ex]
+y + k-1&\equiv 0 \pmod {a_k}
+\end{aligned}
+\end{matrix}\right.</script><p>根据同余式的性质，化简该方程组，得到</p>
 <script type="math/tex; mode=display">
-f(p)=2^{f(\varphi(p)) + \varphi(p)}\bmod p</script><p>我们就成功地化简了问题——把求 $f(p)$ 转化为求 $f(\varphi(p))$ 。</p>
-<p>这个式子可以一直递归下去，直到 $p = 1​$ 时返回 $f(1)=2^{2^{2 \cdots}} \bmod \varphi(1) = 0​$ 。总时间复杂度为 $O(p + T\log^2 p)​$ 。</p>
-<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e6</span>, MAXP = <span class="number">1e7</span>;</span><br><span class="line"><span class="keyword">int</span> t, p, cnt, prime[MAXN + <span class="number">5</span>], phi[MAXP + <span class="number">5</span>];</span><br><span class="line"><span class="keyword">bool</span> isNotPrime[MAXP + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">getPhi</span><span class="params">(<span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    phi[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    isNotPrime[<span class="number">1</span>] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!isNotPrime[i]) &#123;</span><br><span class="line">            prime[++cnt] = i;</span><br><span class="line">            phi[i] = i - <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= cnt &amp;&amp; i * prime[j] &lt;= n; ++j) &#123;</span><br><span class="line">            isNotPrime[i * prime[j]] = <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">if</span> (i % prime[j] == <span class="number">0</span>) &#123;</span><br><span class="line">                phi[i * prime[j]] = phi[i] * prime[j];</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> phi[i * prime[j]] = phi[i] * (prime[j] - <span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;<span class="comment">//线性筛求 φ(1) ~ φ(n) </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">int</span> <span class="title">quickPow</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> p, <span class="keyword">int</span> mod)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> res = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; p; p &gt;&gt;= <span class="number">1</span>, x = (LL) x * x % mod)</span><br><span class="line">        <span class="keyword">if</span> (p &amp; <span class="number">1</span>)</span><br><span class="line">            res = (LL) res * x % mod;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;<span class="comment">//快速幂 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> p)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (p == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;<span class="comment">//f(1) = 0</span></span><br><span class="line">    <span class="keyword">return</span> quickPow(<span class="number">2</span>, f(phi[p]) + phi[p], p);</span><br><span class="line">&#125;<span class="comment">//递归求解 </span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    getPhi(MAXP);</span><br><span class="line">    <span class="keyword">for</span> (read(t); t; --t) &#123;</span><br><span class="line">        read(p);</span><br><span class="line">        write(f(p));<span class="comment">//答案为 f(p) </span></span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+\left\{\begin{matrix}
+\begin{aligned}
+y &\equiv 0 \pmod {a_1}\\[1ex]
+y &\equiv -1 \pmod {a_2}\\[1ex]
+y &\equiv -2 \pmod {a_3}\\[1ex]
+&\cdots\\[1ex]
+y &\equiv 1-k \pmod {a_k}
+\end{aligned}
+\end{matrix}\right.</script><p>这是一个线性同余方程组，且模数不一定两两互质，所以能用 <strong>扩展中国剩余定理(exCRT)</strong> 求出 $y​$ 的最小正整数解。</p>
+<p>难道只需要考虑 $y$ 的最小正整数解吗？实际上 $y + k \times {\rm lcm}\begin{Bmatrix}a_1,a_2,a_3,\ldots,a_k\end{Bmatrix}$ 都是这个方程组的解，但因为 $\gcd(lcm, y) = \gcd(lcm,y + lcm) =\gcd(lcm,y +k\times lcm)$（原理：<strong>更相减损法</strong>），所以没必要尝试。</p>
+<p>求出了 $x​$ 和 $y​$ 还没有结束，因为只满足 $a_i \mid x​$ 和 $a_i \mid y + i -1\ (1 \leq i \leq k)​$，可能会出现 $\gcd(x,y+i-1)\neq a_i​$（即 $\gcd \left( \frac{x}{a_i},\frac{y+i-1}{a_i} \right) \neq 1​$）的情况，所以要验证该解是否成立。总时间复杂度为 $O(k \log a_i)​$ 。</p>
+<h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = (x &lt;&lt; <span class="number">3</span>) + (x &lt;&lt; <span class="number">1</span>) + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">1e4</span>;</span><br><span class="line"><span class="keyword">int</span> k;</span><br><span class="line">LL ans, n, m, a[MAXN + <span class="number">5</span>], b[MAXN + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">slowMul</span><span class="params">(LL x, LL p, LL mod)</span> </span>&#123;</span><br><span class="line">    LL res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; p; p &gt;&gt;= <span class="number">1</span>, x = (x + x) % mod)</span><br><span class="line">        <span class="keyword">if</span> (p &amp; <span class="number">1</span>)</span><br><span class="line">            res = (res + x) % mod;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">gcd</span><span class="params">(LL a, LL b)</span> </span>&#123; <span class="keyword">return</span> !b ? a : gcd(b, a % b); &#125;</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">exGcd</span><span class="params">(LL a, LL b, LL &amp;x, LL &amp;y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!b) &#123;</span><br><span class="line">        x = <span class="number">1</span>, y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    LL d = exGcd(b, a % b, y, x);</span><br><span class="line">    y -= a / b * x;</span><br><span class="line">    <span class="keyword">return</span> d;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">exCrt</span><span class="params">(LL *a, LL *b, LL &amp;lcm)</span> </span>&#123;<span class="comment">//求解 ans ≡ a[i] (mod b[i])</span></span><br><span class="line">    LL res = a[<span class="number">1</span>];</span><br><span class="line">    lcm = b[<span class="number">1</span>];<span class="comment">//第一个方程的解 </span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i &lt;= k; ++i) &#123;</span><br><span class="line">        LL x, y, c = ((a[i] - res) % b[i] + b[i]) % b[i], d = exGcd(lcm, b[i], x, y), m = b[i] / d;</span><br><span class="line">        <span class="keyword">if</span> (c % d) <span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//无解</span></span><br><span class="line">        x = slowMul(x, c / d, m);</span><br><span class="line">        res += lcm * x;</span><br><span class="line">        lcm *= m;</span><br><span class="line">        <span class="keyword">if</span> (lcm &gt; n) <span class="keyword">return</span> <span class="number">-1</span>;<span class="comment">//如果 lcm&#123;a[i]&#125; 比 n 大，肯定找不到合适的 x 满足题意 </span></span><br><span class="line">        res = (res + lcm) % lcm;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res == <span class="number">0</span> ? lcm : res;<span class="comment">//y 的值不能为 0，所以最小正整数解为 lcm</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(n), read(m), read(k);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; ++i) &#123;</span><br><span class="line">        read(a[i]);</span><br><span class="line">        b[i] = ((<span class="number">1</span> - i) % a[i] + a[i]) % a[i];</span><br><span class="line">    &#125;<span class="comment">//y ≡ 1 - i (mod a[i])</span></span><br><span class="line">    LL x, y = exCrt(b, a, x);<span class="comment">//同余的数是 b[i]，模数是 a[i] </span></span><br><span class="line">    <span class="keyword">if</span> (y == <span class="number">-1</span> || y &gt; m - k + <span class="number">1</span>) &#123;<span class="comment">//y 无解 或 超出表格 </span></span><br><span class="line">        <span class="built_in">puts</span>(<span class="string">"NO"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= k; ++i)</span><br><span class="line">        <span class="keyword">if</span> (gcd(x, y + i - <span class="number">1</span>) != a[i]) &#123;</span><br><span class="line">            <span class="built_in">puts</span>(<span class="string">"NO"</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;<span class="comment">//验证该解是否成立 </span></span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"YES"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
@@ -554,13 +589,13 @@ f(p)=2^{f(\varphi(p)) + \varphi(p)}\bmod p</script><p>我们就成功地化简�
       
         <div class="post-tags">
           
-            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
-          
             <a href="/tags/Luogu/" rel="tag"># Luogu</a>
           
             <a href="/tags/数论数学/" rel="tag"># 数论数学</a>
           
-            <a href="/tags/欧拉定理/" rel="tag"># 欧拉定理</a>
+            <a href="/tags/中国剩余定理/" rel="tag"># 中国剩余定理</a>
+          
+            <a href="/tags/Codeforces/" rel="tag"># Codeforces</a>
           
         </div>
       
@@ -573,8 +608,8 @@ f(p)=2^{f(\varphi(p)) + \varphi(p)}\bmod p</script><p>我们就成功地化简�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/problems/BZOJ1407/" rel="next" title="「BZOJ 1407」「NOI2002」Savage">
-                <i class="fa fa-chevron-left"></i> 「BZOJ 1407」「NOI2002」Savage
+              <a href="/problems/bzoj-1477/" rel="next" title="「BZOJ 1477」青蛙的约会">
+                <i class="fa fa-chevron-left"></i> 「BZOJ 1477」青蛙的约会
               </a>
             
           </div>
@@ -583,8 +618,8 @@ f(p)=2^{f(\varphi(p)) + \varphi(p)}\bmod p</script><p>我们就成功地化简�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/others/latex-mathjax-gong-shi-zi-ti-mei-hua/" rel="prev" title="LaTeX/MathJax 字体美化">
-                LaTeX/MathJax 字体美化 <i class="fa fa-chevron-right"></i>
+              <a href="/problems/bzoj-1407/" rel="prev" title="「BZOJ 1407」「NOI2002」Savage">
+                「BZOJ 1407」「NOI2002」Savage <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
