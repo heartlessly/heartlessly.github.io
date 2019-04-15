@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P2458」「SDOI2006」保安站岗]]></title>
+    <url>%2Fproblems%2Fluogu-p2458%2F</url>
+    <content type="text"><![CDATA[Description Source[Luogu]P2458 Solution考虑 树形DP 。 状态： 用 $f_{0,u}$ 表示在节点 $u$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被自己覆盖的最小代价； 用 $f_{1,u}$ 表示在节点 $u$ 的子树中，所有点都已经被覆盖，其中节点 $u​$ 被它儿子覆盖的最小代价； 用 $f_{2,u}$ 表示在节点 $u$ 的子树中，除节点 $u$ 外的点都已经被覆盖，其中节点 $u$ 将被它父亲覆盖的最小代价。 初始： 无 转移： \large { f_{0,u} = val_u + \sum\limits_{v \in son_u} \min \begin{Bmatrix} f_{0,v},f_{1,v},f_{2,v} \end{Bmatrix} }若节点 $u$ 被自己覆盖，则至少要花费节点 $u$ 的点权 $val_u$ 的代价，同时 $u$ 的子节点 $v$ 的状态不需要考虑，因为无论怎样 $v$ 都会被 $u$ 覆盖。 答案： \large{\begin{aligned} &\min \left(f_{0,root},f_{1,root} \right) && (root\ 表示根节点) \end{aligned}}因为根节点没有父亲，所以不需要考虑根节点被父亲管的情况，答案应该取根节点 被自己覆盖 和 被儿子覆盖 的较小值。 Code12]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>动态规划</tag>
+        <tag>树形DP</tag>
+        <tag>2006</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Luogu P1352」没有上司的舞会]]></title>
     <url>%2Fproblems%2Fluogu-p1352%2F</url>
-    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 6 \times 10^3)$ 个点的树，点 $i$ 的点权为 $r_i\ (-128 \leq r_i \leq 127)$ 。现在需要从中选取若干个点，使这些点的点权和最大，但规定选了父节点就不能选子节点，求最大点权和。 Source[Luogu]P1352 Solution考虑 树形DP 。 状态： 用 $f_{0,u}$ 表示在节点 $u$ 的子树中，不取 $u$ 的最大点权和； 用 $f_{1,u}$ 表示在节点 $u$ 的子树中，取了 $u$ 的最大点权和。 初始： \large{\begin{aligned} f_{0,u} &= 0\\[2ex] f_{1,u} &= r_u \end{aligned}}若不取节点 $u$，则这个状态的最小值为 $0$； 若取了节点 $u$，则这个状态的最小值为 $r_u$ 。 转移： \large{\begin{aligned} f_{0,u} &= \sum\limits_{v \in son_u} \max \left( f_{0,v}, f_{1,v}\right)\\[2ex] f_{1,u} &= \sum\limits_{v \in son_u} f_{0,v} \end{aligned}}当不取节点 $u$ 时，$u$ 的子节点取和不取都可以，显然取其中较大的更优，所以 $f_{0,u}​$ 应当等于 所有子节点 取 与 不取 的 较大值 之和。 当取了节点 $u$ 时，$u$ 的子节点只能不取，所以 $f_{1,u}$ 应当等于 所有子节点 不取的和。 答案： \large{\begin{aligned} &\max \left(f_{0,root},f_{1,root} \right) && (root\ 表示根节点) \end{aligned}}答案是在根节点的子树中，取和不取根节点的较大值。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6000;int n, l, k, tot, root, r[MAXN + 5], cnt[MAXN + 5], head[MAXN + 5], f[2][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXN &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u) &#123; f[0][u] = 0; f[1][u] = r[u];//初始 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; dfs(v); f[0][u] += max(f[0][v], f[1][v]); f[1][u] += f[0][v]; &#125;//转移 &#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(r[i]); for (int i = 1; i &lt; n; ++i) &#123; read(l), read(k);//k 是 l 的上司 addEdge(k, l);//连一条有向边 k -&gt; l ++cnt[l];//l 的上司数量 &#125; for (int i = 1; i &lt;= n; ++i) if (!cnt[i]) &#123; root = i; break; &#125;//找根节点（没有父亲的节点） dfs(root); write(max(f[0][root], f[1][root]));//答案 putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 6 \times 10^3)$ 个点的树，点 $i$ 的点权为 $r_i\ (-128 \leq r_i \leq 127)$ 。现在需要从中选取若干个点，使这些点的点权和最大，但规定子节点和父节点不能同时选，求最大点权和。 Source[Luogu]P1352 Solution考虑 树形DP 。 状态： 用 $f_{0,u}$ 表示在节点 $u$ 的子树中，不取 $u$ 的最大点权和； 用 $f_{1,u}$ 表示在节点 $u$ 的子树中，取了 $u$ 的最大点权和。 初始： 无 转移： \large{ f_{0,u} = \sum\limits_{v \in son_u} \max \left( f_{0,v}, f_{1,v}\right) }当不取节点 $u$ 时，$u$ 的子节点取和不取都可以，显然取其中较大的更优，所以 $f_{0,u}$ 应当等于 所有子节点 取 与 不取 的 较大值 之和。 \large{ f_{1,u} = r_u + \sum\limits_{v \in son_u} f_{0,v} }当取节点 $u$ 时，$f_{1,u}$ 的最小值为 节点 $u$ 的点权，同时 $u$ 的子节点只能不取，所以 $f_{1,u}​$ 还应当加上 所有子节点不取 的和。 答案： \large{\begin{aligned} &\max \left(f_{0,root},f_{1,root} \right) && (root\ 表示根节点) \end{aligned}}答案是在根节点的子树中，取 和 不取 根节点的较大值。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = (x &lt;&lt; 3) + (x &lt;&lt; 1) + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6000;int n, l, k, tot, root, r[MAXN + 5], cnt[MAXN + 5], head[MAXN + 5], f[2][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXN &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u) &#123; f[1][u] = r[u]; for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; dfs(v); f[0][u] += max(f[0][v], f[1][v]); f[1][u] += f[0][v]; &#125;//转移 &#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(r[i]); for (int i = 1; i &lt; n; ++i) &#123; read(l), read(k);//k 是 l 的上司 addEdge(k, l);//连一条有向边 k -&gt; l ++cnt[l];//l 的上司数量 &#125; for (int i = 1; i &lt;= n; ++i) if (!cnt[i]) &#123; root = i; break; &#125;//找根节点（没有父亲的节点） dfs(root); write(max(f[0][root], f[1][root]));//答案 putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>树型DP</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -63,8 +78,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>中国剩余定理</tag>
         <tag>Codeforces</tag>
+        <tag>中国剩余定理</tag>
       </tags>
   </entry>
   <entry>
@@ -90,8 +105,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>BZOJ</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -116,11 +131,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
         <tag>概率期望</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -267,9 +282,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
+        <tag>2009</tag>
       </tags>
   </entry>
   <entry>
