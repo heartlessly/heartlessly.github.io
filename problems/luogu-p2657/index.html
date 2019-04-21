@@ -106,7 +106,7 @@
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-21T13:08:03.310Z">
+<meta property="og:updated_time" content="2019-04-21T13:15:58.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="「Luogu P2657」「SCOI2009」windy数">
 <meta name="twitter:description" content="Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。">
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-21 20:46:04 / 修改时间：21:08:03" itemprop="dateCreated datePublished" datetime="2019-04-21T20:46:04+08:00">2019-04-21</time>
+              <time title="创建时间：2019-04-21 20:46:04 / 修改时间：21:15:58" itemprop="dateCreated datePublished" datetime="2019-04-21T20:46:04+08:00">2019-04-21</time>
             
 
             
@@ -501,7 +501,7 @@
       
         <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。</p>
 <a id="more"></a>
-<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P2657" target="_blank" rel="noopener">Luogu[P2657]</a></strong></p>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P2657" target="_blank" rel="noopener">[Luogu]P2657</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p><strong>数位DP</strong> 入门题。</p>
 <p>用 $f_{pos,pre}$ 表示当前到了第 $pos$ 位，上一位是 $pre$ 的 $\rm{windy}$ 数个数。</p>
 <p>考虑用 <strong>记忆化搜索</strong> 实现 <strong>数位DP</strong> 。枚举每一位，保证当前位与上一位的差大于等于 $2$ 。注意判断是否有前导零，如果有或者刚开始搜，就把上一位设为 $11$（因为 $0 \sim 9$ 与 $11$ 的差都大于等于 $2$，保证下一位没有限制），具体实现详见代码。时间复杂度为 $O(\lg^2 n)$ 。</p>
