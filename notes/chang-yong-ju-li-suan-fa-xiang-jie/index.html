@@ -113,7 +113,7 @@
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c10e88.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c4199a.png">
 <meta property="og:image" content="https://i.loli.net/2019/04/07/5ca98a9c125a9.png">
-<meta property="og:updated_time" content="2019-04-18T00:24:35.781Z">
+<meta property="og:updated_time" content="2019-04-21T12:02:47.378Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用距离算法详解">
 <meta name="twitter:description" content="前言在计算距离时，我们一般都是求两点之间的直线距离，实际上距离算法并不只这一种，还有其他的距离算法在 $\mathrm{OI}$ 中也同样很重要。不同的距离算法都有明显的优缺点。本文主要讲解 三种 常见的距离算法，分别是 欧氏距离，曼哈顿距离，切比雪夫距离 。">
@@ -460,7 +460,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-04-18 08:24:35" itemprop="dateModified" datetime="2019-04-18T08:24:35+08:00">2019-04-18</time>
+                <time title="修改时间：2019-04-21 20:02:47" itemprop="dateModified" datetime="2019-04-21T20:02:47+08:00">2019-04-21</time>
               
             
           </span>
@@ -526,7 +526,7 @@
 <script type="math/tex; mode=display">
 \left | AB \right |  = \sqrt{\left ( x_2 - x_1 \right )^2 + \left ( y_2 - y_1 \right )^2}</script><p>实际上这就是平面<strong>（二维空间）</strong>中两点欧氏距离的距离公式，除此之外，$P(x,y)$ 到原点的欧氏距离可以用公式表示为：</p>
 <script type="math/tex; mode=display">
-\left | P \right |  = \sqrt{x^2+y^2}</script><p>举个栗子，在下图中 $A,B​$ 的坐标分别为 $A(6,5),B(2,2)​$。</p>
+\left | P \right |  = \sqrt{x^2+y^2}</script><p>举个例子，在下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。</p>
 <p><img src="https://i.loli.net/2019/04/07/5ca98a9ba8828.png" alt="1.png"></p>
 <p>通过公式，我们很容易得到 $A,B​$ 两点间的欧氏距离：</p>
 <script type="math/tex; mode=display">
@@ -553,7 +553,7 @@ d(x,y) &= \sqrt{\left ( x_1 - y_1 \right )^2 + \left ( x_2 - y_2 \right )^2 + \c
 d(A,B) = \left | x_1 - x_2\right |  + \left | y_1 - y_2 \right |</script><p>观察下图：</p>
 <p><img src="https://i.loli.net/2019/04/07/5ca98a9c2a7ed.png" alt="3.png"></p>
 <p>在 $A,B​$ 间，<br>$\color{yellow}{黄线}​$，<br>$\color{orange}{橙线}​$ 都表示曼哈顿距离，而<br>$\color{red}{红线}​$，$\color{blue}{蓝线}​$ 表示 <strong>等价</strong> 的曼哈顿距离，$\color{green}{绿线}​$ 表示欧氏距离。</p>
-<p>同样的栗子，在下图中 $A,B​$ 的坐标分别为 $A(6,5),B(2,2)​$ 。</p>
+<p>同样的例子，在下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$ 。</p>
 <p><img src="https://i.loli.net/2019/04/07/5ca98a9c10e88.png" alt="4 &amp; 5.png"></p>
 <p>通过公式，我们很容易得到 $A,B$ 两点间的曼哈顿距离：</p>
 <script type="math/tex; mode=display">
@@ -577,7 +577,6 @@ d(A,B) &= \left | x_1 - y_1\right |  + \left | x_2 - y_2\right |  + \cdots + \le
 <p>$d(i,j)\leq d(i,k)+d(k,j)$</p>
 <p><strong>例题：<a href="https://www.luogu.org/problemnew/show/P5098" target="_blank" rel="noopener">[Luogu]P5098</a></strong></p>
 <p><strong>解析：</strong></p>
-<p><del>（不要被难度吓住，是假的）</del></p>
 <p>根据题意，对于式子 $\left | x_1-x_2\right| +\left | y_1-y_2\right| $，我们可以假设 $x_1 - x_2 \geq 0$，根据 $y_1 - y_2$ 的符号分成两种情况：</p>
 <script type="math/tex; mode=display">
 (y_1 - y_2 \geq 0)\rightarrow \left | x_1-x_2\right| +\left | y_1-y_2\right| =x_1 + y_1 - (x_2 + y_2)</script><script type="math/tex; mode=display">
@@ -588,9 +587,9 @@ d(A,B) &= \left | x_1 - y_1\right |  + \left | x_2 - y_2\right |  + \cdots + \le
 <h2 id="三、切比雪夫距离"><a href="#三、切比雪夫距离" class="headerlink" title="三、切比雪夫距离"></a>三、切比雪夫距离</h2><p><strong>切比雪夫距离</strong> 是向量空间中的一种度量，二个点之间的距离定义是其各坐标数值差绝对值的最大值。—— <strong>来源：<a href="https://baike.baidu.com/item/%E5%88%87%E6%AF%94%E9%9B%AA%E5%A4%AB%E8%B7%9D%E7%A6%BB" target="_blank" rel="noopener">百度百科</a></strong></p>
 <p>在 <strong>二维空间</strong> 内，两个点之间的切比雪夫距离为它们横坐标之差的绝对值与纵坐标之差的绝对值的最大值。设点 $A(x_1,y_1),B(x_2,y_2)$，则 $A,B$ 之间的切比雪夫距离用公式可以表示为：</p>
 <script type="math/tex; mode=display">
-d(A,B) = max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )</script><p>仍然是这个栗子，下图中 $A,B​$ 的坐标分别为 $A(6,5),B(2,2)​$。<br><img src="https://i.loli.net/2019/04/07/5ca98a9c10e88.png" alt="4 &amp; 5.png"></p>
+d(A,B) = max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )</script><p>仍然是这个例子，下图中 $A,B$ 的坐标分别为 $A(6,5),B(2,2)$。<br><img src="https://i.loli.net/2019/04/07/5ca98a9c10e88.png" alt="4 &amp; 5.png"></p>
 <script type="math/tex; mode=display">
-d(A,B) = \max(\left | 6 - 2\right | , \left | 5 - 2\right | )=\max(4,3)=4</script><p> $n$ <strong>维空间</strong> 中切比雪夫距离的距离公式：</p>
+d(A,B) = \max(\left | 6 - 2\right | , \left | 5 - 2\right | )=\max(4,3)=4</script><p>同理，$n$ <strong>维空间</strong> 中切比雪夫距离的距离公式：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 d(x,y) &= \max\begin{Bmatrix} \left | x_1 - y_1\right | ,\left | x_2 - y_2\right |,\ldots,\left | x_n - y_n\right |\end{Bmatrix}\\
@@ -773,7 +772,7 @@ d(A,B)&=\max\begin{Bmatrix} \left | x_1 - x_2\right | ,\left | y_1 - y_2\right |
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">39</span>
+                    <span class="site-state-item-count">41</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -899,7 +898,9 @@ d(A,B)&=\max\begin{Bmatrix} \left | x_1 - x_2\right | ,\left | y_1 - y_2\right |
                     
                       
                     
-                    <span class="site-state-item-count">36</span>
+                      
+                    
+                    <span class="site-state-item-count">37</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
