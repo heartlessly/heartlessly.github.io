@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「BZOJ 1799」「AHOI2009」self 同类分布]]></title>
+    <url>%2Funcategorized%2Fbzoj-1799%2F</url>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[BZOJ]1799 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)​$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+      <tags>
+        <tag>BZOJ</tag>
+        <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>AHOI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4127」「AHOI2009」同类分布]]></title>
+    <url>%2Funcategorized%2Fluogu-p4127%2F</url>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[Luogu]P4127 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>AHOI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 1026」「SCOI2009」windy数]]></title>
     <url>%2Fproblems%2Fbzoj-1026%2F</url>
-    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。 Source[BZOJ]1026 Solution数位DP 入门题。 用 $f_{pos,pre}$ 表示当前到了第 $pos$ 位，上一位是 $pre$ 的 $\rm{windy}$ 数个数。 考虑用 记忆化搜索 实现 数位DP 。枚举每一位，保证当前位与上一位的差大于等于 $2$ 。注意判断是否有前导零，如果有或者刚开始搜，就把上一位设为 $11$（因为 $0 \sim 9$ 与 $11$ 的差都大于等于 $2$，保证下一位没有限制），具体实现详见代码。时间复杂度为 $O(\lg^2 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 10;int l, r, f[MAXN + 5][MAXN + 5];int dfs(int *num, int pos, int pre, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，pre 表示上一个数，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return 1;//搜完了 if (!lim &amp;&amp; !lead &amp;&amp; ~f[pos][pre]) return f[pos][pre];//返回该状态已记录的值 int res = 0, maxNum = lim ? num[pos] : 9;//如果有限制，当前位则为 0 ~ 当前位的值，否则为 0 ~ 9 for (int i = 0; i &lt;= maxNum; ++i) &#123; if (abs(i - pre) &lt; 2) continue;//相邻数位之差不能小于 2（题目要求） if (lead &amp;&amp; !i) res += dfs(num, pos - 1, 11, 1, lim &amp;&amp; i == maxNum);//如果前面全是前导零，第一位仍设为 11 else res += dfs(num, pos - 1, i, 0, lim &amp;&amp; i == maxNum);//否则设当前位为 i，枚举下一位 &#125; if (!lim &amp;&amp; !lead) f[pos][pre] = res;//如果没有前导 0 且 最高位无限制，则存下这个状态的值 return res;&#125;//记忆化搜索 实现 数位DP inline int solve(int x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化为 -1 return dfs(num, len, 11, 1, 1);//从 11 开始可以保证数字第一位没有限制 &#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。 Source[BZOJ]1026 Solution数位DP 入门题。 用 $f_{pos,pre}$ 表示当前到了第 $len - pos + 1$ 位，上一位是 $pre$ 的 $\rm{windy}$ 数个数。 考虑用 记忆化搜索 实现 数位DP 。枚举每一位，保证当前位与上一位的差大于等于 $2$ 。注意判断是否有前导零，如果有或者刚开始搜，就把上一位设为 $11$（因为 $0 \sim 9$ 与 $11$ 的差都大于等于 $2$，保证下一位没有限制），具体实现详见代码。时间复杂度为 $O(\lg^2 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 10;int l, r, f[MAXN + 5][MAXN + 5];int dfs(int *num, int pos, int pre, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，pre 表示上一个数，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return 1;//搜完了 if (!lim &amp;&amp; !lead &amp;&amp; ~f[pos][pre]) return f[pos][pre];//返回该状态已记录的值 int res = 0, maxNum = lim ? num[pos] : 9;//如果有限制，当前位则为 0 ~ 当前位的值，否则为 0 ~ 9 for (int i = 0; i &lt;= maxNum; ++i) &#123; if (abs(i - pre) &lt; 2) continue;//相邻数位之差不能小于 2（题目要求） if (lead &amp;&amp; !i) res += dfs(num, pos - 1, 11, 1, lim &amp;&amp; i == maxNum);//如果前面全是前导零，第一位仍设为 11 else res += dfs(num, pos - 1, i, 0, lim &amp;&amp; i == maxNum);//否则设当前位为 i，枚举下一位 &#125; if (!lim &amp;&amp; !lead) f[pos][pre] = res;//如果没有前导 0 且 最高位无限制，则存下这个状态的值 return res;&#125;//记忆化搜索 实现 数位DP inline int solve(int x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化为 -1 return dfs(num, len, 11, 1, 1);//从 11 开始可以保证数字第一位没有限制 &#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -13,12 +39,13 @@
         <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[「Luogu P2657」「SCOI2009」windy数]]></title>
     <url>%2Fproblems%2Fluogu-p2657%2F</url>
-    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。 Source[Luogu]P2657 Solution数位DP 入门题。 用 $f_{pos,pre}$ 表示当前到了第 $pos$ 位，上一位是 $pre$ 的 $\rm{windy}$ 数个数。 考虑用 记忆化搜索 实现 数位DP 。枚举每一位，保证当前位与上一位的差大于等于 $2$ 。注意判断是否有前导零，如果有或者刚开始搜，就把上一位设为 $11$（因为 $0 \sim 9$ 与 $11$ 的差都大于等于 $2$，保证下一位没有限制），具体实现详见代码。时间复杂度为 $O(\lg^2 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 10;int l, r, f[MAXN + 5][MAXN + 5];int dfs(int *num, int pos, int pre, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，pre 表示上一个数，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return 1;//搜完了 if (!lim &amp;&amp; !lead &amp;&amp; ~f[pos][pre]) return f[pos][pre];//返回该状态已记录的值 int res = 0, maxNum = lim ? num[pos] : 9;//如果有限制，当前位则为 0 ~ 当前位的值，否则为 0 ~ 9 for (int i = 0; i &lt;= maxNum; ++i) &#123; if (abs(i - pre) &lt; 2) continue;//相邻数位之差不能小于 2（题目要求） if (lead &amp;&amp; !i) res += dfs(num, pos - 1, 11, 1, lim &amp;&amp; i == maxNum);//如果前面全是前导零，第一位仍设为 11 else res += dfs(num, pos - 1, i, 0, lim &amp;&amp; i == maxNum);//否则设当前位为 i，枚举下一位 &#125; if (!lim &amp;&amp; !lead) f[pos][pre] = res;//如果没有前导 0 且 最高位无限制，则存下这个状态的值 return res;&#125;//记忆化搜索 实现 数位DP inline int solve(int x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化为 -1 return dfs(num, len, 11, 1, 1);//从 11 开始可以保证数字第一位没有限制 &#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 2 \times 10^9 \right)$，求区间 $[l,r]$ 有多少个 不含前导零且相邻两个数字之差至少为 $2$ 的正整数（即 $\rm{windy}$ 数）。 Source[Luogu]P2657 Solution数位DP 入门题。 用 $f_{pos,pre}$ 表示当前到了第 $len - pos + 1$ 位，上一位是 $pre$ 的 $\rm{windy}$ 数个数。 考虑用 记忆化搜索 实现 数位DP 。枚举每一位，保证当前位与上一位的差大于等于 $2$ 。注意判断是否有前导零，如果有或者刚开始搜，就把上一位设为 $11$（因为 $0 \sim 9$ 与 $11$ 的差都大于等于 $2$，保证下一位没有限制），具体实现详见代码。时间复杂度为 $O(\lg^2 n)​$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 10;int l, r, f[MAXN + 5][MAXN + 5];int dfs(int *num, int pos, int pre, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，pre 表示上一个数，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return 1;//搜完了 if (!lim &amp;&amp; !lead &amp;&amp; ~f[pos][pre]) return f[pos][pre];//返回该状态已记录的值 int res = 0, maxNum = lim ? num[pos] : 9;//如果有限制，当前位则为 0 ~ 当前位的值，否则为 0 ~ 9 for (int i = 0; i &lt;= maxNum; ++i) &#123; if (abs(i - pre) &lt; 2) continue;//相邻数位之差不能小于 2（题目要求） if (lead &amp;&amp; !i) res += dfs(num, pos - 1, 11, 1, lim &amp;&amp; i == maxNum);//如果前面全是前导零，第一位仍设为 11 else res += dfs(num, pos - 1, i, 0, lim &amp;&amp; i == maxNum);//否则设当前位为 i，枚举下一位 &#125; if (!lim &amp;&amp; !lead) f[pos][pre] = res;//如果没有前导 0 且 最高位无限制，则存下这个状态的值 return res;&#125;//记忆化搜索 实现 数位DP inline int solve(int x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化为 -1 return dfs(num, len, 11, 1, 1);//从 11 开始可以保证数字第一位没有限制 &#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -28,6 +55,7 @@
         <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -41,9 +69,9 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -57,9 +85,9 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
