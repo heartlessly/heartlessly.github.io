@@ -1,27 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「BZOJ 1833」「ZJOI2010」count 数字计数]]></title>
+    <url>%2Fproblems%2Fbzoj-1833%2F</url>
+    <content type="text"><![CDATA[Description给定两个正整数 $l,r\ (1 \leq l \leq r \leq 10^{12})$，求区间 $[l,r]$ 里的所有整数中，每个数码 $0 \sim 9$ 各出现了几次。 Source[BZOJ]1833 Solution考虑 数位DP 。 用 $f_{pos,cnt}​$ 表示当前到了第 $len - pos + 1​$ 位，有 $cnt​$ 个数码 $digit​$ 的数中，共有多少个数码 $digit​$ 。 分别计算 $0 \sim 9$ 每一个数码，注意判前导零，具体实现详见代码。时间复杂度为 $O(10\lg^2n)​$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 12;LL l, r, f[MAXN + 5][MAXN + 5];LL dfs(int *num, int pos, LL cnt, int digit, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，cnt 表示前 len - pos + 1 位中数码 digit 的数量， //digit 表示当前要求的数码，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return cnt;//若搜完最后一位，则返回数码数量 if (!lead &amp;&amp; !lim &amp;&amp; ~f[pos][cnt]) return f[pos][cnt];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, cnt + ((i == digit) &amp;&amp; !(lead &amp;&amp; !i)), digit, lead &amp;&amp; !i, lim &amp;&amp; i == maxNum); //查找下一位。如果第 i 位的数码是所要求的数码，且该数码不是前导零，那么统计数量 + 1 if (!lead &amp;&amp; !lim) f[pos][cnt] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x, int digit) &#123; if (x &lt; 0) return 0;//l = 0 时 x = -1，特判 int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return dfs(num, len, 0, digit, 1, 1);//注意第一位算 有前导零 且 数位受限制 &#125;int main() &#123; read(l), read(r); for (int i = 0; i &lt;= 9; ++i) &#123; write(solve(r, i) - solve(l - 1, i)); putchar(' '); &#125; putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>BZOJ</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
+        <tag>ZJOI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P2602」「ZJOI2010」数字计数]]></title>
+    <url>%2Fproblems%2Fluogu-p2602%2F</url>
+    <content type="text"><![CDATA[Description给定两个正整数 $l,r\ (1 \leq l \leq r \leq 10^{12})$，求区间 $[l,r]$ 里的所有整数中，每个数码 $0 \sim 9$ 各出现了几次。 Source[Luogu]P2602 Solution考虑 数位DP 。 用 $f_{pos,cnt}​$ 表示当前到了第 $len - pos + 1​$ 位，有 $cnt​$ 个数码 $digit​$ 的数中，共有多少个数码 $digit​$ 。 分别计算 $0 \sim 9$ 每一个数码，注意判前导零，具体实现详见代码。时间复杂度为 $O(10\lg^2n)​$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 12;LL l, r, f[MAXN + 5][MAXN + 5];LL dfs(int *num, int pos, LL cnt, int digit, bool lead, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，cnt 表示前 len - pos + 1 位中数码 digit 的数量， //digit 表示当前要求的数码，lead 表示是否有前导零，lim 表示当前数位是否受到限制 if (!pos) return cnt;//若搜完最后一位，则返回数码数量 if (!lead &amp;&amp; !lim &amp;&amp; ~f[pos][cnt]) return f[pos][cnt];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, cnt + ((i == digit) &amp;&amp; !(lead &amp;&amp; !i)), digit, lead &amp;&amp; !i, lim &amp;&amp; i == maxNum); //查找下一位。如果第 i 位的数码是所要求的数码，且该数码不是前导零，那么统计数量 + 1 if (!lead &amp;&amp; !lim) f[pos][cnt] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x, int digit) &#123; if (x &lt; 0) return 0;//l = 0 时 x = -1，特判 int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return dfs(num, len, 0, digit, 1, 1);//注意第一位算 有前导零 且 数位受限制 &#125;int main() &#123; read(l), read(r); for (int i = 0; i &lt;= 9; ++i) &#123; write(solve(r, i) - solve(l - 1, i)); putchar(' '); &#125; putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
+        <tag>ZJOI</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 1799」「AHOI2009」self 同类分布]]></title>
-    <url>%2Funcategorized%2Fbzoj-1799%2F</url>
-    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[BZOJ]1799 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)​$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+    <url>%2Fproblems%2Fbzoj-1799%2F</url>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[BZOJ]1799 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。同时因为只需要统计 各个数位和 以及 数对 $mod$ 取模的值，所以不需要判前导零。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[「Luogu P4127」「AHOI2009」同类分布]]></title>
-    <url>%2Funcategorized%2Fluogu-p4127%2F</url>
-    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[Luogu]P4127 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+    <url>%2Fproblems%2Fluogu-p4127%2F</url>
+    <content type="text"><![CDATA[Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。 Source[Luogu]P4127 Solution考虑 数位DP 。 用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。 可以枚举 所有数位的和 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 此时所有数位的和 = 枚举的所有数位的和 。如果上述两个条件都满足，则说明这个数符合题意。同时因为只需要统计 各个数位和 以及 数对 $mod$ 取模的值，所以不需要判前导零。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 18, MAXM = MAXN * 9;LL l, r, f[MAXN + 5][MAXM + 5][MAXM + 5];LL dfs(int *num, int pos, int sum, int now, int mod, bool lim) &#123; //pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和， //now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 if (!pos) return !now &amp;&amp; sum == mod;//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1 if (!lim &amp;&amp; ~f[pos][sum][now]) return f[pos][sum][now];//返回已记录的值 LL res = 0; int maxNum = lim ? num[pos] : 9;//当前数位最大值 for (int i = 0; i &lt;= maxNum; ++i) res += dfs(num, pos - 1, sum + i, (now * 10 + i) % mod, mod, lim &amp;&amp; i == maxNum);//查找下一位 if (!lim) f[pos][sum][now] = res;//记录该状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; LL res = 0; for (int i = 1; i &lt;= 9 * len; ++i) &#123;//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） memset(f, -1, sizeof (f));//初始化 res += dfs(num, len, 0, 0, i, 1);//设所有数位的和为 i，累加答案，且注意第一位会受限 &#125; return res;&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125; ​]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
       <tags>
         <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -35,10 +73,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -51,10 +89,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -67,8 +105,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -83,8 +121,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -531,20 +569,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ 1303」「CQOI2009」中位数图]]></title>
-    <url>%2Fproblems%2Fbzoj-1303%2F</url>
-    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[BZOJ]1303 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a​$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp​$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l​$，右边的前缀和为 $r​$ 。$l[i]/r[i]​$ 表示从点 $i​$ 向右/向左 到点 $tmp​$ 为止 (比 $b​$ 大的数的数量 - 比 $b​$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x​$ 可以与右边的每一个 $-x​$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]​$，由题意可知 $-10^5 \le x \le 10^5​$，遍历所有的 $x​$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>BZOJ</tag>
-        <tag>数论数学</tag>
-        <tag>2009</tag>
-        <tag>CQOI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[「Luogu P1627」「CQOI2009」中位数图]]></title>
     <url>%2Fproblems%2Fluogu-p1627%2F</url>
     <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[Luogu]P1627 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a​$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp​$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l​$，右边的前缀和为 $r​$ 。$l[i]/r[i]​$ 表示从点 $i​$ 向右/向左 到点 $tmp​$ 为止 (比 $b​$ 大的数的数量 - 比 $b​$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x​$ 可以与右边的每一个 $-x​$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]​$，由题意可知 $-10^5 \le x \le 10^5​$，遍历所有的 $x​$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
@@ -553,6 +577,20 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
+        <tag>2009</tag>
+        <tag>CQOI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「BZOJ 1303」「CQOI2009」中位数图]]></title>
+    <url>%2Fproblems%2Fbzoj-1303%2F</url>
+    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[BZOJ]1303 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a​$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp​$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l​$，右边的前缀和为 $r​$ 。$l[i]/r[i]​$ 表示从点 $i​$ 向右/向左 到点 $tmp​$ 为止 (比 $b​$ 大的数的数量 - 比 $b​$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x​$ 可以与右边的每一个 $-x​$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]​$，由题意可知 $-10^5 \le x \le 10^5​$，遍历所有的 $x​$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>BZOJ</tag>
         <tag>数论数学</tag>
         <tag>2009</tag>
         <tag>CQOI</tag>

@@ -99,16 +99,16 @@
 
 
   <meta name="description" content="Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。">
-<meta name="keywords" content="Luogu,2009,动态规划,数位DP,搜索,AHOI">
+<meta name="keywords" content="BZOJ,2009,数位DP,动态规划,搜索,AHOI">
 <meta property="og:type" content="article">
-<meta property="og:title" content="「Luogu P4127」「AHOI2009」同类分布">
-<meta property="og:url" content="https://heartlessly.github.io/uncategorized/luogu-p4127/index.html">
+<meta property="og:title" content="「BZOJ 1799」「AHOI2009」self 同类分布">
+<meta property="og:url" content="https://heartlessly.github.io/problems/bzoj-1799/index.html">
 <meta property="og:site_name" content="Heartlessly&#39;s Blog">
 <meta property="og:description" content="Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-04-22T07:48:42.761Z">
+<meta property="og:updated_time" content="2019-04-22T10:11:43.323Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="「Luogu P4127」「AHOI2009」同类分布">
+<meta name="twitter:title" content="「BZOJ 1799」「AHOI2009」self 同类分布">
 <meta name="twitter:description" content="Description给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。">
 
 
@@ -116,7 +116,7 @@
 
 
 
-  <link rel="canonical" href="https://heartlessly.github.io/uncategorized/luogu-p4127/">
+  <link rel="canonical" href="https://heartlessly.github.io/problems/bzoj-1799/">
 
 
 
@@ -126,7 +126,7 @@
   };
 </script>
 
-  <title>「Luogu P4127」「AHOI2009」同类分布 | Heartlessly's Blog</title>
+  <title>「BZOJ 1799」「AHOI2009」self 同类分布 | Heartlessly's Blog</title>
   
 
 
@@ -392,7 +392,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/uncategorized/luogu-p4127/">
+    <link itemprop="mainEntityOfPage" href="https://heartlessly.github.io/problems/bzoj-1799/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Heartlessly">
@@ -409,7 +409,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">「Luogu P4127」「AHOI2009」同类分布
+          <h1 class="post-title" itemprop="name headline">「BZOJ 1799」「AHOI2009」self 同类分布
 
               
             
@@ -435,7 +435,7 @@
                 
               
 
-              <time title="创建时间：2019-04-22 11:40:51 / 修改时间：15:48:42" itemprop="dateCreated datePublished" datetime="2019-04-22T11:40:51+08:00">2019-04-22</time>
+              <time title="创建时间：2019-04-22 11:40:51 / 修改时间：18:11:43" itemprop="dateCreated datePublished" datetime="2019-04-22T11:40:51+08:00">2019-04-22</time>
             
 
             
@@ -445,6 +445,24 @@
             
           </span>
 
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/problems/" itemprop="url" rel="index"><span itemprop="name">problems</span></a></span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -483,10 +501,10 @@
       
         <h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>给定 $l$ 和 $r\ \left( 1 \leq l \leq r \leq 10^{18} \right)$，求区间 $[l,r]$ 中各位数字之和能整除原数的数的个数。</p>
 <a id="more"></a>
-<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://www.luogu.org/problemnew/show/P4127" target="_blank" rel="noopener">[Luogu]P4127</a></strong></p>
+<h2 id="Source"><a href="#Source" class="headerlink" title="Source"></a>Source</h2><p><strong><a href="https://lydsy.com/JudgeOnline/problem.php?id=1799" target="_blank" rel="noopener">[BZOJ]1799</a></strong></p>
 <h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>考虑 <strong>数位DP</strong> 。</p>
 <p>用 $f_{pos,sum,now}$ 表示当前到了第 $len - pos + 1$ 位，这些数位的和是 $sum$，模 $mod$ 的值为 $now$ 的数的个数。</p>
-<p>可以枚举 <strong>所有数位的和</strong> 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 <strong>此时所有数位的和</strong> = <strong>枚举的所有数位的和</strong> 。如果上述两个条件都满足，则说明这个数符合题意。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。</p>
+<p>可以枚举 <strong>所有数位的和</strong> 的值，这个值显然不会超过 $9\lg n$（这个值在每一位都是 $9$ 时最大）。我们把这个值当做模数 $mod$，当前数每增加一位时，我们统计各个数位的和 $sum$，并将新的数对 $mod$ 取模。当搜到最后一位时，如果模数为 $0$，那么满足条件整除；如果 $sum = mod$，那么满足 <strong>此时所有数位的和</strong> = <strong>枚举的所有数位的和</strong> 。如果上述两个条件都满足，则说明这个数符合题意。同时因为只需要统计 各个数位和 以及 数对 $mod$ 取模的值，所以不需要判前导零。具体实现过程详见代码，时间复杂度为 $O(9^3n\lg^3 n)$ 。</p>
 <h2 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">long</span> <span class="keyword">long</span> LL;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">read</span>(<span class="title">T</span> &amp;<span class="title">x</span>) &#123;</span></span><br><span class="line">    x = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">char</span> c = getchar();</span><br><span class="line">    <span class="keyword">bool</span> f = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (; !<span class="built_in">isdigit</span>(c); c = getchar()) f ^= c == <span class="string">'-'</span>;</span><br><span class="line">    <span class="keyword">for</span> (; <span class="built_in">isdigit</span>(c); c = getchar()) x = x * <span class="number">10</span> + (c ^ <span class="number">48</span>);</span><br><span class="line">    x = f ? -x : x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span> &lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">inline</span> <span class="title">void</span> <span class="title">write</span>(<span class="title">T</span> <span class="title">x</span>) &#123;</span></span><br><span class="line">    <span class="keyword">if</span> (x &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">putchar</span>(<span class="string">'-'</span>);</span><br><span class="line">        x = -x;</span><br><span class="line">    &#125;</span><br><span class="line">    T y = <span class="number">1</span>, len = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (; y &lt;= x / <span class="number">10</span>; y *= <span class="number">10</span>) ++len;</span><br><span class="line">    <span class="keyword">for</span> (; len; --len, x %= y, y /= <span class="number">10</span>) <span class="built_in">putchar</span>(x / y + <span class="number">48</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> MAXN = <span class="number">18</span>, MAXM = MAXN * <span class="number">9</span>;</span><br><span class="line">LL l, r, f[MAXN + <span class="number">5</span>][MAXM + <span class="number">5</span>][MAXM + <span class="number">5</span>];</span><br><span class="line"></span><br><span class="line"><span class="function">LL <span class="title">dfs</span><span class="params">(<span class="keyword">int</span> *num, <span class="keyword">int</span> pos, <span class="keyword">int</span> sum, <span class="keyword">int</span> now, <span class="keyword">int</span> mod, <span class="keyword">bool</span> lim)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//pos 表示当前是第 len - pos + 1 位，sum 表示此时所有数位的和，</span></span><br><span class="line">    <span class="comment">//now 表示当前的数对 mod 取模后的值，mod 表示枚举的所有数位的和，lim 表示当前数位是否受到限制 </span></span><br><span class="line">    <span class="keyword">if</span> (!pos) <span class="keyword">return</span> !now &amp;&amp; sum == mod;<span class="comment">//如果 能够整除 且 此时所有数位的和 = 枚举的所有数位的和，返回 1</span></span><br><span class="line">    <span class="keyword">if</span> (!lim &amp;&amp; ~f[pos][sum][now]) <span class="keyword">return</span> f[pos][sum][now];<span class="comment">//返回已记录的值 </span></span><br><span class="line">    LL res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> maxNum = lim ? num[pos] : <span class="number">9</span>;<span class="comment">//当前数位最大值 </span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= maxNum; ++i)</span><br><span class="line">        res += dfs(num, pos - <span class="number">1</span>, sum + i, (now * <span class="number">10</span> + i) % mod, mod, lim &amp;&amp; i == maxNum);<span class="comment">//查找下一位 </span></span><br><span class="line">    <span class="keyword">if</span> (!lim) f[pos][sum][now] = res;<span class="comment">//记录该状态的值 </span></span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">inline</span> LL <span class="title">solve</span><span class="params">(LL x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len = <span class="number">0</span>, num[MAXN + <span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> (; x; x /= <span class="number">10</span>) num[++len] = x % <span class="number">10</span>;</span><br><span class="line">    LL res = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">9</span> * len; ++i) &#123;<span class="comment">//枚举所有数位的和，最大不会超过 9 * 数位长度（每一位都是 9） </span></span><br><span class="line">        <span class="built_in">memset</span>(f, <span class="number">-1</span>, <span class="keyword">sizeof</span> (f));<span class="comment">//初始化</span></span><br><span class="line">        res += dfs(num, len, <span class="number">0</span>, <span class="number">0</span>, i, <span class="number">1</span>);<span class="comment">//设所有数位的和为 i，累加答案，且注意第一位会受限</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    read(l), read(r);</span><br><span class="line">    write(solve(r) - solve(l - <span class="number">1</span>));</span><br><span class="line">    <span class="built_in">putchar</span>(<span class="string">'\n'</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​                                                                                                 </p>
 
@@ -509,12 +527,12 @@
   <script src="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.min.js"></script>
   <link rel="stylesheet" type="text/css" href="http://jslibs.wuxubj.cn/sweetalert_mini/sweetalert.mini.css">
 
-  <p><span>本文标题:</span>「Luogu P4127」「AHOI2009」同类分布</p>
+  <p><span>本文标题:</span>「BZOJ 1799」「AHOI2009」self 同类分布</p>
   <p><span>文章作者:</span>Heartlessly</p>
   <p><span>发布时间:</span>2019年04月22日 - 11:40:51</p>
-  <p><span>最后更新:</span>2019年04月22日 - 15:48:42</p>
-  <p><span>原始链接:</span><a href="/uncategorized/luogu-p4127/" title="「Luogu P4127」「AHOI2009」同类分布">https://heartlessly.github.io/uncategorized/luogu-p4127/</a>
-    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://heartlessly.github.io/uncategorized/luogu-p4127/" aria-label="复制成功！"></i></span>
+  <p><span>最后更新:</span>2019年04月22日 - 18:11:43</p>
+  <p><span>原始链接:</span><a href="/problems/bzoj-1799/" title="「BZOJ 1799」「AHOI2009」self 同类分布">https://heartlessly.github.io/problems/bzoj-1799/</a>
+    <span class="copy-path" title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="https://heartlessly.github.io/problems/bzoj-1799/" aria-label="复制成功！"></i></span>
   </p>
   <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
 </div>
@@ -548,13 +566,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Luogu/" rel="tag"># Luogu</a>
+            <a href="/tags/BZOJ/" rel="tag"># BZOJ</a>
           
             <a href="/tags/2009/" rel="tag"># 2009</a>
           
-            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
-          
             <a href="/tags/数位DP/" rel="tag"># 数位DP</a>
+          
+            <a href="/tags/动态规划/" rel="tag"># 动态规划</a>
           
             <a href="/tags/搜索/" rel="tag"># 搜索</a>
           
@@ -571,8 +589,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/problems/bzoj-1026/" rel="next" title="「BZOJ 1026」「SCOI2009」windy数">
-                <i class="fa fa-chevron-left"></i> 「BZOJ 1026」「SCOI2009」windy数
+              <a href="/problems/luogu-p4127/" rel="next" title="「Luogu P4127」「AHOI2009」同类分布">
+                <i class="fa fa-chevron-left"></i> 「Luogu P4127」「AHOI2009」同类分布
               </a>
             
           </div>
@@ -581,8 +599,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/uncategorized/bzoj-1799/" rel="prev" title="「BZOJ 1799」「AHOI2009」self 同类分布">
-                「BZOJ 1799」「AHOI2009」self 同类分布 <i class="fa fa-chevron-right"></i>
+              <a href="/problems/luogu-p2602/" rel="prev" title="「Luogu P2602」「ZJOI2010」数字计数">
+                「Luogu P2602」「ZJOI2010」数字计数 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -658,7 +676,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">43</span>
+                    <span class="site-state-item-count">45</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -788,7 +806,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">38</span>
+                      
+                    
+                    <span class="site-state-item-count">40</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
