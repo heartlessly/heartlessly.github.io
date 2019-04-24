@@ -9,8 +9,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>缩点</tag>
         <tag>图论</tag>
+        <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
@@ -25,10 +25,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -40,10 +40,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -55,8 +55,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -71,8 +71,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -87,9 +87,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
@@ -103,9 +103,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
@@ -120,8 +120,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -136,8 +136,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -151,10 +151,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -167,10 +167,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -183,8 +183,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -199,8 +199,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -468,8 +468,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>动态规划</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -655,8 +655,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -669,8 +669,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
