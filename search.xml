@@ -49,14 +49,14 @@
   <entry>
     <title><![CDATA[「BZOJ 4521」「CQOI2016」手机号码]]></title>
     <url>%2Fproblems%2Fbzoj-4521%2F</url>
-    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[BZOJ]4521 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[BZOJ]4521 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -65,14 +65,14 @@
   <entry>
     <title><![CDATA[「Luogu P4124」「CQOI2016」手机号码]]></title>
     <url>%2Fproblems%2Fluogu-p4124%2F</url>
-    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[Luogu]P4124 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 10, len = 1; while (y &lt;= x) &#123; y *= 10; ++len; &#125; while (len--) &#123; y /= 10; putchar(x / y + 48); x %= y; &#125;&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[Luogu]P4124 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -87,9 +87,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>2010</tag>
         <tag>数位DP</tag>
-        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
@@ -103,9 +103,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>2010</tag>
         <tag>数位DP</tag>
-        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
@@ -120,8 +120,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -136,8 +136,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -151,10 +151,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -167,10 +167,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>SCOI</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -183,8 +183,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -199,8 +199,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>SCOI</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -468,8 +468,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>动态规划</tag>
+        <tag>数论数学</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -655,8 +655,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -669,8 +669,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
