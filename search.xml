@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P2807」三角形计数]]></title>
+    <url>%2Fproblems%2Fluogu-p2807%2F</url>
+    <content type="text"><![CDATA[Description$n$ 等分大三角形的每条边，将对应的等分点连接起来（连接线分别平行于三条边），求有多少个三角形。 Source[Luogu]P2807 Solution看似很简单的数学题，实际上让人摸不着头发（？？？ 不妨设$\triangle ABC$ 的边长为 $n$，这样 $n$ 等分每一条边后，每个小三角形的边长为 $1$ 。 先考虑头朝上的三角形（$\triangle$）： 边长为 $1$ 的三角形有多少个呢？ （如图）显然第一层有 $1$ 个，第二层有 $2$ 个，一直到第 $n$ 层有 $n$ 个，共 1 + 2 + \cdots + n = \frac{n\left( n + 1\right)}{2}那边长为 $2$ 的三角形呢？ （如图）我们可以数它左下角那个边长为 $1$ 的三角形，因为有大小限制，最右侧一列就不能数了，所以问题变为求边长为 $n - 1$ 的三角形中有几个边长为 $1$ 的三角形，与上面的求法一样，共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}同理，边长为 $i\ \left(1 \leq i \leq n\right)$ 的三角形共 1 + 2 + \cdots + n - i + 1 = \frac{\left(n - i + 1 \right)\left( n - i + 2 \right)}{2}由此可以得出结论，边长 $1 \sim n$ 头朝上的三角形共 \frac{\sum\limits_{i = 1}^n\left(n - i + 1 \right)\left( n - i + 2 \right)}{2} = \frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} = \frac{n \left( n + 1\right)\left(n + 2 \right)}{6}至于第 $2$ 步到第 $3$ 步怎么得出来的，这里给出详细解释。 定理： \sum\limits_{i = 1}^n i^2 = 1^2+2^2+ \cdots + n^2 = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证明： 首先需要知道 \left( n + 1 \right)^3 = n^3 + 3n^2 + 3n + 1那么 \left( n + 1 \right)^3 - n^3 = 3n^2 + 3n + 1因此我们可以列出 $n$ 个式子 \left\{\begin{matrix} \begin{aligned} \left( n + 1 \right)^3 - n^3 &= 3n^2 + 3n + 1\\[2ex] n^3 - \left( n - 1 \right)^3 &= 3\left( n - 1 \right)^2 + 3\left( n - 1 \right) + 1\\[2ex] &\cdots \cdots\\[2ex] 3^3 - 2^3 &= 3 \times 2^2 + 3 \times 2 + 1\\[2ex] 2^3 - 1^3 &= 3 \times 1^2 + 3 \times 1 + 1 \end{aligned} \end{matrix}\right.把这 $n$ 个式子相加，得到 \left( n + 1\right)^3 - 1^3 = 3\sum\limits_{i=1}^n i^2 + 3\sum\limits_{i=1}^n i + n化简 n^3 + 3n^2 + 2n = 3\sum\limits_{i = 1}^ni^2 + \frac{3n\left(n + 1\right)}{2} 2n^3 + 6n^2 + 4n = 6\sum\limits_{i = 1}^ni^2 + 3n^2 + 3n \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6}因式分解，得 \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6} = \frac{n\left(2n^2 + 3n + 1 \right)}{6} = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证毕。 于是乎，我们就可以推出 \begin{aligned} 原式&=\frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} \\[2ex] &= \frac{\sum\limits_{i = 1}^n i^2 + \sum\limits_{i = 1}^n i}{2} \\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{12} + \frac{n\left(n + 1\right)}{4}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right) + 3n\left(n + 1\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 4\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( n + 2\right)}{6} \end{aligned}再考虑头朝下的三角形（$\bigtriangledown $）： （如图）边长为 $1$ 的三角形第 $1$ 行没有，第二行有 $1$ 个，第三行有 $2$ 个，一直到第 $n$ 行有 $n - 1$ 个，所以共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}接下来数边长为 $2$ 的三角形。 （如图）我们考虑数它下方的三角形。前三行没有，第 $4$ 行有 $1$ 个，第 $5$ 行有 $2$ 个，一直到第 $n$ 行有 $n - 3$ 个，共 1 + 2 + \cdots + n - 3 = \frac{\left( n - 2 \right)\left( n - 3 \right)}{2}同理，边长为 $3$ 的三角形共 1 + 2 + \cdots + n - 5 = \frac{\left( n - 4 \right)\left( n - 5 \right)}{2}边长为 $i\ \left( 2 \leq 2i \leq n \right)$ 的三角形共 1 + 2 + \cdots + n - 2 i + 1 = \frac{\left( n - 2i + 1 \right)\left( n - 2i + 2 \right)}{2}头朝下的三角形共（第一行式子表示 $n$ 是奇数，第二行式子表示 $n$ 是偶数） \left\{\begin{matrix} \begin{aligned} & \frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2} = \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} & \{n \mid n = 2m + 1,m \in N^* \}\\[2ex] & \frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2} = \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} & \{n \mid n = 2m,m \in N^* \} \end{aligned} \end{matrix}\right.推导一下。 先考虑 $n$ 是奇数的情况。 \begin{aligned} 原式&=\frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 + 2 + 4^2 + 4 + \cdots + \left( n-1 \right)^2 + n - 1}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2^2 + 4^2 + \cdots + \left( n-1 \right)^2}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n - 1}{2} \right)^2 \right]\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2 \times \left( \frac{n-1}{2} \right) \times \left( \frac{n+1}{2}\right)\times n}{6}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{n\left( n + 1 \right)\left( n - 1\right)}{12}\\[2ex] &= \frac{3\left( n + 1 \right)\left( n - 1 \right) + 2n\left( n + 1 \right)\left( n - 1\right)}{24}\\[2ex] &= \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} \end{aligned}$n$ 为偶数也是同样的道理。 \begin{aligned} 原式&=\frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 - 2 + 4^2 - 4 + \cdots + n^2 - n}{2}\\[2ex] &= \frac{2^2 + 4^2 + \cdots + n^2}{2} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n}{2} \right)^2 \right] - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2 \times \left( \frac{n}{2} \right) \times \left( \frac{n+2}{2}\right)\times \left(n + 1 \right)}{6} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{n\left(n + 1 \right)\left( n + 2 \right)}{12} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2n\left(n + 1 \right)\left( n + 2 \right) - 3n \left( n + 2 \right)}{24}\\[2ex] &= \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} \end{aligned}把头朝上和头朝下的三角形加起来，得到 tot = \left\{\begin{matrix} \begin{aligned} & \frac{\left( n + 1 \right)\left( 2n^2 + 3n - 1 \right)}{8} & \{n \mid n = 2m + 1,m \in N^* \}\\[2ex] & \frac{n\left( n + 2 \right)\left( 2n+1 \right)}{8} & \{n \mid n = 2m,m \in N^* \} \end{aligned} \end{matrix}\right.这就是最后的答案，每次都可以 $O(1)$ 求了，总时间复杂度为 $O(T)$ 。 Code123456789101112131415161718192021222324252627282930313233343536#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int t, n;int main() &#123; for (read(t); t; --t) &#123; read(n); if (n &amp; 1) write((n + 1) * (2 * n * n + 3 * n - 1) / 8);//奇数 else write(n * (n + 2) * (2 * n + 1) / 8);//偶数 putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>数学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Luogu P2746」「USACO5.3」校园网Network of Schools]]></title>
     <url>%2Fproblems%2Fluogu-p2746%2F</url>
     <content type="text"><![CDATA[Description给定一个 $n$ 个点的有向图，求 $2$ 个问题： 如果一个点能覆盖所有与它连通的点，现在需要选择最少的点来覆盖所有的点。 最少增加几条边能使这个有向图变成 强连通分量 。 Source[Luogu]P2746 Solution先考虑第 $1$ 个问题。 一个 强连通分量 里的点可以互相到达，选择强连通分量里的任何一个点都能覆盖整个强连通分量，因此可以把它们缩成一个点。缩完点后图变成一个 DAG（有向无环图至少存在一个入度为 $0$ 的点），入度为 $0$ 的点是必须要选的，因为没有点能覆盖它们，而入度不为 $0$ 的点都能被其它点覆盖，所以问题就变为求入度为 $0$ 的点的个数。 再考虑第 $2$ 个问题。 因为原图中的 强连通分量 已经连通，所以没有必要在强连通分量内增加边，可以沿用上个问题缩点后的图。强连通分量 没有 出度为 $0$ 的点 和 入度为 $0$ 的点，所以我们现在需要连一些边，使该图中这些点的出度或入度增加。显然最优的方案是在 出度为 $0$ 的点 和 入度为 $0$ 的点 之间连一条边，一一匹配完后多出来的点与其它点连边，所以问题的答案就是 出度为 $0$ 的点数 和 入度为 $0$ 的点数 的较大值。如果原来的图本身就是一个强连通分量，新图将会是一个点，出度和入度为 $0$ 。若按照上述做法，答案将是 $1$，但实际答案是 $0$，所以需要特判这种情况。 两个问题的时间复杂度均为 $O(n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1, len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 100, MAXM = MAXN * MAXN;int n, tot, deep, top, cnt, in_0, out_0, head[MAXN + 5], dfn[MAXN + 5], low[MAXN + 5];int sta[MAXN + 5], col[MAXN + 5], in[MAXN + 5], out[MAXN + 5];bool insta[MAXN + 5];struct Edge &#123; int next, to;&#125; e[MAXM + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void tarjan(int u) &#123; dfn[u] = low[u] = ++deep; sta[++top] = u; insta[u] = 1; for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (!dfn[v]) &#123; tarjan(v); low[u] = min(low[u], low[v]); &#125; else if (insta[v]) low[u] = min(low[u], dfn[v]); &#125; if (dfn[u] == low[u]) &#123; col[u] = ++cnt; insta[u] = 0; for (; sta[top] != u; --top) &#123; col[sta[top]] = cnt; insta[sta[top]] = 0; &#125; --top; &#125;&#125;int main() &#123; read(n); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); for (; x; read(x)) addEdge(i, x);//连有向边 &#125; for (int i = 1; i &lt;= n; ++i) if (!dfn[i]) tarjan(i);//缩点 for (int u = 1; u &lt;= n; ++u) for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) if (col[u] != col[v])//如果不在同个强连通分量中，重新连边 ++out[col[u]], ++in[col[v]];//记录出度和入度 for (int i = 1; i &lt;= cnt; ++i) &#123; if (!in[i]) ++in_0; if (!out[i]) ++out_0; &#125;//统计入度为 0 的点和出度为 0 的点 write(in_0); putchar('\n'); write(cnt == 1 ? 0 : max(in_0, out_0));//特判是不是强连通分量 putchar('\n'); return 0;&#125;]]></content>
@@ -8,8 +20,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -24,8 +36,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>图论</tag>
+        <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -39,8 +51,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -56,8 +68,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -72,8 +84,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -87,10 +99,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -103,10 +115,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -121,8 +133,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -137,8 +149,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -154,8 +166,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -170,8 +182,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -185,9 +197,9 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -201,9 +213,9 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -468,8 +480,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>动态规划</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -655,8 +667,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -669,8 +681,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
