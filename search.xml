@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P3403」跳楼机]]></title>
+    <url>%2Fproblems%2Fluogu-p3403%2F</url>
+    <content type="text"><![CDATA[Description现在有一座 $h\ (1 \leq h \leq 2^{63} - 1)$ 层的大楼，你站在第 $1$ 层，每次可以选择向上移动 $x,y,z\ (1 \leq x,y,z \leq 10^5)$ 层，求能到达的楼层数。 Source[Luogu]P3403 Solution其实问题就是求 $ax + by + cz\ (a, b, c \in\rm N)$ 有多少个小于等于 $h$ 的值。 很容易想到 $O(h)$ 的做法，就是用 $f_i$ 表示第 $i$ 层能否到达，那么转移方程就是 \large { f_i = f_{i - x} \mid f_{i - y} \mid f_{i - z} }但是 $h$ 很大，所以换一种思路。 显然如果某一层楼 $i$ 能到达，那么 $i + kx$ 也一定能到达，因此只需要考虑第 $i \bmod x$ 层最早在第几层到达。我们可以连有向边 $i \to (i + y) \bmod x$ 以及 $i \to (i +z) \bmod x$，边权分别为 $y$ 和 $z$，表示从第 $i$ 层到第 $(i + y) \bmod x$ 层需要走 $y$ 层，$z$ 同理。建图后，从 $1$ 到 $i \bmod x$ 的最短路即是最早在第几层到达 $i \bmod x$ 层。如果最早在第 $j\ (1 \leq j \leq h)$ 层到达了第 $i \bmod x$ 层，则 $j + kx$ 层都能够到达，但又必须满足 $j + kx \leq h$，所以一共有 $\left \lfloor \frac{h - j}{x} \right \rfloor + 1$ 层能到达。枚举 $i = 0 \sim x - 1$，然后累加答案即可。时间复杂度为 $O(kx)$ 。这种思想叫做 同余最短路 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;typedef unsigned long long ULL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MAXM = 2e5;ULL h, ans, dis[MAXN + 5];int x, y, z, tot, head[MAXN + 5];bool vis[MAXN + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void spfa(int s) &#123;//求 1 到其它点的最短路 for (int i = 0; i &lt; x; ++i) dis[i] = h + 1; queue&lt;int&gt; q; dis[s] = 1;//最早在第一层到达 1 % x q.push(s); for (; !q.empty(); ) &#123; int u = q.front(); q.pop(); vis[u] = 0; for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) if (dis[v] &gt; dis[u] + w) &#123; dis[v] = dis[u] + w; if (!vis[v]) &#123; q.push(v); vis[v] = 1; &#125; &#125; &#125;&#125;int main() &#123; read(h), read(x), read(y), read(z); for (int i = 0; i &lt; x; ++i) addEdge(i, (i + y) % x, y), addEdge(i, (i + z) % x, z);//连有向边 spfa(1 % x);//起点为 1 % x for (int i = 0; i &lt; x; ++i) if (dis[i] &lt;= h)//必须在 h 层之前到达第 i % x 层 ans += (h - dis[i]) / x + 1;//累加答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>最短路</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Luogu P2807」三角形计数]]></title>
     <url>%2Fproblems%2Fluogu-p2807%2F</url>
-    <content type="text"><![CDATA[Description$n$ 等分大三角形的每条边，将对应的等分点连接起来（连接线分别平行于三条边），求有多少个三角形。 Source[Luogu]P2807 Solution看似很简单的数学题，实际上让人摸不着头发（？？？ 不妨设$\triangle ABC$ 的边长为 $n$，这样 $n$ 等分每一条边后，每个小三角形的边长为 $1$ 。 先考虑头朝上的三角形（$\triangle$）： 边长为 $1$ 的三角形有多少个呢？ （如图）显然第一层有 $1$ 个，第二层有 $2$ 个，一直到第 $n$ 层有 $n$ 个，共 1 + 2 + \cdots + n = \frac{n\left( n + 1\right)}{2}那边长为 $2$ 的三角形呢？ （如图）我们可以数它左下角那个边长为 $1$ 的三角形，因为有大小限制，最右侧一列就不能数了，所以问题变为求边长为 $n - 1$ 的三角形中有几个边长为 $1$ 的三角形，与上面的求法一样，共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}同理，边长为 $i\ \left(1 \leq i \leq n\right)$ 的三角形共 1 + 2 + \cdots + n - i + 1 = \frac{\left(n - i + 1 \right)\left( n - i + 2 \right)}{2}由此可以得出结论，边长 $1 \sim n$ 头朝上的三角形共 \frac{\sum\limits_{i = 1}^n\left(n - i + 1 \right)\left( n - i + 2 \right)}{2} = \frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} = \frac{n \left( n + 1\right)\left(n + 2 \right)}{6}至于第 $2$ 步到第 $3$ 步怎么得出来的，这里给出详细解释。 定理： \sum\limits_{i = 1}^n i^2 = 1^2+2^2+ \cdots + n^2 = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证明： 首先需要知道 \left( n + 1 \right)^3 = n^3 + 3n^2 + 3n + 1那么 \left( n + 1 \right)^3 - n^3 = 3n^2 + 3n + 1因此我们可以列出 $n$ 个式子 \left\{\begin{matrix} \begin{aligned} \left( n + 1 \right)^3 - n^3 &= 3n^2 + 3n + 1\\[2ex] n^3 - \left( n - 1 \right)^3 &= 3\left( n - 1 \right)^2 + 3\left( n - 1 \right) + 1\\[2ex] &\cdots \cdots\\[2ex] 3^3 - 2^3 &= 3 \times 2^2 + 3 \times 2 + 1\\[2ex] 2^3 - 1^3 &= 3 \times 1^2 + 3 \times 1 + 1 \end{aligned} \end{matrix}\right.把这 $n$ 个式子相加，得到 \left( n + 1\right)^3 - 1^3 = 3\sum\limits_{i=1}^n i^2 + 3\sum\limits_{i=1}^n i + n化简 n^3 + 3n^2 + 2n = 3\sum\limits_{i = 1}^ni^2 + \frac{3n\left(n + 1\right)}{2} 2n^3 + 6n^2 + 4n = 6\sum\limits_{i = 1}^ni^2 + 3n^2 + 3n \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6}因式分解，得 \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6} = \frac{n\left(2n^2 + 3n + 1 \right)}{6} = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证毕。 于是乎，我们就可以推出 \begin{aligned} 原式&=\frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} \\[2ex] &= \frac{\sum\limits_{i = 1}^n i^2 + \sum\limits_{i = 1}^n i}{2} \\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{12} + \frac{n\left(n + 1\right)}{4}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right) + 3n\left(n + 1\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 4\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( n + 2\right)}{6} \end{aligned}再考虑头朝下的三角形（$\bigtriangledown $）： （如图）边长为 $1$ 的三角形第 $1$ 行没有，第二行有 $1$ 个，第三行有 $2$ 个，一直到第 $n$ 行有 $n - 1$ 个，所以共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}接下来数边长为 $2$ 的三角形。 （如图）我们考虑数它下方的三角形。前三行没有，第 $4$ 行有 $1$ 个，第 $5$ 行有 $2$ 个，一直到第 $n$ 行有 $n - 3$ 个，共 1 + 2 + \cdots + n - 3 = \frac{\left( n - 2 \right)\left( n - 3 \right)}{2}同理，边长为 $3$ 的三角形共 1 + 2 + \cdots + n - 5 = \frac{\left( n - 4 \right)\left( n - 5 \right)}{2}边长为 $i\ \left( 2 \leq 2i \leq n \right)$ 的三角形共 1 + 2 + \cdots + n - 2 i + 1 = \frac{\left( n - 2i + 1 \right)\left( n - 2i + 2 \right)}{2}头朝下的三角形共（第一行式子表示 $n$ 是奇数，第二行式子表示 $n$ 是偶数） \left\{\begin{matrix} \begin{aligned} & \frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2} = \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} & \{n \mid n = 2m + 1,m \in N^* \}\\[2ex] & \frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2} = \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} & \{n \mid n = 2m,m \in N^* \} \end{aligned} \end{matrix}\right.推导一下。 先考虑 $n$ 是奇数的情况。 \begin{aligned} 原式&=\frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 + 2 + 4^2 + 4 + \cdots + \left( n-1 \right)^2 + n - 1}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2^2 + 4^2 + \cdots + \left( n-1 \right)^2}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n - 1}{2} \right)^2 \right]\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2 \times \left( \frac{n-1}{2} \right) \times \left( \frac{n+1}{2}\right)\times n}{6}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{n\left( n + 1 \right)\left( n - 1\right)}{12}\\[2ex] &= \frac{3\left( n + 1 \right)\left( n - 1 \right) + 2n\left( n + 1 \right)\left( n - 1\right)}{24}\\[2ex] &= \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} \end{aligned}$n$ 为偶数也是同样的道理。 \begin{aligned} 原式&=\frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 - 2 + 4^2 - 4 + \cdots + n^2 - n}{2}\\[2ex] &= \frac{2^2 + 4^2 + \cdots + n^2}{2} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n}{2} \right)^2 \right] - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2 \times \left( \frac{n}{2} \right) \times \left( \frac{n+2}{2}\right)\times \left(n + 1 \right)}{6} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{n\left(n + 1 \right)\left( n + 2 \right)}{12} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2n\left(n + 1 \right)\left( n + 2 \right) - 3n \left( n + 2 \right)}{24}\\[2ex] &= \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} \end{aligned}把头朝上和头朝下的三角形加起来，得到 tot = \left\{\begin{matrix} \begin{aligned} & \frac{\left( n + 1 \right)\left( 2n^2 + 3n - 1 \right)}{8} & \{n \mid n = 2m + 1,m \in N^* \}\\[2ex] & \frac{n\left( n + 2 \right)\left( 2n+1 \right)}{8} & \{n \mid n = 2m,m \in N^* \} \end{aligned} \end{matrix}\right.这就是最后的答案，每次都可以 $O(1)$ 求了，总时间复杂度为 $O(T)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int t, n;int main() &#123; for (read(t); t; --t) &#123; read(n); if (n &amp; 1) write((n + 1) * (2 * n * n + 3 * n - 1) / 8);//奇数 else write(n * (n + 2) * (2 * n + 1) / 8);//偶数 putchar('\n'); &#125; return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description$n$ 等分大三角形的每条边，将对应的等分点连接起来（连接线分别平行于三条边），求有多少个三角形。 Source[Luogu]P2807 Solution看似很简单的数学题，实际上让人摸不着头发（？？？ 不妨设$\triangle ABC$ 的边长为 $n$，这样 $n$ 等分每一条边后，每个小三角形的边长为 $1$ 。 先考虑头朝上的三角形（$\triangle$）： 边长为 $1$ 的三角形有多少个呢？ （如图）显然第一层有 $1$ 个，第二层有 $2$ 个，一直到第 $n$ 层有 $n$ 个，共 1 + 2 + \cdots + n = \frac{n\left( n + 1\right)}{2}那边长为 $2$ 的三角形呢？ （如图）我们可以数它左下角那个边长为 $1$ 的三角形，因为有大小限制，最右侧一列就不能数了，所以问题变为求边长为 $n - 1$ 的三角形中有几个边长为 $1$ 的三角形，与上面的求法一样，共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}同理，边长为 $i\ \left(1 \leq i \leq n\right)$ 的三角形共 1 + 2 + \cdots + n - i + 1 = \frac{\left(n - i + 1 \right)\left( n - i + 2 \right)}{2}由此可以得出结论，边长 $1 \sim n$ 头朝上的三角形共 \frac{\sum\limits_{i = 1}^n\left(n - i + 1 \right)\left( n - i + 2 \right)}{2} = \frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} = \frac{n \left( n + 1\right)\left(n + 2 \right)}{6}至于第 $2$ 步到第 $3$ 步怎么得出来的，这里给出详细解释。 定理： \sum\limits_{i = 1}^n i^2 = 1^2+2^2+ \cdots + n^2 = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证明： 首先需要知道 \left( n + 1 \right)^3 = n^3 + 3n^2 + 3n + 1那么 \left( n + 1 \right)^3 - n^3 = 3n^2 + 3n + 1因此我们可以列出 $n$ 个式子 \left\{\begin{matrix} \begin{aligned} \left( n + 1 \right)^3 - n^3 &= 3n^2 + 3n + 1\\[2ex] n^3 - \left( n - 1 \right)^3 &= 3\left( n - 1 \right)^2 + 3\left( n - 1 \right) + 1\\[2ex] &\cdots \cdots\\[2ex] 3^3 - 2^3 &= 3 \times 2^2 + 3 \times 2 + 1\\[2ex] 2^3 - 1^3 &= 3 \times 1^2 + 3 \times 1 + 1 \end{aligned} \end{matrix}\right.把这 $n$ 个式子相加，得到 \left( n + 1\right)^3 - 1^3 = 3\sum\limits_{i=1}^n i^2 + 3\sum\limits_{i=1}^n i + n化简 n^3 + 3n^2 + 2n = 3\sum\limits_{i = 1}^ni^2 + \frac{3n\left(n + 1\right)}{2} 2n^3 + 6n^2 + 4n = 6\sum\limits_{i = 1}^ni^2 + 3n^2 + 3n \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6}因式分解，得 \sum\limits_{i = 1}^ni^2 = \frac{2n^3 + 3n^2 + n}{6} = \frac{n\left(2n^2 + 3n + 1 \right)}{6} = \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{6}证毕。 于是乎，我们就可以推出 \begin{aligned} 原式&=\frac{\sum\limits_{i = 1}^n i\left( i + 1\right)}{2} \\[2ex] &= \frac{\sum\limits_{i = 1}^n i^2 + \sum\limits_{i = 1}^n i}{2} \\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right)}{12} + \frac{n\left(n + 1\right)}{4}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 1\right) + 3n\left(n + 1\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( 2n + 4\right)}{12}\\[2ex] &= \frac{n\left( n + 1 \right) \left( n + 2\right)}{6} \end{aligned}再考虑头朝下的三角形（$\bigtriangledown $）： （如图）边长为 $1$ 的三角形第 $1$ 行没有，第二行有 $1$ 个，第三行有 $2$ 个，一直到第 $n$ 行有 $n - 1$ 个，所以共 1 + 2 + \cdots + n - 1 = \frac{n \left( n - 1\right)}{2}接下来数边长为 $2$ 的三角形。 （如图）我们考虑数它下方的三角形。前三行没有，第 $4$ 行有 $1$ 个，第 $5$ 行有 $2$ 个，一直到第 $n$ 行有 $n - 3$ 个，共 1 + 2 + \cdots + n - 3 = \frac{\left( n - 2 \right)\left( n - 3 \right)}{2}同理，边长为 $3$ 的三角形共 1 + 2 + \cdots + n - 5 = \frac{\left( n - 4 \right)\left( n - 5 \right)}{2}边长为 $i\ \left( 2 \leq 2i \leq n \right)$ 的三角形共 1 + 2 + \cdots + n - 2 i + 1 = \frac{\left( n - 2i + 1 \right)\left( n - 2i + 2 \right)}{2}头朝下的三角形共（第一行式子表示 $n$ 是奇数，第二行式子表示 $n$ 是偶数） \left\{\begin{matrix} \begin{aligned} & \frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2} = \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} & \{n \mid n = 2m + 1,m \in \rm N^* \}\\[2ex] & \frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2} = \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} & \{n \mid n = 2m,m \in \rm N^* \} \end{aligned} \end{matrix}\right.推导一下。 先考虑 $n$ 是奇数的情况。 \begin{aligned} 原式&=\frac{2 \times 3 + 4 \times 5 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 + 2 + 4^2 + 4 + \cdots + \left( n-1 \right)^2 + n - 1}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2^2 + 4^2 + \cdots + \left( n-1 \right)^2}{2}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n - 1}{2} \right)^2 \right]\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{2 \times \left( \frac{n-1}{2} \right) \times \left( \frac{n+1}{2}\right)\times n}{6}\\[2ex] &= \frac{\left( n + 1 \right)\left( n - 1 \right)}{8} + \frac{n\left( n + 1 \right)\left( n - 1\right)}{12}\\[2ex] &= \frac{3\left( n + 1 \right)\left( n - 1 \right) + 2n\left( n + 1 \right)\left( n - 1\right)}{24}\\[2ex] &= \frac{\left( n - 1 \right)\left( n + 1 \right)\left( 2n + 3 \right)}{24} \end{aligned}$n$ 为偶数也是同样的道理。 \begin{aligned} 原式&=\frac{1 \times 2 + 3 \times 4 + \cdots + n\left( n - 1 \right)}{2}\\[2ex] &= \frac{2^2 - 2 + 4^2 - 4 + \cdots + n^2 - n}{2}\\[2ex] &= \frac{2^2 + 4^2 + \cdots + n^2}{2} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= 2\left[ 1^2 + 2^2 + \cdots + \left( \frac{n}{2} \right)^2 \right] - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2 \times \left( \frac{n}{2} \right) \times \left( \frac{n+2}{2}\right)\times \left(n + 1 \right)}{6} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{n\left(n + 1 \right)\left( n + 2 \right)}{12} - \frac{n \left( n + 2 \right)}{8}\\[2ex] &= \frac{2n\left(n + 1 \right)\left( n + 2 \right) - 3n \left( n + 2 \right)}{24}\\[2ex] &= \frac{n\left( n + 2 \right)\left( 2n-1 \right)}{24} \end{aligned}把头朝上和头朝下的三角形加起来，得到 tot = \left\{\begin{matrix} \begin{aligned} & \frac{\left( n + 1 \right)\left( 2n^2 + 3n - 1 \right)}{8} & \{n \mid n = 2m + 1,m \in \rm N^* \}\\[2ex] & \frac{n\left( n + 2 \right)\left( 2n+1 \right)}{8} & \{n \mid n = 2m,m \in \rm N^* \} \end{aligned} \end{matrix}\right.这就是最后的答案，每次都可以 $O(1)$ 求了，总时间复杂度为 $O(T)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int t, n;int main() &#123; for (read(t); t; --t) &#123; read(n); if (n &amp; 1) write((n + 1) * (2 * n * n + 3 * n - 1) / 8);//奇数 else write(n * (n + 2) * (2 * n + 1) / 8);//偶数 putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -20,9 +32,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>缩点</tag>
         <tag>图论</tag>
         <tag>Luogu</tag>
-        <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
@@ -36,11 +48,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
+        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -51,11 +63,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -67,10 +79,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
-        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -83,10 +95,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
-        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -99,11 +111,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
-        <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -115,11 +127,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
-        <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -132,9 +144,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -148,9 +160,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -163,11 +175,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -179,11 +191,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -195,11 +207,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -211,11 +223,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -297,10 +309,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>SDOI</tag>
-        <tag>动态规划</tag>
         <tag>2006</tag>
+        <tag>Luogu</tag>
+        <tag>动态规划</tag>
+        <tag>SDOI</tag>
         <tag>树形DP</tag>
       </tags>
   </entry>
@@ -392,8 +404,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>中国剩余定理</tag>
         <tag>Codeforces</tag>
+        <tag>中国剩余定理</tag>
       </tags>
   </entry>
   <entry>
@@ -429,8 +441,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -443,8 +455,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
