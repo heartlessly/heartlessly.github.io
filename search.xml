@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P5343」「XR-1」分块]]></title>
+    <url>%2Fproblems%2Fluogu-p5343%2F</url>
+    <content type="text"><![CDATA[Description给定一个长度为 $n\ (1 \leq n \leq 10^{18})$ 的序列和 $2$ 个 可重 集合：$PR$ 和 $NF$ 。现在要把它分成若干块，块的大小有限制，允许的块长为 $PR \cap NF$。求有多少种不同的分块方案，答案对 $10^9 + 7$ 取模。（设最大块长为 $x$，$1 \leq |PR|,|NF|,x \leq 100$）。 Source[Luogu]P5343 Solution$60 \rm pts$： 考虑 动态规划 。 先预处理出所有可能的块长 $a_1 \sim a_m$（注意要去重）。 用 $f_i$ 表示长度为 $i$ 的序列的分块方案数。 初始 $f_0 = 1$ 。（长度为 $0$ 的序列一定有 $1$ 种分块方案） 状态转移方程（考虑分出来最后一块的块长为 $a_j$）： \large{ f_i = \sum\limits_{j = 1}^m f_{i - a_j} }直接转移是 $O(n)$ 的。 $100\rm pts$： 发现块长最大只有 $100$（$\max\limits_{i = 1}^m \{a_i\} \leq 100$），所以考虑用 矩阵乘法 优化上述 DP 。 若矩阵的大小为 $size \times size$，则有 $size = \max\limits_{i = 1}^m \{a_i\}$（因为 $f_i$ 不可能由 $f_{i - 100}$ 之前的转移过来）。 先构造初始矩阵。根据 $f_0 = 1$，DP 预处理出 $f_1 \sim f_{size - 1}$，然后才能转移。 \large { \begin{bmatrix} f_{size - 1}\\[1ex] f_{size-2}\\[1ex] \cdots\\[1ex] f_{1}\\[1ex] f_{0}\\[1ex] \end{bmatrix} }接下来构造转移矩阵。首先根据 $f_i = \sum\limits_{j = 1}^m f_{i - a_j}$ 得知，矩阵第一行中，第 $a_i$ 个数为 $1$，其余为 $0$ 。剩下的 $f_{i-1} \sim f_{i - size + 1}$ 都可以在上一个矩阵中找到，所以对应的标为 $1$，其它为 $0$ 。 \large{ \begin{bmatrix} \\[1ex] 1 & 0 & \cdots & \cdots & \cdots & 0\\[1ex] 0 & 1 & 0 & \cdots & \cdots & 0\\[1ex] 0 & \cdots & 0 & 1 & 0 & 0\\[1ex] 0 & \cdots & \cdots & 0 & 1 & 0\\[1ex] \end{bmatrix} \times\begin{bmatrix} f_{i-1}\\[1ex] f_{i-2}\\[1ex] \cdots\\[1ex] f_{i-size + 1}\\[1ex] f_{i-size}\\[1ex] \end{bmatrix}=\begin{bmatrix} f_i\\[1ex] f_{i-1}\\[1ex] \cdots\\[1ex] f_{i-size + 2}\\[1ex] f_{i-size + 1}\\[1ex] \end{bmatrix} }最后是答案矩阵。 \large{ \begin{bmatrix} \\[1ex] 1 & 0 & \cdots & \cdots & \cdots & 0\\[1ex] 0 & 1 & 0 & \cdots & \cdots & 0\\[1ex] 0 & \cdots & 0 & 1 & 0 & 0\\[1ex] 0 & \cdots & \cdots & 0 & 1 & 0\\[1ex] \end{bmatrix}^{n-size + 1} \times\begin{bmatrix} f_{size - 1}\\[1ex] f_{size-2}\\[1ex] \cdots\\[1ex] f_{1}\\[1ex] f_{0}\\[1ex] \end{bmatrix}=\begin{bmatrix} f_n\\[1ex] f_{n-1}\\[1ex] \cdots\\[1ex] f_{n-size + 2}\\[1ex] f_{n-size + 1}\\[1ex] \end{bmatrix} }答案矩阵的第 $1$ 行第 $1$ 列即是最终答案。时间复杂度为 $O(size^3\log n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 100;const int MOD = 1e9 + 7;LL n;int pr, nf, m, size, f[MAXN + 5];bool a[MAXN + 5], b[MAXN + 5];struct Matrix &#123; int mat[MAXN + 5][MAXN + 5]; inline void clear() &#123; memset(mat, 0, sizeof (mat)); &#125; inline Matrix friend operator*(Matrix a, Matrix b) &#123; Matrix c; c.clear(); for (int i = 1; i &lt;= size; ++i) for (int j = 1; j &lt;= size; ++j) for (int k = 1; k &lt;= size; ++k) c.mat[i][j] = (c.mat[i][j] + (LL) a.mat[i][k] * b.mat[k][j]) % MOD; return c; &#125;//矩阵乘法 &#125; ans, base;inline Matrix quickPow(Matrix x, LL p) &#123; Matrix res; res.clear(); for (int i = 1; i &lt;= size; ++i) res.mat[i][i] = 1; for (; p; p &gt;&gt;= 1, x = x * x) if (p &amp; 1) res = res * x; return res;&#125;//矩阵快速幂 int main() &#123; read(n), read(pr); for (int x, i = 1; i &lt;= pr; ++i) &#123; read(x); a[x] = 1; &#125; read(nf); for (int x, i = 1; i &lt;= nf; ++i) &#123; read(x); b[x] = 1; &#125;//用两个桶标记允许的块长 for (int i = 1; i &lt;= 100; ++i) if (a[i] &amp;&amp; b[i]) &#123;//若同时满足 a,b base.mat[1][i] = 1;//转移矩阵第一行 size = i;//矩阵大小 &#125; for (int i = 1; i &lt; size; ++i) base.mat[i + 1][i] = 1;//转移矩阵第 2 ~ size 行 f[0] = 1;//初始状态 for (int i = 1; i &lt; size; ++i) for (int j = 1; j &lt;= i; ++j) if (a[j] &amp;&amp; b[j]) f[i] = (f[i] + f[i - j]) % MOD;//DP 预处理 f[1] ~ f[size - 1] for (int i = 1; i &lt;= size; ++i) ans.mat[i][1] = f[size - i];//初始矩阵 ans = quickPow(base, n - size + 1) * ans;//得到答案矩阵 write(ans.mat[1][1]); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>动态规划</tag>
+        <tag>矩阵加速</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Codeforces 1120C」Compress String]]></title>
     <url>%2Fproblems%2Fcodeforces-1120c%2F</url>
     <content type="text"><![CDATA[Description给定一个长度为 $n$ 的字符串 $s$，现在有一个打字机，每次你可以花费 $a$ 的代价打出一个字符，或者花费 $b$ 的代价打出一个 已经打出的字符串 的子串，求打出 $s$ 的最小代价。$(1 \leq n,a,b \leq 5 \times 10^3)$ Source[Luogu]CF1120C [Codeforces]1120C Solution很容易想到 $O(n^3)$ 的 DP 。 我们用 $f_i$ 表示打完前 $i$ 个字符所需要的最小代价，状态转移方程为 \large { f_i = \min \left( f_{i - 1} + a,\min \{ f_{i - k}\} + b \right) }考虑第 $i$ 个字符是怎么打出来的。 可以先打出前 $i - 1$ 个字符，然后花费 $a$ 的代价打出第 $i$ 个字符。 设子串的末尾为第 $j$ 个字符，子串的长度为 $k$，则可以先打出前 $i - k$ 个字符，再花费 $b$ 的代价打出 $k$ 个字符。前提是 $s_{i-k + 1, i}$ 与 $s_{j - k + 1, j}$ 相等，可以用 $\rm hash$ 判断。 最后取上述两种情况的最小值即可。 如何优化？ 不难发现，$f$ 数组的值其实是单调不减的。 换句话说，方程中 $k$ 的值要尽可能大。 而 $k$ 的最大值其实是 $s_{1,i}$ 与 $s_{1,j}$ 的 最长公共后缀 长度。 于是我们可以省去对 $k$ 的枚举，同样的状态，新转移方程为 \large { f_i = \min \left( f_{i - 1} + a, \min \{f_{\min\left(i - LPS_{i,j}, j\right)} \} + b \right) }其中 $LPS_{i,j}$ 表示 $s_{1, i}$ 与 $s_{1,j}$ 的最长公共后缀长度。之所以要与 $j$ 取 $\min$，是因为已经假设子串末尾为第 $j$ 个字符，$i - LPS_{i,j}$ 的值肯定不能比 $j$ 小，否则就等于取了 还没打出来的字符串 的子串。 图示： $\rm LPS(最长公共后缀)$ 可以用 $O(n^2)$ DP 预处理，考虑第 $s_i$ 和 $s_j$ 是否相等即可。 \large { LPS_{i,j} = \left\{\begin{matrix} LPS_{i - 1,j - 1} + 1 & (s_i = s_j)\\[2ex] 0 & (s_i \neq s_j) \end{matrix}\right. }当然这道题也可以用 $\rm SA(后缀数组)$ 维护 DP，只不过写起来麻烦一点。 总时间复杂度为 $O(n^2)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5e3;int n, a, b, f[MAXN + 5], lps[MAXN + 5][MAXN + 5];char s[MAXN + 5];int main() &#123; read(n), read(a), read(b); scanf("%s", s + 1); for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= i; ++j) lps[i][j] = s[i] == s[j] ? lps[i - 1][j - 1] + 1 : 0;//预处理最长公共后缀 memset(f, 0x3f, sizeof (f)); f[0] = 0;//初始状态：不打字花费的代价为 0 for (int i = 1; i &lt;= n; ++i) &#123; f[i] = f[i - 1] + a; for (int j = 1; j &lt; i; ++j) f[i] = min(f[i], f[max(i - lps[i][j], j)] + b);//转移 &#125; write(f[n]); putchar('\n'); return 0;&#125;]]></content>
@@ -21,9 +34,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
-        <tag>Luogu</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
@@ -49,10 +62,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -76,9 +89,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -89,8 +102,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -101,8 +114,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -113,10 +126,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>缩点</tag>
         <tag>图论</tag>
-        <tag>USACO</tag>
         <tag>Luogu</tag>
+        <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -129,11 +142,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -144,11 +157,27 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4124」「CQOI2016」手机号码]]></title>
+    <url>%2Fproblems%2Fluogu-p4124%2F</url>
+    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[Luogu]P4124 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>CQOI</tag>
+        <tag>2016</tag>
       </tags>
   </entry>
   <entry>
@@ -160,27 +189,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>CQOI</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>2016</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[「Luogu P4124」「CQOI2016」手机号码]]></title>
-    <url>%2Fproblems%2Fluogu-p4124%2F</url>
-    <content type="text"><![CDATA[Description现在需要找一些 $11$ 位的手机号码（不含前导零），要出现至少 $3$ 个相邻的相同数字，且不能同时出现 $4$ 和 $8$ 。问区间 $[l,r]\ (10^{10} \leq l \leq r &lt; 10^{11})$ 中有多少符合上述条件的手机号码。 Source[Luogu]P4124 Solution考虑用 记忆化搜索 实现 数位DP 。 用 $f_{pos,pre1,pre2,four,eight,isThree}$ 表示 当前到了第 $12 - pos$ 位，前一位数是 $pre1$，前一位数的前一位数是 $pre2$，是否存在 $4$，是否存在 $8$，是否存在 $3$ 位数连续 的电话号码个数。因为固定 $11$ 位，只需要保证第 $1$ 位非零，所以不需要判断前导零。还有一个细节，当 $l = 10^{10}$ 时，$l - 1$ 会变成 $10$ 位数，显然不符合题意，这时计算就会出错，所以需要特判。具体实现详见代码，时间复杂度为 $O(\lg^3n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 11;LL l, r, f[MAXN + 5][MAXN + 5][MAXN + 5][2][2][2];inline LL dfs(int *num, int pos, int pre1, int pre2, bool four, bool eight, bool isThree, bool lim) &#123; //当前到了第 12 - pos 位，前一位数是 pre1，前一位数的前一位数是 pre2， //four 表示是否出现过 4，eight 表示是否出现过 8，isThree 表示是否有 3 位数连续，lim 表示当前位是否受限制 //固定 11 位，不需要判断前导零，只需要保证开头（第 1 位）不为 0 if (four &amp;&amp; eight) return 0;//不能同时有 4 和 8 if (!pos) return isThree;//搜完了，如果有三个以上连续的，返回 1 if (!lim &amp;&amp; ~f[pos][pre1][pre2][four][eight][isThree]) return f[pos][pre1][pre2][four][eight][isThree];//返回已记录的值 LL res = 0, maxNum = lim ? num[pos] : 9;//当前位最大值 for (int i = (pos == 11); i &lt;= maxNum; ++i)//第一位不能为 0 res += dfs(num, pos - 1, i, pre1, four || (i == 4), eight || (i == 8), isThree || (pre1 == pre2 &amp;&amp; i == pre2), lim &amp;&amp; (i == maxNum)); //搜索下一位，判断是否有 4，是否有 8 以及 是否存在 3 个数连续 if (!lim) f[pos][pre1][pre2][four][eight][isThree] = res;//存下当前状态的值 return res;&#125;inline LL solve(LL x) &#123; int len = 0, num[MAXN + 5]; for (; x; x /= 10) num[++len] = x % 10; memset(f, -1, sizeof (f));//初始化 return len == 11 ? dfs(num, len, 10, 10, 0, 0, 0, 1) : 0;//特判长度是否为 11 //第 1 位受到限制。前 2 位不能为 0 ~ 9，否则会影响检查是否存在 3 位数连续&#125;int main() &#123; read(l), read(r); write(solve(r) - solve(l - 1)); putchar('\n'); return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>CQOI</tag>
         <tag>数位DP</tag>
-        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -192,11 +205,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -207,12 +220,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数位DP</tag>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -225,8 +238,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -239,12 +252,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -257,9 +270,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>数位DP</tag>
-        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -271,12 +284,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>数位DP</tag>
-        <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -288,8 +301,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -303,12 +316,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>SCOI</tag>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -321,10 +334,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>概率期望</tag>
-        <tag>树形DP</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
+        <tag>概率期望</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -335,12 +348,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
-        <tag>概率期望</tag>
         <tag>Luogu</tag>
-        <tag>树形DP</tag>
+        <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
+        <tag>概率期望</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -351,8 +364,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>树形DP</tag>
       </tags>
   </entry>
@@ -364,8 +377,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>树形DP</tag>
       </tags>
   </entry>
@@ -374,8 +387,8 @@
     <url>%2Funcategorized%2Fluogu-p2014%2F</url>
     <content type="text"><![CDATA[Description现在有 $n\ (1\leq n \leq 300)$ 个点，其中节点 $i\ (1 \leq i \leq n)$ 的父节点为 $k_i\ (0\leq k_i \leq n)$，权值为 $s_i\ (1 \leq s_i \leq 20)$，$k_i = 0$ 表示这个点没有父节点。现在需要从中选择 $m\ (1 \leq m \leq 300)$ 个点，你能选择一个点当且仅当 这个点的所有祖先节点已选 或 这个点没有父节点，求这些点的最大点权和。 Source[Luogu]P2014 Solution不止一个点没有父节点，说明这道题的图是一个 森林（由很多树组成）。一种经典的解决方法是，我们把每棵树的根连向一个虚拟节点—— $0$ 号节点（即 $k_i = 0$ 时依然连边）。我们把 $0$ 号节点看作必选的点，也就是说，一共要选 $m + 1$ 个点。这样就把一个森林转化成了一棵树。 这是一个有树形依赖的背包问题，所以考虑在转化后的树上做 树形DP（树形背包）。 状态： 用 $f_{u,j,k}$ 表示从 $u$ 的前 $j$ 个子节点的子树中选出 $k$ 个点的最大点权和。 初始： \large { f_{u, 0, 1} = s_u }从节点 $u$ 的前 $0$ 个子节点中选出 $1$ 个点的答案为 $s_u$（根据题目中的条件：只有选了节点 $u$ 才能继续选其子树中的点）。 转移： \large { f_{u,j,k} = \max \begin{Bmatrix} f_{u, j - 1, k - l} + f_{v, sum_v, l} \end{Bmatrix}\\[2ex] \left( 0 \leq l \leq \min\left(k - 1,size_v \right), v \in son_u \right) }其中 $v$ 是 $u$ 的第 $j$ 个子节点，$sum_v$ 表示 $v$ 的子节点个数，$size_v$ 表示 $v$ 的子树大小。在 $u$ 的子树中，从 $u$ 的前 $j$ 个子节点的子树中选出 $k$ 个点时，可以先从前 $j - 1$ 个子节点的子树中选择 $k - l$ 个点，然后在第 $j$ 个子节点 $v$ 的子树中选择 $l$ 个点，枚举 $l$，取最大值即是该状态的答案。 答案： \large{\begin{aligned} &f_{root,sum_{root},m + 1} && (root\ 表示根节点) \end{aligned}}答案为在根节点的子树中，从根节点的所有儿子（$sum_{root}$，即根节点的儿子个数）中选出 $m + 1$ 个点的最大点权和。此题中根节点为 $0$ 号节点（虚点）。 然而 $3$ 维的空间可能会开不下，考虑如何优化空间复杂度。 很容易发现，$u$ 是从子节点 $v$ 的状态合并而来的，所以在处理 $u$ 之前 $v$ 的状态都是已知的（即 $f_{v,sum_v,l}$ 已知）。同时状态转移与 $k$ 枚举的顺序无关，因为枚举 $k$ 时 $j - 1$ 的所有状态都已经求出来了。除此之外，状态 $k - l$ 一直在 $l$ 的前面，因此我们考虑压掉 $j$ 这一维。 状态： 用 $f_{u,j}$ 表示在 $u$ 的子树中，选出 $j$ 个点的最大点权和。 初始： \large { f_{u,1} = s_u }转移： \large { f_{u,j} = \max \begin{Bmatrix} f_{u, j - k} + f_{v, k} \end{Bmatrix}\\[2ex] \left( 0 \leq k \leq \min\left(j - 1,size_v \right), v \in son_u \right) }$size_v$ 表示 $v$ 的子树大小。注意 $j$ 应该倒叙枚举，这样做的实质是：$f_{u,j-k}$ 仍然是上一次转移的状态（还没被更新），即 $f_{u-1,j-k}$ 。 答案： \large{\begin{aligned} &f_{root,m + 1} && (root\ 表示根节点) \end{aligned}}时间复杂度不是很好证明，应该为 $O(nm)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 300, MAXM = 300;int n, m, tot, k, s[MAXN + 5], head[MAXN + 5], size[MAXN + 5], f[MAXN + 5][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u, int depth) &#123; if (depth &gt; m) return;//小优化：所选的点一定在前 m 层（节点 0 算第 0 层） size[u] = 1; f[u][1] = s[u];//初始 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; dfs(v, depth + 1); size[u] += size[v];//节点 u 的子树大小 for (int j = min(m + 1, size[u]); j; --j)//注意压维后要倒序枚举 for (int k = 0; k &lt;= min(j - 1, size[v]); ++k) f[u][j] = max(f[u][j], f[u][j - k] + f[v][k]);//转移 &#125;&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(k), read(s[i]); addEdge(k, i);//k 是 i 的父节点，连一条有向边 k -&gt; i &#125; dfs(0, 0);//根节点是 0 write(f[0][m + 1]);//答案 putchar('\n'); return 0;&#125;]]></content>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>树形DP</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
@@ -390,10 +403,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2006</tag>
-        <tag>动态规划</tag>
-        <tag>SDOI</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>动态规划</tag>
+        <tag>2006</tag>
         <tag>树形DP</tag>
       </tags>
   </entry>
@@ -405,8 +418,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>树形DP</tag>
       </tags>
   </entry>
@@ -443,9 +456,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -470,10 +483,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -485,8 +498,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -509,8 +522,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -522,8 +535,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
+        <tag>数论数学</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -535,10 +548,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>SDOI</tag>
-        <tag>2012</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>数论数学</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -561,8 +574,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -573,11 +586,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>动态规划</tag>
+        <tag>数论数学</tag>
+        <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
-        <tag>概率期望</tag>
       </tags>
   </entry>
   <entry>
@@ -624,10 +637,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -651,9 +664,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -711,8 +724,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -760,9 +773,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>2009</tag>
       </tags>
   </entry>
   <entry>
@@ -773,10 +786,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>2009</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
