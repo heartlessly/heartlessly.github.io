@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「LOJ 10050」The XOR-longest Path]]></title>
+    <url>%2Fproblems%2Floj-10056%2F</url>
+    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 10^5)$ 个点的带权树，求树上最长的异或和路径。$(0 \leq 边权 &lt; 2^{31})$ Source[LOJ]10056 Solution$a,b$ 的树上路径异或和其实就是 $a$ 到根的路径异或和 与 $b$ 到根的路径异或和 的异或值。原因是：根据异或运算的性质 $x \oplus x = 0$ 可知，两个点到根重复的路径会互相抵消为 $0$，对答案不影响。 所以我们可以先用 搜索 求出每个点到根的路径异或和，然后把这些值插入到 Trie 中，从中选出两点使其异或和最大，这就和另外一题 [LOJ]10050 一样了，不会的话自行阅读，这里不再赘述过程。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MAXM = 2e5;int n, tot, ans, head[MAXN + 5], val[MAXN + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];struct Trie &#123; int tot, ch[MAXN * 31 + 5][2]; inline void insert(int x) &#123; int u = 1; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v]) ch[u][v] = ++tot;//新建节点 u = ch[u][v]; &#125; &#125; inline int find(int x) &#123; int u = 1, res = 0; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v ^ 1]) u = ch[u][v];//如果没有相反的路，则沿相同的路走 else &#123; res += 1 &lt;&lt; i;//走相反的路 u = ch[u][v ^ 1];//这一位为 1，累加答案 &#125; &#125; return res; &#125;&#125; tr;inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;void dfs(int u, int fa) &#123; for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (v == fa) continue; val[v] = val[u] ^ w;//预处理出每个节点到根的路径异或和 dfs(v, u); &#125;&#125;int main() &#123; read(n); for (int u, v, w, i = 1; i &lt; n; ++i) &#123; read(u), read(v), read(w); addEdge(u, v, w), addEdge(v, u, w);//连无向边 &#125; dfs(1, 0); tr.tot = 1; for (int i = 1; i &lt;= n; ++i) &#123; ans = max(ans, tr.find(val[i]));//查找 x 与 Trie 中已有数的异或最大值 tr.insert(val[i]);//把 x 插入到 Trie 中 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>搜索</tag>
+        <tag>Trie</tag>
+        <tag>LibreOJ</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4551」最长异或路径]]></title>
+    <url>%2Fproblems%2Fluogu-p4551%2F</url>
+    <content type="text"><![CDATA[Description给定一棵 $n\ (1 \leq n \leq 10^5)$ 个点的带权树，求树上最长的异或和路径。$(0 \leq 边权 &lt; 2^{31})$ Source[Luogu]P4551 Solution$a,b$ 的树上路径异或和其实就是 $a$ 到根的路径异或和 与 $b$ 到根的路径异或和 的异或值。原因是：根据异或运算的性质 $x \oplus x = 0$ 可知，两个点到根重复的路径会互相抵消为 $0$，对答案不影响。 所以我们可以先用 搜索 求出每个点到根的路径异或和，然后把这些值插入到 Trie 中，从中选出两点使其异或和最大，这就和另外一题 [LOJ]10050 一样了，不会的话自行阅读，这里不再赘述过程。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MAXM = 2e5;int n, tot, ans, head[MAXN + 5], val[MAXN + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];struct Trie &#123; int tot, ch[MAXN * 31 + 5][2]; inline void insert(int x) &#123; int u = 1; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v]) ch[u][v] = ++tot;//新建节点 u = ch[u][v]; &#125; &#125; inline int find(int x) &#123; int u = 1, res = 0; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v ^ 1]) u = ch[u][v];//如果没有相反的路，则沿相同的路走 else &#123; res += 1 &lt;&lt; i;//走相反的路 u = ch[u][v ^ 1];//这一位为 1，累加答案 &#125; &#125; return res; &#125;&#125; tr;inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;void dfs(int u, int fa) &#123; for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (v == fa) continue; val[v] = val[u] ^ w;//预处理出每个节点到根的路径异或和 dfs(v, u); &#125;&#125;int main() &#123; read(n); for (int u, v, w, i = 1; i &lt; n; ++i) &#123; read(u), read(v), read(w); addEdge(u, v, w), addEdge(v, u, w);//连无向边 &#125; dfs(1, 0); tr.tot = 1; for (int i = 1; i &lt;= n; ++i) &#123; ans = max(ans, tr.find(val[i]));//查找 x 与 Trie 中已有数的异或最大值 tr.insert(val[i]);//把 x 插入到 Trie 中 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>搜索</tag>
+        <tag>Trie</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「LOJ 10050」The XOR Largest Pair]]></title>
+    <url>%2Fproblems%2Floj-10050%2F</url>
+    <content type="text"><![CDATA[Description在给定的 $n$ 个整数 $a_1,a_2,\ldots,a_n$ 中选出两个进行异或运算，得到的结果最大是多少？$(1 \leq n \leq 10^5,0 \leq a_i \leq 2^{31})$ Source[LOJ]10050 Solution转化问题：对于每个 $i\ (1 \leq i \leq n)$，我们需要找到一个 $j\ (1 \leq j &lt; i)$，使得 $a_i \oplus a_j$ 的值最大（$\oplus $ 表示异或）。 我们可以建一棵 0-1 Trie 。 把每个数二进制分解，从高位到低位依次插入到 Trie 中（注意这道题中的二进制位不超过 $30$，高位补 $0$ ）。 在插入第 $i$ 个数之前，我们要先找到前 $i - 1$ 个数与 $a_i$ 异或的最大值来更新答案。 怎么找呢？我们从最高位开始，如果 $a_i$ 二进制下某一位是 $1$，就选择走 Trie 对应深度的 $0$ 的子树，反之则走 $1$ 的子树。这是根据异或运算的性质来使异或后的值这一位为 $1$，最大化答案。若不能取相反，则只能取相同，异或后这一位将为 $0$ 。 举例分析。假如我们已经在 Trie 中插入了 $5$ 个数：$1,2,4,5,7$，转化为二进制分别对应 $001,010,100,101,111$ 。（如图） 若我们要求 $3(011)$ 与这 $5$ 个数的最大异或值，则考虑走 $1-0-0$ 这一条路线，因为这样能使每一位都是 $1$ 。 若我们要求 $4(100)$ 与这 $5$ 个数的最大异或值，则考虑走 $0-1-0$ 这一条路线，本来选 $0-1-1$ 这条路线能得到异或最大值，但是在第 $2$ 个 $1$ 的位置时发现没有 $1$ 这条路，所以只能走 $0$ 。 对于每一个数我们都需要 $O(\log n)$ 的时间计算它与前面的数的最大异或值，所以时间复杂度为 $O(n \log n)$，空间复杂度为 $O(n \log n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, ans;struct Trie &#123; int tot, ch[MAXN * 30 + 5][2]; inline void insert(int x) &#123; int u = 1; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v]) ch[u][v] = ++tot;//新建节点 u = ch[u][v]; &#125; &#125; inline int find(int x) &#123; int u = 1, res = 0; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v ^ 1]) u = ch[u][v];//如果没有相反的路，则沿相同的路走 else &#123; u = ch[u][v ^ 1];//走相反的路 res += 1 &lt;&lt; i;//这一位为 1，累加答案 &#125; &#125; return res; &#125;&#125; tr;int main() &#123; read(n); tr.tot = 1; for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); ans = max(ans, tr.find(x));//查找 x 与 Trie 中已有数的异或最大值 tr.insert(x);//把 x 插入到 Trie 中 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Trie</tag>
+        <tag>LibreOJ</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Codeforces 1164I」Maximum Value]]></title>
     <url>%2Fproblems%2Fcodeforces-1164i%2F</url>
     <content type="text"><![CDATA[Description实数 $a,b$ 满足 $\left(a + b - 1\right) ^2 = ab + 1$，求 $a^2 + b^2$ 的最大值。 Source[Codeforces]1164I Solution提交答案 题。 化简式子，使等式左边变为要求的值，等式右边存在完全平方项。 \left(a + b - 1\right) ^2 = ab + 1\\ a^2+b^2+2ab+1-2a-2b=ab+1\\ a^2+b^2+ab-2a-2b=0\\ 2a^2+2b^2+2ab-4a-4b=0\\ \begin{aligned} a^2+b^2 &= -a^2 - b^2 - 2ab + 4a + 4b\\ &= -\left( a + b \right)^2 + 4a + 4b\\ &= 4 - \left[ \left( a + b \right)^2 - 4\left( a + b \right) + 4\right]\\ &= 4 - \left( a + b - 2\right)^2 \end{aligned}\\ \begin{aligned} &\because \left( a + b - 2 \right)^2 \geq 0\\ &\therefore a^2 + b^2 \leq 4 \end{aligned}即 $a^2 + b^2$ 的最大值为 $4$ 。 Answer14]]></content>
@@ -209,8 +247,8 @@
       <tags>
         <tag>图论</tag>
         <tag>Luogu</tag>
-        <tag>缩点</tag>
         <tag>USACO</tag>
+        <tag>缩点</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -465,8 +503,11 @@
   </entry>
   <entry>
     <title><![CDATA[「Luogu P2014」选课]]></title>
-    <url>%2Funcategorized%2Fluogu-p2014%2F</url>
+    <url>%2Fproblems%2Fluogu-p2014%2F</url>
     <content type="text"><![CDATA[Description现在有 $n\ (1\leq n \leq 300)$ 个点，其中节点 $i\ (1 \leq i \leq n)$ 的父节点为 $k_i\ (0\leq k_i \leq n)$，权值为 $s_i\ (1 \leq s_i \leq 20)$，$k_i = 0$ 表示这个点没有父节点。现在需要从中选择 $m\ (1 \leq m \leq 300)$ 个点，你能选择一个点当且仅当 这个点的所有祖先节点已选 或 这个点没有父节点，求这些点的最大点权和。 Source[Luogu]P2014 Solution不止一个点没有父节点，说明这道题的图是一个 森林（由很多树组成）。一种经典的解决方法是，我们把每棵树的根连向一个虚拟节点—— $0$ 号节点（即 $k_i = 0$ 时依然连边）。我们把 $0$ 号节点看作必选的点，也就是说，一共要选 $m + 1$ 个点。这样就把一个森林转化成了一棵树。 这是一个有树形依赖的背包问题，所以考虑在转化后的树上做 树形DP（树形背包）。 状态： 用 $f_{u,j,k}$ 表示从 $u$ 的前 $j$ 个子节点的子树中选出 $k$ 个点的最大点权和。 初始： \large { f_{u, 0, 1} = s_u }从节点 $u$ 的前 $0$ 个子节点中选出 $1$ 个点的答案为 $s_u$（根据题目中的条件：只有选了节点 $u$ 才能继续选其子树中的点）。 转移： \large { f_{u,j,k} = \max \begin{Bmatrix} f_{u, j - 1, k - l} + f_{v, sum_v, l} \end{Bmatrix}\\[2ex] \left( 0 \leq l \leq \min\left(k - 1,size_v \right), v \in son_u \right) }其中 $v$ 是 $u$ 的第 $j$ 个子节点，$sum_v$ 表示 $v$ 的子节点个数，$size_v$ 表示 $v$ 的子树大小。在 $u$ 的子树中，从 $u$ 的前 $j$ 个子节点的子树中选出 $k$ 个点时，可以先从前 $j - 1$ 个子节点的子树中选择 $k - l$ 个点，然后在第 $j$ 个子节点 $v$ 的子树中选择 $l$ 个点，枚举 $l$，取最大值即是该状态的答案。 答案： \large{\begin{aligned} &f_{root,sum_{root},m + 1} && (root\ 表示根节点) \end{aligned}}答案为在根节点的子树中，从根节点的所有儿子（$sum_{root}$，即根节点的儿子个数）中选出 $m + 1$ 个点的最大点权和。此题中根节点为 $0$ 号节点（虚点）。 然而 $3$ 维的空间可能会开不下，考虑如何优化空间复杂度。 很容易发现，$u$ 是从子节点 $v$ 的状态合并而来的，所以在处理 $u$ 之前 $v$ 的状态都是已知的（即 $f_{v,sum_v,l}$ 已知）。同时状态转移与 $k$ 枚举的顺序无关，因为枚举 $k$ 时 $j - 1$ 的所有状态都已经求出来了。除此之外，状态 $k - l$ 一直在 $l$ 的前面，因此我们考虑压掉 $j$ 这一维。 状态： 用 $f_{u,j}$ 表示在 $u$ 的子树中，选出 $j$ 个点的最大点权和。 初始： \large { f_{u,1} = s_u }转移： \large { f_{u,j} = \max \begin{Bmatrix} f_{u, j - k} + f_{v, k} \end{Bmatrix}\\[2ex] \left( 0 \leq k \leq \min\left(j - 1,size_v \right), v \in son_u \right) }$size_v$ 表示 $v$ 的子树大小。注意 $j$ 应该倒叙枚举，这样做的实质是：$f_{u,j-k}$ 仍然是上一次转移的状态（还没被更新），即 $f_{u-1,j-k}$ 。 答案： \large{\begin{aligned} &f_{root,m + 1} && (root\ 表示根节点) \end{aligned}}时间复杂度不是很好证明，应该为 $O(nm)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 300, MAXM = 300;int n, m, tot, k, s[MAXN + 5], head[MAXN + 5], size[MAXN + 5], f[MAXN + 5][MAXN + 5];struct Edge &#123; int next, to;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v) &#123; e[++tot] = (Edge) &#123; head[u], v &#125;; head[u] = tot;&#125;void dfs(int u, int depth) &#123; if (depth &gt; m) return;//小优化：所选的点一定在前 m 层（节点 0 算第 0 层） size[u] = 1; f[u][1] = s[u];//初始 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; dfs(v, depth + 1); size[u] += size[v];//节点 u 的子树大小 for (int j = min(m + 1, size[u]); j; --j)//注意压维后要倒序枚举 for (int k = 0; k &lt;= min(j - 1, size[v]); ++k) f[u][j] = max(f[u][j], f[u][j - k] + f[v][k]);//转移 &#125;&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(k), read(s[i]); addEdge(k, i);//k 是 i 的父节点，连一条有向边 k -&gt; i &#125; dfs(0, 0);//根节点是 0 write(f[0][m + 1]);//答案 putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
