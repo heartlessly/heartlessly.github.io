@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「BZOJ 2120」数颜色]]></title>
     <url>%2Fproblems%2Fbzoj-2120%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2120 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，可以和普通莫队一样。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2120 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -16,7 +16,7 @@
   <entry>
     <title><![CDATA[「Luogu P1903」「国家集训队」数颜色/维护队列]]></title>
     <url>%2Fproblems%2Fluogu-p1903%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 5 \times 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[Luogu]P1903 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，可以和普通莫队一样。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 5 \times 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[Luogu]P1903 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -180,8 +180,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2012</tag>
         <tag>最短路</tag>
+        <tag>2012</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
@@ -194,9 +194,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -208,9 +208,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -271,8 +271,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -287,8 +287,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>BZOJ</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -302,8 +302,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -319,8 +319,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -335,8 +335,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -352,8 +352,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -368,8 +368,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -384,8 +384,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -400,8 +400,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -417,8 +417,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -433,8 +433,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -448,9 +448,9 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -464,9 +464,9 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
