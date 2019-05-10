@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[「BZOJ 2724」「Violet 6」蒲公英]]></title>
-    <url>%2Fproblems%2Fbzoj-2724%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数 $a_i$，$m$ 个询问，求区间 $[l,r]$ 中的最小众数，强制在线。$(1 \leq n \leq 4\times10^4,1 \leq m \leq 5 \times 10^4, 1 \leq a_i \leq 10^9)$ Source[BZOJ]2724 Solution 1考虑 分块 。我们可以预处理出 $f_{i,j}$ 为第 $i$ 个块到第 $j$ 个块的区间最小众数，那样区间 $[l,r]$ 的答案只有可能是 中间所有块的区间最小众数，左边多余块中的数 或 右边多余块中的数（如图）。 很容易在 $O(块的大小 \times n)$ 的时间内预处理出所有的 $f_{i,j}$，但是怎么求出左右多余块中的数在区间 $[l,r]$ 中的出现次数呢？我们可以用 $\rm vector$ 存下每一个 $a_i$ 在序列中的所有出现位置（要先离散化）。在询问时，对于左右多余块中的每一个数 $x$，我们可以二分找到端点 $l,r$ 在 $x$ 对应的 $\rm vector$ 中的位置（可以用 $\rm STL$ 中的 $\rm lower_bound$ 和 $\rm upper_bound$），相减即是 $x$ 在区间 $[l,r]$ 中的出现次数。注意如果该数的出现次数与当前答案的出现次数相同，但这个数更小，也要更新答案，因为要求的是最小众数。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS\log n)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt{m \log n}}$ 时总时间复杂度最小，为 $O(n \sqrt{m \log n })$ 。 Code 1123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 1e3;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m * log2(n)); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0;//maxn 记录众数出现次数，mode 记录最小众数 for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; //如果出现次数比 maxn 大 或 出现次数与 maxn 相同但这个数比当前记录的 mode 小 maxn = cnt[a[k]]; mode = a[k];//更新最优值 &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;&#125;inline int query(int l, int r) &#123; int posL, posR, mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同一个块 for (int i = l; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin();//二分找到 l,r 的位置 if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; //判断能否更新答案 maxn = posR - posL; mode = a[i]; &#125; &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125; Solution 2考虑怎么优化上述做法（即减少查询的时间复杂度）。 很容易发现查询时答案在区间 $[l,r]$ 中的出现次数其实是单调不减的。 我们可以预处理出 $pos_i$，表示 $i$ 的位置在 $a_i$ 的 $\rm vector$ 中对应第几个数。假设当前我们已经知道当前的最小众数是 $mode$，且 $mode$ 的出现次数为 $maxn$ 。左边和右边多余的块分类讨论： 对于左边多余块中的某个数 $x$，$x$ 在其对应 $\rm vector$ 中的位置是 $pos_x$，如果 $x$ 第 $pos_x + maxn$ 次出现的位置 $\leq r$，就说明区间 $[l,r]$ 中 $x$ 的出现次数为 $maxn + 1$，比当前答案更优。如果 $x$ 第 $pos_x + maxn - 1$ 次出现的位置 $\leq r$，且 $x$ 比答案小，就说明 $x$ 也能更新答案。 右边多余的块同理，只是变成了判断 $x$ 第 $pos_x - maxn$ 次出现的位置是否 $\geq l$ 。 写代码时有很多细节需要注意。比如要先判断 $\rm vector$ 的下标是否小于 $0$ 或者超过 $size$，然后再访问。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt m}$ 时总时间复杂度最小，为 $O(n \sqrt m)$ 。 Code 2123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 500;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5], pos[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 pos[i] = site[a[i]].size();//pos[i] 表示 i 的位置在 a[i] 的 vector 中对应第几个数 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0; for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; maxn = cnt[a[k]]; mode = a[k]; &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;//预处理方法与之前相同&#125;inline int query(int l, int r) &#123; int mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同个一块 for (int i = l; i &lt;= r; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i];//判断出现次数相同但 a[i] 更小的情况，注意边界 for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn) mode = a[i];//判断 a[i] 出现次数比答案更多的情况，maxn 单调不减 &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn)//判断第 pos[i] + maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; if (pos[i] - maxn + 1 &gt;= 0 &amp;&amp; pos[i] - maxn + 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] - maxn + 1] &gt;= l &amp;&amp; site[a[i]][pos[i] - maxn + 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] - maxn &gt;= 0 &amp;&amp; site[a[i]][pos[i] - maxn] &gt;= l; ++maxn)//判断第 pos[i] - maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>BZOJ</tag>
-        <tag>分块</tag>
-        <tag>二分</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[「Luogu P4168」「Violet」蒲公英]]></title>
     <url>%2Fproblems%2Fluogu-p4168%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数 $a_i$，$m$ 个询问，求区间 $[l,r]$ 中的最小众数，强制在线。$(1 \leq n \leq 4\times10^4,1 \leq m \leq 5 \times 10^4, 1 \leq a_i \leq 10^9)$ Source[Luogu]P4168 Solution 1考虑 分块 。我们可以预处理出 $f_{i,j}$ 为第 $i$ 个块到第 $j$ 个块的区间最小众数，那样区间 $[l,r]$ 的答案只有可能是 中间所有块的区间最小众数，左边多余块中的数 或 右边多余块中的数（如图）。 很容易在 $O(块的大小 \times n)$ 的时间内预处理出所有的 $f_{i,j}$，但是怎么求出左右多余块中的数在区间 $[l,r]$ 中的出现次数呢？我们可以用 $\rm vector$ 存下每一个 $a_i$ 在序列中的所有出现位置（要先离散化）。在询问时，对于左右多余块中的每一个数 $x$，我们可以二分找到端点 $l,r$ 在 $x$ 对应的 $\rm vector$ 中的位置（可以用 $\rm STL$ 中的 $\rm lower_bound$ 和 $\rm upper_bound$），相减即是 $x$ 在区间 $[l,r]$ 中的出现次数。注意如果该数的出现次数与当前答案的出现次数相同，但这个数更小，也要更新答案，因为要求的是最小众数。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS\log n)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt{m \log n}}$ 时总时间复杂度最小，为 $O(n \sqrt{m \log n })$ 。 Code 1123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 1e3;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m * log2(n)); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0;//maxn 记录众数出现次数，mode 记录最小众数 for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; //如果出现次数比 maxn 大 或 出现次数与 maxn 相同但这个数比当前记录的 mode 小 maxn = cnt[a[k]]; mode = a[k];//更新最优值 &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;&#125;inline int query(int l, int r) &#123; int posL, posR, mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同一个块 for (int i = l; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin();//二分找到 l,r 的位置 if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; //判断能否更新答案 maxn = posR - posL; mode = a[i]; &#125; &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125; Solution 2考虑怎么优化上述做法（即减少查询的时间复杂度）。 很容易发现查询时答案在区间 $[l,r]$ 中的出现次数其实是单调不减的。 我们可以预处理出 $pos_i$，表示 $i$ 的位置在 $a_i$ 的 $\rm vector$ 中对应第几个数。假设当前我们已经知道当前的最小众数是 $mode$，且 $mode$ 的出现次数为 $maxn$ 。左边和右边多余的块分类讨论： 对于左边多余块中的某个数 $x$，$x$ 在其对应 $\rm vector$ 中的位置是 $pos_x$，如果 $x$ 第 $pos_x + maxn$ 次出现的位置 $\leq r$，就说明区间 $[l,r]$ 中 $x$ 的出现次数为 $maxn + 1$，比当前答案更优。如果 $x$ 第 $pos_x + maxn - 1$ 次出现的位置 $\leq r$，且 $x$ 比答案小，就说明 $x$ 也能更新答案。 右边多余的块同理，只是变成了判断 $x$ 第 $pos_x - maxn$ 次出现的位置是否 $\geq l$ 。 写代码时有很多细节需要注意。比如要先判断 $\rm vector$ 的下标是否小于 $0$ 或者超过 $size$，然后再访问。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt m}$ 时总时间复杂度最小，为 $O(n \sqrt m)$ 。 Code 2123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 500;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5], pos[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 pos[i] = site[a[i]].size();//pos[i] 表示 i 的位置在 a[i] 的 vector 中对应第几个数 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0; for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; maxn = cnt[a[k]]; mode = a[k]; &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;//预处理方法与之前相同&#125;inline int query(int l, int r) &#123; int mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同个一块 for (int i = l; i &lt;= r; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i];//判断出现次数相同但 a[i] 更小的情况，注意边界 for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn) mode = a[i];//判断 a[i] 出现次数比答案更多的情况，maxn 单调不减 &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn)//判断第 pos[i] + maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; if (pos[i] - maxn + 1 &gt;= 0 &amp;&amp; pos[i] - maxn + 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] - maxn + 1] &gt;= l &amp;&amp; site[a[i]][pos[i] - maxn + 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] - maxn &gt;= 0 &amp;&amp; site[a[i]][pos[i] - maxn] &gt;= l; ++maxn)//判断第 pos[i] - maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个数 $a_i$，$m$ 个询问，求区间 $[l,r]$ 中的最小众数，强制在线。 $(1 \leq n \leq 4\times10^4,1 \leq m \leq 5 \times 10^4, 1 \leq a_i \leq 10^9)$ Source[Luogu]P4168 Solution 1考虑 分块 。我们可以预处理出 $f_{i,j}$ 为第 $i$ 个块到第 $j$ 个块的区间最小众数，那样区间 $[l,r]$ 的答案只有可能是 中间所有块的区间最小众数，左边多余块中的数 或 右边多余块中的数（如图）。 很容易在 $O(块的大小 \times n)$ 的时间内预处理出所有的 $f_{i,j}$，但是怎么求出左右多余块中的数在区间 $[l,r]$ 中的出现次数呢？我们可以用 $\rm vector$ 存下每一个 $a_i$ 在序列中的所有出现位置（要先离散化）。在询问时，对于左右多余块中的每一个数 $x$，我们可以二分找到端点 $l,r$ 在 $x$ 对应的 $\rm vector$ 中的位置（可以用 $\rm STL$ 中的 $\rm lower_bound$ 和 $\rm upper_bound$），相减即是 $x$ 在区间 $[l,r]$ 中的出现次数。注意如果该数的出现次数与当前答案的出现次数相同，但这个数更小，也要更新答案，因为要求的是最小众数。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS\log n)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt{m \log n}}$ 时总时间复杂度最小，为 $O(n \sqrt{m \log n })$ 。 Code 1123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 1e3;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m * log2(n)); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0;//maxn 记录众数出现次数，mode 记录最小众数 for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; //如果出现次数比 maxn 大 或 出现次数与 maxn 相同但这个数比当前记录的 mode 小 maxn = cnt[a[k]]; mode = a[k];//更新最优值 &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;&#125;inline int query(int l, int r) &#123; int posL, posR, mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同一个块 for (int i = l; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin();//二分找到 l,r 的位置 if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; //判断能否更新答案 maxn = posR - posL; mode = a[i]; &#125; &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125; Solution 2考虑怎么优化上述做法（即减少查询的时间复杂度）。 很容易发现查询时答案在区间 $[l,r]$ 中的出现次数其实是单调不减的。 我们可以预处理出 $pos_i$，表示 $i$ 的位置在 $a_i$ 的 $\rm vector$ 中对应第几个数。假设当前我们已经知道当前的最小众数是 $mode$，且 $mode$ 的出现次数为 $maxn$ 。左边和右边多余的块分类讨论： 对于左边多余块中的某个数 $x$，$x$ 在其对应 $\rm vector$ 中的位置是 $pos_x$，如果 $x$ 第 $pos_x + maxn$ 次出现的位置 $\leq r$，就说明区间 $[l,r]$ 中 $x$ 的出现次数为 $maxn + 1$，比当前答案更优。如果 $x$ 第 $pos_x + maxn - 1$ 次出现的位置 $\leq r$，且 $x$ 比答案小，就说明 $x$ 也能更新答案。 右边多余的块同理，只是变成了判断 $x$ 第 $pos_x - maxn$ 次出现的位置是否 $\geq l$ 。 写代码时有很多细节需要注意。比如要先判断 $\rm vector$ 的下标是否小于 $0$ 或者超过 $size$，然后再访问。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt m}$ 时总时间复杂度最小，为 $O(n \sqrt m)$ 。 Code 2123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 500;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5], pos[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 pos[i] = site[a[i]].size();//pos[i] 表示 i 的位置在 a[i] 的 vector 中对应第几个数 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0; for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; maxn = cnt[a[k]]; mode = a[k]; &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;//预处理方法与之前相同&#125;inline int query(int l, int r) &#123; int mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同个一块 for (int i = l; i &lt;= r; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i];//判断出现次数相同但 a[i] 更小的情况，注意边界 for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn) mode = a[i];//判断 a[i] 出现次数比答案更多的情况，maxn 单调不减 &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn)//判断第 pos[i] + maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; if (pos[i] - maxn + 1 &gt;= 0 &amp;&amp; pos[i] - maxn + 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] - maxn + 1] &gt;= l &amp;&amp; site[a[i]][pos[i] - maxn + 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] - maxn &gt;= 0 &amp;&amp; site[a[i]][pos[i] - maxn] &gt;= l; ++maxn)//判断第 pos[i] - maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>分块</tag>
+        <tag>二分</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「BZOJ 2724」「Violet 6」蒲公英]]></title>
+    <url>%2Fproblems%2Fbzoj-2724%2F</url>
+    <content type="text"><![CDATA[Description给定 $n$ 个数 $a_i$，$m$ 个询问，求区间 $[l,r]$ 中的最小众数，强制在线。 $(1 \leq n \leq 10^4,1 \leq m \leq 2 \times 10^4, 1 \leq a_i \leq 10^9)$ Source[BZOJ]2724 Solution 1考虑 分块 。我们可以预处理出 $f_{i,j}$ 为第 $i$ 个块到第 $j$ 个块的区间最小众数，那样区间 $[l,r]$ 的答案只有可能是 中间所有块的区间最小众数，左边多余块中的数 或 右边多余块中的数（如图）。 很容易在 $O(块的大小 \times n)$ 的时间内预处理出所有的 $f_{i,j}$，但是怎么求出左右多余块中的数在区间 $[l,r]$ 中的出现次数呢？我们可以用 $\rm vector$ 存下每一个 $a_i$ 在序列中的所有出现位置（要先离散化）。在询问时，对于左右多余块中的每一个数 $x$，我们可以二分找到端点 $l,r$ 在 $x$ 对应的 $\rm vector$ 中的位置（可以用 $\rm STL$ 中的 $\rm lower_bound$ 和 $\rm upper_bound$），相减即是 $x$ 在区间 $[l,r]$ 中的出现次数。注意如果该数的出现次数与当前答案的出现次数相同，但这个数更小，也要更新答案，因为要求的是最小众数。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS\log n)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt{m \log n}}$ 时总时间复杂度最小，为 $O(n \sqrt{m \log n })$ 。 Code 1123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAX_SIZE = 500;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m * log2(n)); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0;//maxn 记录众数出现次数，mode 记录最小众数 for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; //如果出现次数比 maxn 大 或 出现次数与 maxn 相同但这个数比当前记录的 mode 小 maxn = cnt[a[k]]; mode = a[k];//更新最优值 &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;&#125;inline int query(int l, int r) &#123; int posL, posR, mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同一个块 for (int i = l; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin();//二分找到 l,r 的位置 if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; //判断能否更新答案 maxn = posR - posL; mode = a[i]; &#125; &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; posL = lower_bound(site[a[i]].begin(), site[a[i]].end(), l) - site[a[i]].begin(); posR = upper_bound(site[a[i]].begin(), site[a[i]].end(), r) - site[a[i]].begin(); if (posR - posL &gt; maxn || (posR - posL == maxn &amp;&amp; a[i] &lt; mode)) &#123; maxn = posR - posL; mode = a[i]; &#125; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125; Solution 2考虑怎么优化上述做法（即减少查询的时间复杂度）。 很容易发现查询时答案在区间 $[l,r]$ 中的出现次数其实是单调不减的。 我们可以预处理出 $pos_i$，表示 $i$ 的位置在 $a_i$ 的 $\rm vector$ 中对应第几个数。假设当前我们已经知道当前的最小众数是 $mode$，且 $mode$ 的出现次数为 $maxn$ 。左边和右边多余的块分类讨论： 对于左边多余块中的某个数 $x$，$x$ 在其对应 $\rm vector$ 中的位置是 $pos_x$，如果 $x$ 第 $pos_x + maxn$ 次出现的位置 $\leq r$，就说明区间 $[l,r]$ 中 $x$ 的出现次数为 $maxn + 1$，比当前答案更优。如果 $x$ 第 $pos_x + maxn - 1$ 次出现的位置 $\leq r$，且 $x$ 比答案小，就说明 $x$ 也能更新答案。 右边多余的块同理，只是变成了判断 $x$ 第 $pos_x - maxn$ 次出现的位置是否 $\geq l$ 。 写代码时有很多细节需要注意。比如要先判断 $\rm vector$ 的下标是否小于 $0$ 或者超过 $size$，然后再访问。 设块的大小为 $S$，则总时间复杂度为 预处理 $O \left( \frac{n^2}{S} \right)$ + 查询 $O(mS)$，根据 均值不等式，可知取 $S = \frac{n}{\sqrt m}$ 时总时间复杂度最小，为 $O(n \sqrt m)$ 。 Code 2123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 4e4, MAX_SIZE = 500;int n, m, blockSize, blockNum, lastans, a[MAXN + 5], b[MAXN + 5], cnt[MAXN + 5], bel[MAXN + 5], pos[MAXN + 5];int blockL[MAX_SIZE + 5], blockR[MAX_SIZE + 5], f[MAX_SIZE + 5][MAX_SIZE + 5], num[MAX_SIZE + 5][MAX_SIZE + 5];vector&lt;int&gt; site[MAXN + 5];inline void init() &#123; blockSize = n / sqrt(m); blockNum = n / blockSize + (n % blockSize &gt; 0); sort(b + 1, b + n + 1); int len = unique(b + 1, b + n + 1) - b - 1; for (int i = 1; i &lt;= n; ++i) &#123; a[i] = lower_bound(b + 1, b + len + 1, a[i]) - b;//离散化 pos[i] = site[a[i]].size();//pos[i] 表示 i 的位置在 a[i] 的 vector 中对应第几个数 site[a[i]].push_back(i);//存下每一个 a[i] 出现的位置 bel[i] = (i - 1) / blockSize + 1; &#125; for (int i = 1; i &lt;= blockNum; ++i) blockL[i] = (i - 1) * blockSize + 1, blockR[i] = i * blockSize; blockR[blockNum] = n; for (int i = 1; i &lt;= blockNum; ++i) &#123; memset(cnt, 0, sizeof (cnt)); int maxn = 0, mode = 0; for (int j = i; j &lt;= blockNum; ++j) &#123; for (int k = blockL[j]; k &lt;= blockR[j]; ++k) &#123; ++cnt[a[k]]; if (cnt[a[k]] &gt; maxn || (cnt[a[k]] == maxn &amp;&amp; a[k] &lt; mode)) &#123; maxn = cnt[a[k]]; mode = a[k]; &#125; &#125; num[i][j] = maxn;//记录第 i 个块到第 j 个块众数的出现次数 f[i][j] = mode;//记录第 i 个块到第 j 个块的最小众数 &#125; &#125;//预处理方法与之前相同&#125;inline int query(int l, int r) &#123; int mode = 0, maxn = 0; if (bel[l] == bel[r]) &#123;//l,r 在同个一块 for (int i = l; i &lt;= r; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i];//判断出现次数相同但 a[i] 更小的情况，注意边界 for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn) mode = a[i];//判断 a[i] 出现次数比答案更多的情况，maxn 单调不减 &#125; return b[mode];//mode 是离散化后的值，b[mode] 才是原序列中的值 &#125; maxn = num[bel[l] + 1][bel[r] - 1];//中间完整块众数的出现次数 mode = f[bel[l] + 1][bel[r] - 1];//中间完整块的最小众数 for (int i = l; i &lt;= blockR[bel[l]]; ++i) &#123; if (pos[i] + maxn - 1 &gt;= 0 &amp;&amp; pos[i] + maxn - 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn - 1] &gt;= l &amp;&amp; site[a[i]][pos[i] + maxn - 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] + maxn &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] + maxn] &lt;= r; ++maxn)//判断第 pos[i] + maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理左边多余块的每一个数 for (int i = blockL[bel[r]]; i &lt;= r; ++i) &#123; if (pos[i] - maxn + 1 &gt;= 0 &amp;&amp; pos[i] - maxn + 1 &lt; (int) site[a[i]].size() &amp;&amp; site[a[i]][pos[i] - maxn + 1] &gt;= l &amp;&amp; site[a[i]][pos[i] - maxn + 1] &lt;= r &amp;&amp; a[i] &lt; mode) mode = a[i]; for (; pos[i] - maxn &gt;= 0 &amp;&amp; site[a[i]][pos[i] - maxn] &gt;= l; ++maxn)//判断第 pos[i] - maxn 个 a[i] 是否在询问范围内 mode = a[i]; &#125;//处理右边多余块的每一个数 return b[mode];&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; init(); for (int l, r, i = 1; i &lt;= m; ++i) &#123; read(l), read(r); l = (l + lastans - 1) % n + 1, r = (r + lastans - 1) % n + 1;//强制在线 if (l &gt; r) swap(l, r); write(lastans = query(l, r)); putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>BZOJ</tag>
         <tag>分块</tag>
         <tag>二分</tag>
       </tags>
@@ -58,9 +58,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>莫队</tag>
         <tag>集训队</tag>
+        <tag>莫队</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -84,9 +84,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -163,11 +163,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -178,8 +178,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>矩阵加速</tag>
       </tags>
   </entry>
@@ -216,10 +216,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -244,10 +244,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -271,9 +271,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -284,8 +284,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -296,8 +296,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -308,10 +308,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>图论</tag>
-        <tag>缩点</tag>
         <tag>USACO</tag>
+        <tag>缩点</tag>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -325,10 +325,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
+        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -339,11 +339,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -355,8 +355,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -370,12 +370,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -387,11 +387,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
-        <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -402,12 +402,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>动态规划</tag>
-        <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -420,8 +420,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -434,12 +434,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -451,10 +451,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -466,12 +466,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -483,8 +483,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -498,12 +498,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -530,12 +530,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -546,9 +546,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -559,9 +559,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -572,9 +572,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -588,11 +588,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>动态规划</tag>
+        <tag>SDOI</tag>
         <tag>2006</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -603,9 +603,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -641,9 +641,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -668,10 +668,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -683,8 +683,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>中国剩余定理</tag>
         <tag>Codeforces</tag>
+        <tag>中国剩余定理</tag>
       </tags>
   </entry>
   <entry>
@@ -707,8 +707,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -720,8 +720,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -733,10 +733,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -759,8 +759,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -822,10 +822,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -849,9 +849,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -909,8 +909,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>线段树</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -950,20 +950,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「Luogu P1627」「CQOI2009」中位数图]]></title>
-    <url>%2Fproblems%2Fluogu-p1627%2F</url>
-    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[Luogu]P1627 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l$，右边的前缀和为 $r$ 。$l[i]/r[i]$ 表示从点 $i$ 向右/向左 到点 $tmp$ 为止 (比 $b$ 大的数的数量 - 比 $b$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x$ 可以与右边的每一个 $-x$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]$，由题意可知 $-10^5 \le x \le 10^5$，遍历所有的 $x$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>数论数学</tag>
-        <tag>CQOI</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[「BZOJ 1303」「CQOI2009」中位数图]]></title>
     <url>%2Fproblems%2Fbzoj-1303%2F</url>
     <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[BZOJ]1303 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l$，右边的前缀和为 $r$ 。$l[i]/r[i]$ 表示从点 $i$ 向右/向左 到点 $tmp$ 为止 (比 $b$ 大的数的数量 - 比 $b$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x$ 可以与右边的每一个 $-x$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]$，由题意可知 $-10^5 \le x \le 10^5$，遍历所有的 $x$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
@@ -975,6 +961,20 @@
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P1627」「CQOI2009」中位数图]]></title>
+    <url>%2Fproblems%2Fluogu-p1627%2F</url>
+    <content type="text"><![CDATA[Description给定长度为 $n\ (n \leq 10^5)$ 的排列，求有多少包含 $b\ (1 \leq b \leq n)$ 的奇数长度的序列中位数为 $b$ 。 Source[Luogu]P1627 Solution因为所求的是中位数，所以考虑改变原序列。把大于 $b$ 的数全部变为 $1$，小于 $b$ 的数变为 $-1$，等于 $b$ 则为 $0$ 。问题就变为求存在几个包含 $b$ 的区间和为 $0$ 。我们假设 $tmp$ 为 $b$ 的下标，原数组为 $x$，新数组为 $a$ 。 Sample Input127 45 7 2 4 3 1 6 Sample Output14 Example 对于样例，能使结果成立的 $4$ 个区间分别为 $[1,5]$，$[1,7]$，$[2,4]$，$[4,4]$ 。 接下来我们建造两个桶，分别计数 $tmp$ 左边的后缀和与右边的前缀和，假设左边的后缀和为 $l$，右边的前缀和为 $r$ 。$l[i]/r[i]$ 表示从点 $i$ 向右/向左 到点 $tmp$ 为止 (比 $b$ 大的数的数量 - 比 $b$ 小的数的数量) 出现的次数。还是拿样例来说： 通过观察上图，我们能够发现，左边的数 $x$ 可以与右边的每一个 $-x$ 进行匹配。通过乘法原理，该值即为 $l[x] \times r[-x]$，由题意可知 $-10^5 \le x \le 10^5$，遍历所有的 $x$ 即可，最终答案为： \sum\limits_{i=\min{x}}^{\max{x}}l[i] \times r[-i]值得注意的是，$l[0]$ 和 $r[0]$ 的初始值为 $1$，因为 $b$ 是需要被算入的。当然，桶的下标不能是负数，所以我在每次操作时都加上了一个很大的数，比如数据最大值 —— $10^5$，也可以用 $\mathrm{STL}$ 中的 $map$ 解决问题，时间复杂度为 $O(n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, b, tmp, sum, a[MAXN + 10], l[MAXN &lt;&lt; 1 | 1], r[MAXN &lt;&lt; 1 | 1];LL ans;int main() &#123; read(n), read(b); for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); if (x == b) tmp = i; else a[i] = x &gt; b ? 1 : -1; &#125; ++l[MAXN], ++r[MAXN]; for (int i = tmp - 1; i &gt;= 1; --i) &#123; sum += a[i]; ++l[sum + MAXN]; &#125;//后缀和 sum = 0; for (int i = tmp + 1; i &lt;= n; ++i) &#123; sum += a[i]; ++r[sum + MAXN]; &#125;//前缀和 for (int i = -MAXN; i &lt;= MAXN; ++i) ans += (LL) l[i + MAXN] * (LL) r[-i + MAXN];//公式计算答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>2009</tag>
+        <tag>数论数学</tag>
+        <tag>CQOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
