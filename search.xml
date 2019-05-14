@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「BZOJ 1085」「SCOI2005」骑士精神]]></title>
+    <url>%2Fproblems%2Fbzoj-1085%2F</url>
+    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[BZOJ]1085 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>BZOJ</tag>
+        <tag>SCOI</tag>
+        <tag>搜索</tag>
+        <tag>2005</tag>
+        <tag>A*</tag>
+        <tag>迭代加深</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P2324」「SCOI2005」骑士精神]]></title>
+    <url>%2Fproblems%2Fluogu-p2324%2F</url>
+    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[Luogu]P2324 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>SCOI</tag>
+        <tag>搜索</tag>
+        <tag>2005</tag>
+        <tag>A*</tag>
+        <tag>迭代加深</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「NowCoder 342C」筱玛的迷阵探险]]></title>
     <url>%2Fproblems%2Fnowcoder-342c%2F</url>
     <content type="text"><![CDATA[Description给定一个 $n \times n$ 的网格，每个格子的权值为 $a_{i,j}$，现在要从 $(1,1)$ 走到 $(n,m)$，初始值为 $e$，求路径最大异或和。 $(1 \leq n \leq 20,0 \leq a_{i,j},e \leq 10^9)$ Source[NowCoder]342C Solution与 [Codeforces]1006F 相似，考虑 折半搜索 。从起点和终点分别开始搜，到对角线停止。 怎么求最大异或和呢？ 我们可以建 $n$ 棵 Trie 。当我们第一次搜到对角线上的点 $(x,y)$ 时，把此时的路径异或和插入到第 $x$ 棵 Trie 中。当我们第二次从终点搜到 $(x,y)$ 时，又得到了一个路径和 $val$，显然这时我们要从第 $x$ 棵 Trie 中找到一个数，使它与 $val$ 的异或值最大。这就变成了一个很经典的问题，具体操作详见 [LOJ]10050 。注意搜索的边界和 Trie 的空间大小。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 20, MAXM = 1e5;int n, e, ans, a[MAXN + 5][MAXN + 5];struct Trie &#123; int tot, ch[MAXM * 31 + 5][2]; inline void insert(int x) &#123; int u = 1; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v]) ch[u][v] = ++tot;//新建节点 u = ch[u][v]; &#125; &#125; inline int find(int x) &#123; int u = 1, res = 0; for (int i = 30; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i);//x 二进制下第 i 位的值 if (!ch[u][v ^ 1]) u = ch[u][v];//如果没有相反的路，则沿相同的路走 else &#123; res += 1 &lt;&lt; i;//走相反的路 u = ch[u][v ^ 1];//这一位为 1，累加答案 &#125; &#125; return res; &#125;&#125; tr[MAXN + 5];void dfs1(int x, int y, int val) &#123; if (x + y == n + 1) &#123;//(x,y) 在对角线上，n + 1 是为了防止 n = 1 时出错 tr[x].insert(val);//把 val 插入到第 x 棵 Trie 中 return; &#125; if (x &lt; n) dfs1(x + 1, y, val ^ a[x + 1][y]); if (y &lt; n) dfs1(x, y + 1, val ^ a[x][y + 1]);//注意边界 &#125;void dfs2(int x, int y, int val) &#123; if (x + y == n + 1) &#123; ans = max(ans, tr[x].find(val ^ e ^ a[x][y])); //不要忘记异或上初始值 e //这里异或 a[x][y] 是因为第二次到这个点多异或了 (x,y) 一次， //而第一次到 (x,y) 时已经异或过了，再异或一次相当于只保留一次异或 return; &#125; if (x &gt; 1) dfs2(x - 1, y, val ^ a[x - 1][y]); if (y &gt; 1) dfs2(x, y - 1, val ^ a[x][y - 1]);&#125;int main() &#123; read(n), read(e); for (int i = 1; i &lt;= n; ++i) &#123; tr[i].tot = 1;//Trie 初始节点数为 1 for (int j = 1; j &lt;= n; ++j) read(a[i][j]); &#125; dfs1(1, 1, a[1][1]), dfs2(n, n, a[n][n]); write(ans); putchar('\n'); return 0;&#125;]]></content>
@@ -83,9 +115,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>莫队</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -109,9 +141,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -188,11 +220,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -203,8 +235,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>矩阵加速</tag>
       </tags>
   </entry>
@@ -241,10 +273,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -269,10 +301,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -296,9 +328,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -309,8 +341,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -321,8 +353,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -333,10 +365,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>USACO</tag>
         <tag>Luogu</tag>
+        <tag>图论</tag>
+        <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -350,10 +382,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -364,11 +396,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -380,8 +412,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
@@ -395,12 +427,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数位DP</tag>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -412,11 +444,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -427,12 +459,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数位DP</tag>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -445,8 +477,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
@@ -459,12 +491,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -476,10 +508,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
       </tags>
   </entry>
@@ -491,12 +523,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>SCOI</tag>
-        <tag>2009</tag>
-        <tag>数位DP</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>Luogu</tag>
+        <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>SCOI</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -508,8 +540,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
@@ -523,12 +555,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>SCOI</tag>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -555,12 +587,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -571,9 +603,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -584,9 +616,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -597,9 +629,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -613,11 +645,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2006</tag>
-        <tag>动态规划</tag>
-        <tag>SDOI</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>动态规划</tag>
+        <tag>2006</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -628,9 +660,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -666,9 +698,23 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P2421」「NOI2002」荒岛野人]]></title>
+    <url>%2Fproblems%2Fluogu-p2421%2F</url>
+    <content type="text"><![CDATA[Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_i$ 年。没有 $2$ 个野人能在有生之年生存在同一个洞穴中，求洞穴个数 $m\ (m \leq 10^6)$ 的最小值。 Source[Luogu]P2421 Solution 前置知识： 扩展欧几里得(exgcd)算法 对于 野人 $i$ 和 野人 $j$ $(i \neq j)$，假设经过 $x$ 天之后他们会在同一个洞穴相遇，那么可以得出方程： c_i + p_ix \equiv c_j + p_jx \pmod m化简方程，得到 (p_i - p_j)x \equiv c_j - c_i \pmod m这个方程等价于 (p_i - p_j)x + m \times y = c_j - c_i显然我们可以用 exgcd(扩展欧几里得) 算法求出方程 $(p_i - p_j)x + m \times y = \gcd(p_i-p_j,m)$ 的一个解 $x’$ 。 如果 $\gcd(p_i-p_j,m) \nmid c_j-c_i$，说明 $x$ 无解，野人 $i,j$ 永远不会相遇。 若有解，我们求出 $x$ 的最小正整数解，即 x = \left( x' \times \frac{c_j - c_i}{\gcd(p_i-p_j,m)} \bmod \frac{m}{\gcd(p_i-p_j,m)} + \frac{m}{\gcd(p_i-p_j,m)} \right) \bmod \frac{m}{\gcd(p_i-p_j,m)}如果 $x &gt; \min(l_i,l_j)$，说明在他们相遇之前，$i, j$ 中会有至少一个野人死亡，所以也是可行的。 如果 $x \leq \min(l_i,l_j)$，说明 野人 $i,j$ 会在死亡前相遇，这个 $m$ 不可行。 我们只需要枚举每一个可能的 $m$（题目保证 $m \leq 10^6$），枚举每一对野人 $(i,j)$，用 exgcd 求解 $x$ 并判断这个 $m$ 是否满足要求。还有一些小细节：用 exgcd 时必须保证 $p_i \geq p_j$，因为 $\gcd$ 只对 非负整数 有意义。总时间复杂度为 $O( n^2m\log p_i)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 15, MAXM = 1e6;int n, maxn, c[MAXN + 5], p[MAXN + 5], l[MAXN + 5];int exGcd(int a, int b, int &amp;x, int &amp;y) &#123; if (b == 0) &#123; x = 1, y = 0; return a; &#125; int d = exGcd(b, a % b, y, x); y -= a / b * x; return d;&#125;inline bool judge(int m) &#123;//判断这个 m 是否可行 for (int i = 1; i &lt; n; ++i) for (int j = i + 1; j &lt;= n; ++j) &#123;//枚举每一对野人 int pi = p[i], pj = p[j], ci = c[i], cj = c[j], x, y, d; if (pi &lt; pj) &#123; swap(pi, pj); swap(ci, cj); &#125; //如果 pi &lt; pj，不满足 gcd 要求，交换 d = exGcd(pi - pj, m, x, y);//d = gcd(pi - pj, m) if ((cj - ci) % d != 0) continue;//x 无解，野人 i,j 不可能相遇 int p = m / d; x *= (cj - ci) / d; x = (x % p + p) % p;//x 的最小整数解 if (x &lt;= min(l[i], l[j])) return 0;//这个 m 不符合题意 &#125; return 1;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(c[i]), read(p[i]), read(l[i]); maxn = max(maxn, c[i]);//已有洞穴中的编号最大的洞穴 &#125; for (int i = maxn; i &lt;= MAXM; ++i)//枚举洞穴个数，注意最小值为编号最大的洞穴 if (judge(i)) &#123; write(i); putchar('\n'); return 0; &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
+        <tag>NOI</tag>
+        <tag>2002</tag>
       </tags>
   </entry>
   <entry>
@@ -680,23 +726,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>数论数学</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[「Luogu P2421」「NOI2002」荒岛野人]]></title>
-    <url>%2Fproblems%2Fluogu-p2421%2F</url>
-    <content type="text"><![CDATA[Descripion岛上有 $m$ 个洞穴，顺时针编号为 $1 \sim m$ 。岛上有 $n\ (1 \leq n \leq 15)$ 个野人分别住在 $c_1,c_2,\ldots,c_n\ (1 \leq c_i \leq 100)$ 中。以后每年，第 $i$ 个野人会沿顺时针向前走 $p_i\ (1 \leq p_i \leq 100)$ 个洞住下来，其中第 $i$ 个野人可以生存 $l_i$ 年。没有 $2$ 个野人能在有生之年生存在同一个洞穴中，求洞穴个数 $m\ (m \leq 10^6)$ 的最小值。 Source[Luogu]P2421 Solution 前置知识： 扩展欧几里得(exgcd)算法 对于 野人 $i$ 和 野人 $j$ $(i \neq j)$，假设经过 $x$ 天之后他们会在同一个洞穴相遇，那么可以得出方程： c_i + p_ix \equiv c_j + p_jx \pmod m化简方程，得到 (p_i - p_j)x \equiv c_j - c_i \pmod m这个方程等价于 (p_i - p_j)x + m \times y = c_j - c_i显然我们可以用 exgcd(扩展欧几里得) 算法求出方程 $(p_i - p_j)x + m \times y = \gcd(p_i-p_j,m)$ 的一个解 $x’$ 。 如果 $\gcd(p_i-p_j,m) \nmid c_j-c_i$，说明 $x$ 无解，野人 $i,j$ 永远不会相遇。 若有解，我们求出 $x$ 的最小正整数解，即 x = \left( x' \times \frac{c_j - c_i}{\gcd(p_i-p_j,m)} \bmod \frac{m}{\gcd(p_i-p_j,m)} + \frac{m}{\gcd(p_i-p_j,m)} \right) \bmod \frac{m}{\gcd(p_i-p_j,m)}如果 $x &gt; \min(l_i,l_j)$，说明在他们相遇之前，$i, j$ 中会有至少一个野人死亡，所以也是可行的。 如果 $x \leq \min(l_i,l_j)$，说明 野人 $i,j$ 会在死亡前相遇，这个 $m$ 不可行。 我们只需要枚举每一个可能的 $m$（题目保证 $m \leq 10^6$），枚举每一对野人 $(i,j)$，用 exgcd 求解 $x$ 并判断这个 $m$ 是否满足要求。还有一些小细节：用 exgcd 时必须保证 $p_i \geq p_j$，因为 $\gcd$ 只对 非负整数 有意义。总时间复杂度为 $O( n^2m\log p_i)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 15, MAXM = 1e6;int n, maxn, c[MAXN + 5], p[MAXN + 5], l[MAXN + 5];int exGcd(int a, int b, int &amp;x, int &amp;y) &#123; if (b == 0) &#123; x = 1, y = 0; return a; &#125; int d = exGcd(b, a % b, y, x); y -= a / b * x; return d;&#125;inline bool judge(int m) &#123;//判断这个 m 是否可行 for (int i = 1; i &lt; n; ++i) for (int j = i + 1; j &lt;= n; ++j) &#123;//枚举每一对野人 int pi = p[i], pj = p[j], ci = c[i], cj = c[j], x, y, d; if (pi &lt; pj) &#123; swap(pi, pj); swap(ci, cj); &#125; //如果 pi &lt; pj，不满足 gcd 要求，交换 d = exGcd(pi - pj, m, x, y);//d = gcd(pi - pj, m) if ((cj - ci) % d != 0) continue;//x 无解，野人 i,j 不可能相遇 int p = m / d; x *= (cj - ci) / d; x = (x % p + p) % p;//x 的最小整数解 if (x &lt;= min(l[i], l[j])) return 0;//这个 m 不符合题意 &#125; return 1;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(c[i]), read(p[i]), read(l[i]); maxn = max(maxn, c[i]);//已有洞穴中的编号最大的洞穴 &#125; for (int i = maxn; i &lt;= MAXM; ++i)//枚举洞穴个数，注意最小值为编号最大的洞穴 if (judge(i)) &#123; write(i); putchar('\n'); return 0; &#125; return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>NOI</tag>
-        <tag>2002</tag>
-        <tag>数论数学</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -708,8 +740,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -732,8 +764,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -745,8 +777,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
+        <tag>数论数学</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -758,10 +790,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>SDOI</tag>
-        <tag>2012</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>数论数学</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -784,8 +816,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -847,10 +879,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -874,9 +906,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -934,8 +966,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -996,10 +1028,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
