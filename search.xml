@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P2324」「SCOI2005」骑士精神]]></title>
+    <url>%2Fproblems%2Fluogu-p2324%2F</url>
+    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[Luogu]P2324 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>SCOI</tag>
+        <tag>2005</tag>
+        <tag>搜索</tag>
+        <tag>Luogu</tag>
+        <tag>启发式搜索</tag>
+        <tag>迭代加深</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 1085」「SCOI2005」骑士精神]]></title>
     <url>%2Fproblems%2Fbzoj-1085%2F</url>
     <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[BZOJ]1085 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
@@ -10,24 +26,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
-        <tag>启发式搜索</tag>
-        <tag>迭代加深</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[「Luogu P2324」「SCOI2005」骑士精神]]></title>
-    <url>%2Fproblems%2Fluogu-p2324%2F</url>
-    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[Luogu]P2324 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>Luogu</tag>
-        <tag>SCOI</tag>
         <tag>搜索</tag>
-        <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
       </tags>
@@ -48,7 +48,7 @@
   <entry>
     <title><![CDATA[「Codeforces 1006F」Xor-Paths]]></title>
     <url>%2Fproblems%2Fcodeforces-1006f%2F</url>
-    <content type="text"><![CDATA[Description给定一个 $n \times m$ 的网格，每个格子的权值为 $a_{i,j}$，现在要从 $(1,1)$ 走到 $(n,m)$，求异或和等于 $k$ 的路径数。 $(1 \leq n,m \leq 20,0 \leq a_{i,j},k \leq 10^{18})$ Source[Luogu]CF1006F [Codeforces]1006F Solution$n,m$ 的范围很小，所以考虑搜索。 直接暴搜显然不行，因为路径数很多。 所以使用 折半搜索 。 从起点和终点开始分别搜索，搜到对角线停止，设路径总数为 $k$，则时间复杂度可以降为 $O(\sqrt k)$ 。 起点开始只能向下或向右走，终点开始只能向上或向左走，注意边界。 我们可以开一个 $\rm map$ 存下从 $(1,1)$ 到对角线上的点 $(x,y)$ 异或和为 $val$ 的路径数。第二次搜到 $(x,y)$ 时，若当前异或和为 $val$，则答案需要加上从 $(1,1)$ 到 $(x,y)$ 异或和为 $k \oplus val$ 的路径数（$\oplus$ 表示异或，异或的逆运算也是异或）。 怎么判断 $(x,y)$ 是否在对角线上？只要看 $x+y$ 是否与 $\left \lfloor \frac{n + m}{2} \right \rfloor + 1$ 相等即可（对角线是一次函数）。至于为什么 $+1$，是因为能够防止 $n = m = 1$ 的情况出错。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 20;int n, m;LL k, ans, a[MAXN + 5][MAXN + 5];map&lt;LL, LL&gt; cnt[MAXN + 5][MAXN + 5];void dfs1(int x, int y, LL val) &#123;//表示当前到点 (x,y)，路径异或和为 val if (x + y == (n + m) / 2 + 1) &#123; ++cnt[x][y][val];//统计 (1,1) -&gt; (x,y) 异或和为 val 的路径数 return; &#125; if (x &lt; n) dfs1(x + 1, y, val ^ a[x + 1][y]); if (y &lt; m) dfs1(x, y + 1, val ^ a[x][y + 1]);&#125;void dfs2(int x, int y, LL val) &#123; if (x + y == (n + m) / 2 + 1) &#123;//搜到对角线就停止 ans += cnt[x][y][k ^ val ^ a[x][y]]; //这里异或 a[x][y] 是因为第二次到这个点多异或了 (x,y) 一次， //而第一次到 (x,y) 时已经异或过了，再异或一次相当于只保留一次异或 return; &#125; if (x &gt; 1) dfs2(x - 1, y, val ^ a[x - 1][y]); if (y &gt; 1) dfs2(x, y - 1, val ^ a[x][y - 1]);&#125;int main() &#123; read(n), read(m), read(k); for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= m; ++j) read(a[i][j]); dfs1(1, 1, a[1][1]), dfs2(n, m, a[n][m]); write(ans); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一个 $n \times m$ 的网格，每个格子的权值为 $a_{i,j}$，现在要从 $(1,1)$ 走到 $(n,m)$，求异或和等于 $k$ 的路径数。 $(1 \leq n,m \leq 20,0 \leq a_{i,j},k \leq 10^{18})$ Source[Luogu]CF1006F [Codeforces]1006F Solution$n,m$ 的范围很小，所以考虑搜索。 直接暴搜显然不行，因为路径数很多。 所以使用 折半搜索 。 从起点和终点开始分别搜索，搜到对角线停止，设路径总数为 $k$，则时间复杂度可以降为 $O(\sqrt k)$ 。 起点开始只能向下或向右走，终点开始只能向上或向左走，注意边界。 我们可以开一个 $\rm map$ 存下从 $(1,1)$ 到对角线上的点 $(x,y)$ 异或和为 $val$ 的路径数。第二次搜到 $(x,y)$ 时，若当前异或和为 $val$，则答案需要加上从 $(1,1)$ 到 $(x,y)$ 异或和为 $k \oplus val$ 的路径数（$\oplus$ 表示异或，异或的逆运算也是异或）。 怎么判断 $(x,y)$ 是否在对角线上？只要看 $x+y$ 是否与 $\left \lfloor \frac{n + m}{2} \right \rfloor + 1$ 相等即可（对角线是一次函数）。至于为什么 $+1$，是因为能够防止 $n = m = 1$ 的情况出错。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 20;int n, m;LL k, ans, a[MAXN + 5][MAXN + 5];map&lt;LL, LL&gt; cnt[MAXN + 5];void dfs1(int x, int y, LL val) &#123;//表示当前到点 (x,y)，路径异或和为 val if (x + y == (n + m) / 2 + 1) &#123; ++cnt[x][val];//统计 (1,1) -&gt; (x,y) 异或和为 val 的路径数 return; &#125; if (x &lt; n) dfs1(x + 1, y, val ^ a[x + 1][y]); if (y &lt; m) dfs1(x, y + 1, val ^ a[x][y + 1]);&#125;void dfs2(int x, int y, LL val) &#123; if (x + y == (n + m) / 2 + 1) &#123;//搜到对角线就停止 ans += cnt[x][k ^ val ^ a[x][y]]; //这里异或 a[x][y] 是因为第二次到这个点多异或了 (x,y) 一次， //而第一次到 (x,y) 时已经异或过了，再异或一次相当于只保留一次异或 return; &#125; if (x &gt; 1) dfs2(x - 1, y, val ^ a[x - 1][y]); if (y &gt; 1) dfs2(x, y - 1, val ^ a[x][y - 1]);&#125;int main() &#123; read(n), read(m), read(k); for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= m; ++j) read(a[i][j]); dfs1(1, 1, a[1][1]), dfs2(n, m, a[n][m]); write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -115,9 +115,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>莫队</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -141,9 +141,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -220,11 +220,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -235,8 +235,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>矩阵加速</tag>
       </tags>
   </entry>
@@ -273,10 +273,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -301,10 +301,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -328,9 +328,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -341,8 +341,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>最短路</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -353,8 +353,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -365,10 +365,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>缩点</tag>
         <tag>图论</tag>
         <tag>USACO</tag>
+        <tag>Luogu</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -396,11 +396,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -413,8 +413,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -427,12 +427,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -445,10 +445,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -459,12 +459,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -476,10 +476,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -491,12 +491,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -508,11 +508,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -523,12 +523,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -540,11 +540,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -555,28 +555,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[「Luogu P4284」「SHOI2014」概率充电器]]></title>
-    <url>%2Fproblems%2Fluogu-p4284%2F</url>
-    <content type="text"><![CDATA[Description给定一棵 $n$ 个点的树，每个节点都有一个充电元件，第 $i$ 条边有 $p_i \%$ 的概率导电，第 $i$ 个点有 $q_i \%$ 的概率充电。求期望通电的元件个数，保留 $6$ 位小数。 Source[Luogu]P4284 Solution首先根据 期望 的性质： \large { E(A + B) = E(A) + E(B) }得到 \large {\begin{aligned} E\left( \sum\limits_{i=1}^n i \right) = \sum\limits_{i=1}^nE(i) = \sum\limits_{i=1}^n p_ix_i \end{aligned}}因为每个充电元件的贡献都是 $1$（即 $x_i = 1$），所以问题就是求所有元件充电的概率总和： \large { \sum\limits_{i=1}^n p_i }其中 $p_i$ 是元件 $i$ 通电的概率。这个东西怎么求呢？尝试 树形DP 。 状态： 用 $p_u$ 表示元件 $u$ 通电的概率。 转移： 考虑节点 $u$ 通电的 $3$ 种可能： 节点 $u$ 自己充电； 子树里有一个节点充电并传导到节点 $u$； 子树外有一个节点充电并传导到节点 $u​$ 。 节点 $u$ 自己充电很好实现，因为节点 $u$ 通电的初始概率就是读入进来的 $p_u$ 。 但是后两种似乎很难同时实现，干脆分两次 $\rm{dfs}​$ 解决。 对于第一次 $\rm{dfs}​$，我们先考虑第二种可能，有以下方程 \large {\begin{aligned} & p_u = p_u \cup \left( p_v \times q_{u \rightarrow v} \right) & \left( v \in son_u\right) \end{aligned}}其中 $q_{u \rightarrow v}​$ 表示边 $u \rightarrow v​$ 导电的概率。节点 $u​$ 通电的概率就是 节点 $u​$ 自己发电 与 子节点 $v​$ 通电后经过边 $u \rightarrow v​$ 传导到 $u​$ 的并集，换句话说，就是上述两种情况至少发生一种的概率。两个概率的并怎么求呢？有如下公式 \large { \begin{aligned} P\left( A \cup B \right) &= P\left( A \right) + P\left( B \right) - P\left( A \cap B \right)\\ &= P\left( A \right) + P\left( B \right) - P\left( A \right) \times P\left( B \right) \end{aligned} }很好证明，因为 $A$ 和 $B$ 至少发生一种，分 $3$ 种情况讨论（都运用了 乘法原理）： $A​$ 发生 $B​$ 不发生，概率为 $P\left(A \right) \times \left( 1 - P \left( B\right) \right)​$； $B$ 发生 $A$ 不发生，概率为 $P\left(B \right) \times \left( 1 - P \left( A\right) \right)$ ； $A​$ 与 $B​$ 同时发生，概率为 $P \left( A\right) \times P \left( B\right)​$ 。 根据 加法原理，把上述值加起来即能得证。这样我们就处理好了子树里节点导电的情况。 对于第二次 $\rm{dfs}​$，我们再考虑第三种可能，有以下方程 \large {\begin{aligned} & p_v = p_v \cup \left( \frac{p_u - p_v \times q_{u \rightarrow v}}{1 - p_v \times q_{u \rightarrow v}} \times q_{u \rightarrow v} \right) & \left( v \in son_u\right) \end{aligned}}其中 $q_{u \rightarrow v}$ 表示边 $u \rightarrow v$ 导电的概率。显然根节点（$root$）通电的概率已知（不可能有第三种可能），考虑通过父节点 $u$ 状态确定子节点 $v$ 。 $p_v$ 的值一定为 当前 $p_v$ 的值（自己和子树内的通电概率） 和 子树外节点通电传导给 $v$ 的并。其中 $v$ 子树里的节点通电传导给 $u$ 的概率为 $p_v \times q_{u \rightarrow v}$，这个值与子节点 $v$ 的 子树外节点通电传导给 $u$ 的概率 的并是 $p_u$ 。而现在要求 子树外节点通电传导给 $u$ 的概率 。 这个问题可以转化为——若已知 $P \left( B\right),P \left( C\right)$ 的值，且 $P\left( A \cup B \right) = P \left ( C\right)$，怎么求 $P \left( A \right)$？ 用刚才的公式倒推即可： \large { P \left( A \cup B\right) = P \left( C \right) } \large { P\left( A \right) + P\left( B \right) - P\left( A \right) \times P\left( B \right) = P\left( C \right) } \large { P\left( A \right) - P\left( A \right) \times P\left( B \right) = P\left( C \right) -P\left( B \right) } \large { P\left( A \right) \times \left( 1 - P\left( B \right) \right) = P\left( C \right) -P\left( B \right) } \large {\begin{aligned} & P\left( A \right) = \frac{P\left( C \right) -P\left( B \right)}{1 - P\left( B \right)} & \left( P \left( B \right) \neq 1 \right) \end{aligned} }根据这个式子求出 子树外节点通电传导给 $u$ 的概率，乘上 $q_{u \rightarrow v}$ 就是 子树外节点通电传导给 $v$ 的概率 了，再求 $p_v$ 与它的并，就是这个状态的值。值得注意的是，如果上述式子中的 $P\left( B \right) = 1$（即 $p_v \times q_{u \rightarrow v} = 1$），显然是不能直接除的，但因为 $0 \leq p_v,q_{u \rightarrow v} \leq 1$，所以 $p_v = q_{u \rightarrow v} = 1$，在这种情况下可以直接跳过，不进行转移（$p_v$ 一定通电）。最后把所有节点通电的概率加起来即为答案。 与第一次 $\rm{dfs}$ 不同的是：第一次是由子树合并答案，需要递归到底，返回时再转移；第二次是由父节点更新答案，遍历完整棵树即可。时间复杂度为 $O(n)​$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 5e5, MAXM = 5e5;const double eps = 1e-7;int n, tot, head[MAXN + 5];double ans, p[MAXN + 5], x[MAXN + 5];struct Edge &#123; int next, to; double dis;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v, double w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline double cup(double a, double b) &#123;//求两个概率的并 a∪b return a + b - a * b;&#125;inline double calc(double a, double b) &#123;//已知 P(b) 以及 P(a)∪P(b)，求 P(a) return (a - b) / (1.0 - b);&#125;void dfsUp(int u, int fa) &#123;//第一次 dfs，子树内节点传导电 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; dfsUp(v, u);//递归到底层 double q = e[i].dis; p[u] = cup(p[u], p[v] * q);//转移 &#125;&#125;void dfsDown(int u, int fa) &#123;//第二次 dfs，子树外节点传导电 ans += p[u];//累加答案 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; double q = e[i].dis; if (fabs(p[v] * q - 1.0) &lt; eps) &#123; dfsDown(v, u); continue;//跳过并向下搜 &#125; p[v] = cup(p[v], calc(p[u], p[v] * q) * q);//转移 dfsDown(v, u);//遍历整棵树 &#125;&#125;int main() &#123; read(n); for (int i = 1; i &lt; n; ++i) &#123; int u, v; double w; read(u), read(v), read(w); w *= 0.01;//q% addEdge(u, v, w), addEdge(v, u, w);//连无向边 &#125; for (int i = 1; i &lt;= n; ++i) &#123; read(p[i]); p[i] *= 0.01;//初始概率 为 节点自己充电的概率 &#125; dfsUp(1, 0); dfsDown(1, 0);//根节点为 1 printf("%.6lf\n", ans); return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>概率期望</tag>
-        <tag>树形DP</tag>
-        <tag>SHOI</tag>
-        <tag>2014</tag>
+        <tag>搜索</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -589,10 +573,26 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>概率期望</tag>
-        <tag>树形DP</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
+        <tag>概率期望</tag>
+        <tag>树形DP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4284」「SHOI2014」概率充电器]]></title>
+    <url>%2Fproblems%2Fluogu-p4284%2F</url>
+    <content type="text"><![CDATA[Description给定一棵 $n$ 个点的树，每个节点都有一个充电元件，第 $i$ 条边有 $p_i \%$ 的概率导电，第 $i$ 个点有 $q_i \%$ 的概率充电。求期望通电的元件个数，保留 $6$ 位小数。 Source[Luogu]P4284 Solution首先根据 期望 的性质： \large { E(A + B) = E(A) + E(B) }得到 \large {\begin{aligned} E\left( \sum\limits_{i=1}^n i \right) = \sum\limits_{i=1}^nE(i) = \sum\limits_{i=1}^n p_ix_i \end{aligned}}因为每个充电元件的贡献都是 $1$（即 $x_i = 1$），所以问题就是求所有元件充电的概率总和： \large { \sum\limits_{i=1}^n p_i }其中 $p_i$ 是元件 $i$ 通电的概率。这个东西怎么求呢？尝试 树形DP 。 状态： 用 $p_u$ 表示元件 $u$ 通电的概率。 转移： 考虑节点 $u$ 通电的 $3$ 种可能： 节点 $u$ 自己充电； 子树里有一个节点充电并传导到节点 $u$； 子树外有一个节点充电并传导到节点 $u​$ 。 节点 $u$ 自己充电很好实现，因为节点 $u$ 通电的初始概率就是读入进来的 $p_u$ 。 但是后两种似乎很难同时实现，干脆分两次 $\rm{dfs}​$ 解决。 对于第一次 $\rm{dfs}​$，我们先考虑第二种可能，有以下方程 \large {\begin{aligned} & p_u = p_u \cup \left( p_v \times q_{u \rightarrow v} \right) & \left( v \in son_u\right) \end{aligned}}其中 $q_{u \rightarrow v}​$ 表示边 $u \rightarrow v​$ 导电的概率。节点 $u​$ 通电的概率就是 节点 $u​$ 自己发电 与 子节点 $v​$ 通电后经过边 $u \rightarrow v​$ 传导到 $u​$ 的并集，换句话说，就是上述两种情况至少发生一种的概率。两个概率的并怎么求呢？有如下公式 \large { \begin{aligned} P\left( A \cup B \right) &= P\left( A \right) + P\left( B \right) - P\left( A \cap B \right)\\ &= P\left( A \right) + P\left( B \right) - P\left( A \right) \times P\left( B \right) \end{aligned} }很好证明，因为 $A$ 和 $B$ 至少发生一种，分 $3$ 种情况讨论（都运用了 乘法原理）： $A​$ 发生 $B​$ 不发生，概率为 $P\left(A \right) \times \left( 1 - P \left( B\right) \right)​$； $B$ 发生 $A$ 不发生，概率为 $P\left(B \right) \times \left( 1 - P \left( A\right) \right)$ ； $A​$ 与 $B​$ 同时发生，概率为 $P \left( A\right) \times P \left( B\right)​$ 。 根据 加法原理，把上述值加起来即能得证。这样我们就处理好了子树里节点导电的情况。 对于第二次 $\rm{dfs}​$，我们再考虑第三种可能，有以下方程 \large {\begin{aligned} & p_v = p_v \cup \left( \frac{p_u - p_v \times q_{u \rightarrow v}}{1 - p_v \times q_{u \rightarrow v}} \times q_{u \rightarrow v} \right) & \left( v \in son_u\right) \end{aligned}}其中 $q_{u \rightarrow v}$ 表示边 $u \rightarrow v$ 导电的概率。显然根节点（$root$）通电的概率已知（不可能有第三种可能），考虑通过父节点 $u$ 状态确定子节点 $v$ 。 $p_v$ 的值一定为 当前 $p_v$ 的值（自己和子树内的通电概率） 和 子树外节点通电传导给 $v$ 的并。其中 $v$ 子树里的节点通电传导给 $u$ 的概率为 $p_v \times q_{u \rightarrow v}$，这个值与子节点 $v$ 的 子树外节点通电传导给 $u$ 的概率 的并是 $p_u$ 。而现在要求 子树外节点通电传导给 $u$ 的概率 。 这个问题可以转化为——若已知 $P \left( B\right),P \left( C\right)$ 的值，且 $P\left( A \cup B \right) = P \left ( C\right)$，怎么求 $P \left( A \right)$？ 用刚才的公式倒推即可： \large { P \left( A \cup B\right) = P \left( C \right) } \large { P\left( A \right) + P\left( B \right) - P\left( A \right) \times P\left( B \right) = P\left( C \right) } \large { P\left( A \right) - P\left( A \right) \times P\left( B \right) = P\left( C \right) -P\left( B \right) } \large { P\left( A \right) \times \left( 1 - P\left( B \right) \right) = P\left( C \right) -P\left( B \right) } \large {\begin{aligned} & P\left( A \right) = \frac{P\left( C \right) -P\left( B \right)}{1 - P\left( B \right)} & \left( P \left( B \right) \neq 1 \right) \end{aligned} }根据这个式子求出 子树外节点通电传导给 $u$ 的概率，乘上 $q_{u \rightarrow v}$ 就是 子树外节点通电传导给 $v$ 的概率 了，再求 $p_v$ 与它的并，就是这个状态的值。值得注意的是，如果上述式子中的 $P\left( B \right) = 1$（即 $p_v \times q_{u \rightarrow v} = 1$），显然是不能直接除的，但因为 $0 \leq p_v,q_{u \rightarrow v} \leq 1$，所以 $p_v = q_{u \rightarrow v} = 1$，在这种情况下可以直接跳过，不进行转移（$p_v$ 一定通电）。最后把所有节点通电的概率加起来即为答案。 与第一次 $\rm{dfs}$ 不同的是：第一次是由子树合并答案，需要递归到底，返回时再转移；第二次是由父节点更新答案，遍历完整棵树即可。时间复杂度为 $O(n)​$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 5e5, MAXM = 5e5;const double eps = 1e-7;int n, tot, head[MAXN + 5];double ans, p[MAXN + 5], x[MAXN + 5];struct Edge &#123; int next, to; double dis;&#125; e[(MAXM &lt;&lt; 1) + 5];inline void addEdge(int u, int v, double w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline double cup(double a, double b) &#123;//求两个概率的并 a∪b return a + b - a * b;&#125;inline double calc(double a, double b) &#123;//已知 P(b) 以及 P(a)∪P(b)，求 P(a) return (a - b) / (1.0 - b);&#125;void dfsUp(int u, int fa) &#123;//第一次 dfs，子树内节点传导电 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; dfsUp(v, u);//递归到底层 double q = e[i].dis; p[u] = cup(p[u], p[v] * q);//转移 &#125;&#125;void dfsDown(int u, int fa) &#123;//第二次 dfs，子树外节点传导电 ans += p[u];//累加答案 for (int v, i = head[u]; v = e[i].to, i; i = e[i].next) &#123; if (v == fa) continue; double q = e[i].dis; if (fabs(p[v] * q - 1.0) &lt; eps) &#123; dfsDown(v, u); continue;//跳过并向下搜 &#125; p[v] = cup(p[v], calc(p[u], p[v] * q) * q);//转移 dfsDown(v, u);//遍历整棵树 &#125;&#125;int main() &#123; read(n); for (int i = 1; i &lt; n; ++i) &#123; int u, v; double w; read(u), read(v), read(w); w *= 0.01;//q% addEdge(u, v, w), addEdge(v, u, w);//连无向边 &#125; for (int i = 1; i &lt;= n; ++i) &#123; read(p[i]); p[i] *= 0.01;//初始概率 为 节点自己充电的概率 &#125; dfsUp(1, 0); dfsDown(1, 0);//根节点为 1 printf("%.6lf\n", ans); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>动态规划</tag>
+        <tag>SHOI</tag>
+        <tag>2014</tag>
+        <tag>概率期望</tag>
+        <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -603,9 +603,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -616,9 +616,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -629,9 +629,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -645,11 +645,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>SDOI</tag>
-        <tag>动态规划</tag>
         <tag>2006</tag>
+        <tag>动态规划</tag>
+        <tag>SDOI</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -660,9 +660,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -698,9 +698,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -725,10 +725,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -740,8 +740,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>中国剩余定理</tag>
         <tag>Codeforces</tag>
+        <tag>中国剩余定理</tag>
       </tags>
   </entry>
   <entry>
@@ -764,8 +764,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -777,8 +777,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -790,10 +790,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -816,8 +816,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -830,9 +830,9 @@
       <tags>
         <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
-        <tag>概率期望</tag>
       </tags>
   </entry>
   <entry>
@@ -879,10 +879,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -906,9 +906,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -966,8 +966,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>线段树</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1028,10 +1028,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
