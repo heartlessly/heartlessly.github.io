@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[「Luogu P2324」「SCOI2005」骑士精神]]></title>
-    <url>%2Fproblems%2Fluogu-p2324%2F</url>
-    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[Luogu]P2324 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <title><![CDATA[「BZOJ 2824」「AHOI2012」铁盘整理]]></title>
+    <url>%2Fproblems%2Fbzoj-2824%2F</url>
+    <content type="text"><![CDATA[Description给定一个长度为 $n$ 互不相同的序列 $a_i$，每次操作可以将第 $1 \sim i\ (1 \leq i \leq n)$ 个数翻转，求最少几次操作可以使它变成升序数列。$(1 \leq n \leq 50, 1 \leq a_i \leq 100)$ Source[BZOJ]2824 Solution考虑 IDA* 。 先离散化，保证最后得到的数列为 $1,2,3, \ldots, n$ 。 本题中的 最完美估价： 12345678a[n + 1] = n + 1;inline int h() &#123; int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125; 显然一次翻转最多只能改变一对相邻数的差（比如翻转第 $1 \sim 3$ 个数只能改变第 $3$ 个数与第 $4$ 个数的差）。因此对于一个序列，有多少对相邻的数差不为 $1$，就至少要翻转多少次。不要忘记把第 $n + 1$ 个数设为 $n + 1$，因为如果翻转第 $1 \sim n$ 个数，我们也可以认为改变了第 $n$ 个数与第 $n + 1$ 个数的差。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 50;int n, a[MAXN + 5], b[MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125;void dfs(int g, int f, int pre) &#123; if (sol || g + h() &gt; f) return;//预估步数 if (!h()) &#123; sol = 1;//找到答案 return; &#125; for (int i = 1; i &lt;= n; ++i) &#123; if (i == pre) continue;//保证不与上一次翻转的长度相同 reverse(a + 1, a + i + 1);//翻转 dfs(g + 1, f, i); reverse(a + 1, a + i + 1);//回溯 &#125;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; sort(b + 1, b + n + 1); for (int i = 1; i &lt;= n; ++i) a[i] = lower_bound(b + 1, b + n + 1, a[i]) - b;//离散化 a[n + 1] = n + 1; for (int i = 0; ; ++i) &#123;//迭代加深 sol = 0; dfs(0, i, 0); if (sol) &#123; write(i); putchar('\n'); break; &#125; &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
-        <tag>SCOI</tag>
-        <tag>2005</tag>
+        <tag>BZOJ</tag>
         <tag>搜索</tag>
-        <tag>Luogu</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
+        <tag>2012</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P2534」「AHOI2012」铁盘整理]]></title>
+    <url>%2Fproblems%2Fluogu-p2534%2F</url>
+    <content type="text"><![CDATA[Description给定一个长度为 $n$ 互不相同的序列 $a_i$，每次操作可以将第 $1 \sim i\ (1 \leq i \leq n)$ 个数翻转，求最少几次操作可以使它变成升序数列。$(1 \leq n \leq 50, 1 \leq a_i \leq 100)$ Source[Luogu]P2534 Solution考虑 IDA* 。 先离散化，保证最后得到的数列为 $1,2,3, \ldots, n$ 。 本题中的 最完美估价： 12345678a[n + 1] = n + 1;inline int h() &#123; int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125; 显然一次翻转最多只能改变一对相邻数的差（比如翻转第 $1 \sim 3$ 个数只能改变第 $3$ 个数与第 $4$ 个数的差）。因此对于一个序列，有多少对相邻的数差不为 $1$，就至少要翻转多少次。不要忘记把第 $n + 1$ 个数设为 $n + 1$，因为如果翻转第 $1 \sim n$ 个数，我们也可以认为改变了第 $n$ 个数与第 $n + 1$ 个数的差。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 50;int n, a[MAXN + 5], b[MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125;void dfs(int g, int f, int pre) &#123; if (sol || g + h() &gt; f) return;//预估步数 if (!h()) &#123; sol = 1;//找到答案 return; &#125; for (int i = 1; i &lt;= n; ++i) &#123; if (i == pre) continue;//保证不与上一次翻转的长度相同 reverse(a + 1, a + i + 1);//翻转 dfs(g + 1, f, i); reverse(a + 1, a + i + 1);//回溯 &#125;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; sort(b + 1, b + n + 1); for (int i = 1; i &lt;= n; ++i) a[i] = lower_bound(b + 1, b + n + 1, a[i]) - b;//离散化 a[n + 1] = n + 1; for (int i = 0; ; ++i) &#123;//迭代加深 sol = 0; dfs(0, i, 0); if (sol) &#123; write(i); putchar('\n'); break; &#125; &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>搜索</tag>
+        <tag>启发式搜索</tag>
+        <tag>迭代加深</tag>
+        <tag>AHOI</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -26,8 +42,24 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
+        <tag>启发式搜索</tag>
+        <tag>迭代加深</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P2324」「SCOI2005」骑士精神]]></title>
+    <url>%2Fproblems%2Fluogu-p2324%2F</url>
+    <content type="text"><![CDATA[Description在一个 $5 \times 5$ 的棋盘上有白色和黑色的骑士各 $12$ 个，以及一个空位（每个骑士都可以移动到和它横坐标相差 $2$，纵坐标相差 $1$ 或横坐标相差 $1$，纵坐标相差 $2$ 的空位上）。给定初始棋盘，求出至少移动多少次能得到目标棋盘（如下图）。如果 $15$ 步以内不能得到，输出 $-1$ 。 Source[Luogu]P2324 SolutionIDA* 经典题。 不管是 A* 还是 IDA*，最重要的就是 估价函数，定义为： f(n) = g(n) + h(n)其中 $f(n)$ 是节点 $n$ 的估价函数，$g(n)$ 是当前的实际步数，$h(n)$ 是对未来步数的最完美估价。 为什么是这样呢？ 假设你觉得到 $n$ 这个状态需要 $f(n)$ 步，你到当前状态已经花了 $g(n)$ 步，现在你想从当前状态到 $n$ 这个状态，在运气最好的情况下还需要 $h(n)$ 步。若 $g(n) + h(n) &gt; f(n)$，则显然当前状态不能再 $f(n)$ 步之内到达 $n$ 这个状态。 如果要让所有马归位，状态数会非常多，所以我们考虑移动空位，即让空位与马交换位置，直到当前状态与目标状态相同。除此之外，这道题有要求 $15$ 步之内完成，所以可以 迭代加深，即规定最大深度，超过这个深度就直接退出。换句话说，我们可以把这个最大深度作为 $f(n)$ 。 本题中的 最完美估价： 123456789101112131415161718192021const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125; 对于一匹不在自己位置上的马，在最优的情况下，我们只需要一次移动就能使这匹马归位。假设每一匹这样的马都需要移动一次，所以我们统计这样的马的个数即可。 还有一个剪枝，就是记录上一步是空格在哪个位置，下一步再跳回上一步的位置显然不优，这样可以少掉很多无用递归。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091929394959697#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != '0' &amp;&amp; c != '1' &amp;&amp; c != '*'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 5;const int dx[8] = &#123; -2, -1, 2, 1, 2, 1, -1, -2 &#125;;const int dy[8] = &#123; 1, 2, 1, 2, -1, -2, -2, -1 &#125;;const int goal[MAXN + 1][MAXN + 1] = &#123; //目标矩阵，空位标记为 -1 &#123; 0, 0, 0, 0, 0, 0 &#125;, &#123; 0, 1, 1, 1, 1, 1 &#125;, &#123; 0, 0, 1, 1, 1, 1 &#125;, &#123; 0, 0, 0, -1, 1, 1 &#125;, &#123; 0, 0, 0, 0, 0, 1 &#125;, &#123; 0, 0, 0, 0, 0, 0 &#125; &#125;;int t, sx, sy, a[MAXN + 5][MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) cnt += a[i][j] != goal[i][j]; //我们统计了当前状态与目标状态不同的位置个数为 cnt， //但是我们实际要统计的是不在自己位置上的马的个数， //这里我们把空位也算了进去，若所有马都在自己位置上， //则此时空位也一定在自己的位置上，由此可得， //空位对结果没有影响，所以最后 cnt 要 -1 return cnt - 1;&#125;void dfs(int x, int y, int g, int f, int prex, int prey) &#123; if (sol || x &lt; 1 || x &gt; 5 || y &lt; 1 || y &gt; 5 || g + h() &gt; f) return; if (h() == -1) &#123;//若最完美估价为 -1，说明当前状态与目标状态重合 sol = 1;//标记为有解 return; &#125; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx == prex &amp;&amp; ty == prey) continue;//保证下一步不与上一步相同 swap(a[x][y], a[tx][ty]);//空格与马交换位置 dfs(tx, ty, g + 1, f, x, y);//继续搜，当前步数 +1 swap(a[x][y], a[tx][ty]);//回溯 &#125;&#125;int main() &#123; for (read(t); t; --t) &#123; for (int i = 1; i &lt;= 5; ++i) for (int j = 1; j &lt;= 5; ++j) &#123; char c; readChar(c); if (c == '*') &#123; sx = i, sy = j;//空位位置 a[i][j] = -1;//标记为 -1 &#125; else a[i][j] = c ^ 48;//字符转成数字 &#125; int ans = -1; for (int i = 0; i &lt;= 15; ++i) &#123;//迭代加深（规定深度搜索） sol = 0; dfs(sx, sy, 0, i, 0, 0); if (sol) &#123; ans = i;//深度为 i 时有解 break; &#125; &#125; write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>SCOI</tag>
+        <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
       </tags>
@@ -115,9 +147,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>集训队</tag>
-        <tag>莫队</tag>
         <tag>Luogu</tag>
+        <tag>莫队</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -141,9 +173,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -220,11 +252,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -235,8 +267,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>矩阵加速</tag>
       </tags>
   </entry>
@@ -273,10 +305,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -301,10 +333,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -328,9 +360,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -341,8 +373,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -353,8 +385,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -365,10 +397,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>缩点</tag>
         <tag>图论</tag>
-        <tag>USACO</tag>
         <tag>Luogu</tag>
+        <tag>USACO</tag>
+        <tag>缩点</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -381,11 +413,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -396,11 +428,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -413,8 +445,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -427,12 +459,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -444,11 +476,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>数位DP</tag>
-        <tag>ZJOI</tag>
         <tag>2010</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>ZJOI</tag>
       </tags>
   </entry>
   <entry>
@@ -459,12 +491,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>数位DP</tag>
-        <tag>ZJOI</tag>
-        <tag>2010</tag>
         <tag>Luogu</tag>
+        <tag>2010</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>ZJOI</tag>
       </tags>
   </entry>
   <entry>
@@ -476,10 +508,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -491,12 +523,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>2009</tag>
-        <tag>数位DP</tag>
-        <tag>AHOI</tag>
         <tag>Luogu</tag>
+        <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>AHOI</tag>
       </tags>
   </entry>
   <entry>
@@ -508,11 +540,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -523,12 +555,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>SCOI</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>2009</tag>
-        <tag>数位DP</tag>
         <tag>Luogu</tag>
+        <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>SCOI</tag>
+        <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -540,11 +572,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -555,12 +587,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>动态规划</tag>
-        <tag>搜索</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -587,12 +619,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -603,9 +635,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -616,9 +648,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -629,9 +661,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -645,11 +677,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2006</tag>
-        <tag>动态规划</tag>
-        <tag>SDOI</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>动态规划</tag>
+        <tag>2006</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -660,9 +692,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -698,9 +730,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -725,10 +757,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -740,8 +772,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -764,8 +796,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -777,8 +809,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
+        <tag>数论数学</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -790,10 +822,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>SDOI</tag>
-        <tag>2012</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>数论数学</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -816,8 +848,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -828,8 +860,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>动态规划</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -879,10 +911,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -906,9 +938,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -966,8 +998,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -1015,8 +1047,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -1028,10 +1060,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2009</tag>
-        <tag>数论数学</tag>
-        <tag>CQOI</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
+        <tag>2009</tag>
+        <tag>CQOI</tag>
       </tags>
   </entry>
   <entry>
