@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Codeforces 1117C」Compress String]]></title>
+    <url>%2Fproblems%2Fcodeforces-1117c%2F</url>
+    <content type="text"><![CDATA[Description坐标系上有一只小船，现在想从 $(x_1,y_1)$ 去 $(x_2,y_2)$ 。每时刻都有风，会把船往对应的风向吹一个单位，风是循环的，吹完 $s_1 \sim s_n$ 就又会从 $s_1$ 开始。船在每一时刻都可以向指定方向移动一个单位。求船到目的地的最少时间，如果不能到达输出 -1 。$(1 \leq n \leq 10^5,0 \leq x_1,x_2,y_1,y_2 \leq 10^9)$ Source[Luogu]CF1117C [Codeforces]1117C Solution考虑 二分答案 。 首先要想到一个转化。虽然风吹与船行同时进行，但我们可以先让风吹完了再让船走。由于我们已经二分得到了时间，所以风吹完后小船的坐标我们是已知的（可以用前缀和预处理 $s_1 \sim s_n$ 前 $i$ 时刻每种风的数量），而小船到目的地的最短距离就是该坐标与目的地的 曼哈顿距离 。 二分的下界显然是 $0$，上界怎么算呢？如果风一直把船往与目的地相反的方向吹，只有一个时刻的风是相同方向的，那样经过 $n$ 时刻才能移动 $2$ 格，因此最坏情况下需要 $10^{14}$ 的时间。总时间复杂度为 $O(\log n)$ Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'U' &amp;&amp; c != 'D' &amp;&amp; c != 'L' &amp;&amp; c != 'R'; c = getchar());&#125;const int MAXN = 1e5;LL sx, sy, tx, ty, n, ans = -1;int sum[100][MAXN + 5];char d[MAXN + 5];inline LL dist(LL x1, LL y1, LL x2, LL y2) &#123;//曼哈顿距离 return abs(x1 - x2) + abs(y1 - y2);&#125;inline bool check(LL p) &#123; LL x = sx + sum['R'][n] * (p / n) + sum['R'][p % n] - sum['L'][n] * (p / n) - sum['L'][p % n];//一共 p / n 次循环，多余的单独处理 LL y = sy + sum['U'][n] * (p / n) + sum['U'][p % n] - sum['D'][n] * (p / n) - sum['D'][p % n]; return dist(x, y, tx, ty) &lt;= p;//判断是否在能规定时间内到达目的地&#125;int main() &#123; read(sx), read(sy), read(tx), read(ty), read(n); for (int i = 1; i &lt;= n; ++i) &#123; readChar(d[i]); sum['R'][i] = sum['R'][i - 1] + (d[i] == 'R'); sum['L'][i] = sum['L'][i - 1] + (d[i] == 'L'); sum['U'][i] = sum['U'][i - 1] + (d[i] == 'U'); sum['D'][i] = sum['D'][i - 1] + (d[i] == 'D');//前缀和预处理 &#125; for (LL l = 0, r = 1e14; l &lt;= r; ) &#123;//二分答案，注意上界 LL mid = (l + r) &gt;&gt; 1; if (check(mid)) &#123; r = mid - 1; ans = mid; &#125; else l = mid + 1; &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Codeforces</tag>
+        <tag>二分</tag>
+        <tag>模拟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 2824」「AHOI2012」铁盘整理]]></title>
     <url>%2Fproblems%2Fbzoj-2824%2F</url>
     <content type="text"><![CDATA[Description给定一个长度为 $n$ 互不相同的序列 $a_i$，每次操作可以将第 $1 \sim i\ (1 \leq i \leq n)$ 个数翻转，求最少几次操作可以使它变成升序数列。$(1 \leq n \leq 50, 1 \leq a_i \leq 100)$ Source[BZOJ]2824 Solution考虑 IDA* 。 先离散化，保证最后得到的数列为 $1,2,3, \ldots, n$ 。 本题中的 最完美估价： 12345678a[n + 1] = n + 1;inline int h() &#123; int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125; 显然一次翻转最多只能改变一对相邻数的差（比如翻转第 $1 \sim 3$ 个数只能改变第 $3$ 个数与第 $4$ 个数的差）。因此对于一个序列，有多少对相邻的数差不为 $1$，就至少要翻转多少次。不要忘记把第 $n + 1$ 个数设为 $n + 1$，因为如果翻转第 $1 \sim n$ 个数，我们也可以认为改变了第 $n$ 个数与第 $n + 1$ 个数的差。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 50;int n, a[MAXN + 5], b[MAXN + 5];bool sol;inline int h() &#123;//最完美估价 int cnt = 0; for (int i = 1; i &lt;= n; ++i) cnt += abs(a[i] - a[i + 1]) != 1; return cnt;&#125;void dfs(int g, int f, int pre) &#123; if (sol || g + h() &gt; f) return;//预估步数 if (!h()) &#123; sol = 1;//找到答案 return; &#125; for (int i = 1; i &lt;= n; ++i) &#123; if (i == pre) continue;//保证不与上一次翻转的长度相同 reverse(a + 1, a + i + 1);//翻转 dfs(g + 1, f, i); reverse(a + 1, a + i + 1);//回溯 &#125;&#125;int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); b[i] = a[i]; &#125; sort(b + 1, b + n + 1); for (int i = 1; i &lt;= n; ++i) a[i] = lower_bound(b + 1, b + n + 1, a[i]) - b;//离散化 a[n + 1] = n + 1; for (int i = 0; ; ++i) &#123;//迭代加深 sol = 0; dfs(0, i, 0); if (sol) &#123; write(i); putchar('\n'); break; &#125; &#125; return 0;&#125;]]></content>
@@ -9,9 +22,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -25,9 +38,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -42,10 +55,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -58,10 +71,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -98,8 +111,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>分块</tag>
         <tag>二分</tag>
+        <tag>分块</tag>
       </tags>
   </entry>
   <entry>
@@ -111,8 +124,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>分块</tag>
         <tag>二分</tag>
+        <tag>分块</tag>
       </tags>
   </entry>
   <entry>
@@ -306,8 +319,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>最短路</tag>
         <tag>2012</tag>
+        <tag>最短路</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
@@ -444,10 +457,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
         <tag>CQOI</tag>
+        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -460,10 +473,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
         <tag>CQOI</tag>
+        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -476,11 +489,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2010</tag>
+        <tag>搜索</tag>
         <tag>动态规划</tag>
         <tag>数位DP</tag>
-        <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -492,11 +505,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2010</tag>
+        <tag>搜索</tag>
         <tag>动态规划</tag>
         <tag>数位DP</tag>
-        <tag>搜索</tag>
         <tag>ZJOI</tag>
+        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -508,11 +521,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
+        <tag>2009</tag>
         <tag>AHOI</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -524,11 +537,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
+        <tag>2009</tag>
         <tag>AHOI</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -540,11 +553,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -556,11 +569,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>动态规划</tag>
+        <tag>2009</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -572,11 +585,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -588,11 +601,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -678,8 +691,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>动态规划</tag>
+        <tag>SDOI</tag>
         <tag>2006</tag>
         <tag>树形DP</tag>
       </tags>
@@ -772,8 +785,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>中国剩余定理</tag>
         <tag>Codeforces</tag>
+        <tag>中国剩余定理</tag>
       </tags>
   </entry>
   <entry>
@@ -809,8 +822,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -823,8 +836,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>SDOI</tag>
         <tag>数论数学</tag>
+        <tag>SDOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -860,8 +873,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>动态规划</tag>
+        <tag>数论数学</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -1048,8 +1061,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>数论数学</tag>
-        <tag>2009</tag>
         <tag>CQOI</tag>
+        <tag>2009</tag>
       </tags>
   </entry>
   <entry>
@@ -1062,8 +1075,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>数论数学</tag>
-        <tag>2009</tag>
         <tag>CQOI</tag>
+        <tag>2009</tag>
       </tags>
   </entry>
   <entry>
