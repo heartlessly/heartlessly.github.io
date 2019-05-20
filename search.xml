@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「AtCoder ABC126-F」XOR Matching]]></title>
+    <url>%2Fproblems%2Fatcoder-abc126f%2F</url>
+    <content type="text"><![CDATA[Description构造一个序列 $\{a\}$，这个序列的长度是 $2^{m + 1}$，且 $0 \sim 2^m - 1$ 中的每一个整数都必须出现 $2$ 次。对于任何 $a_i = a_j\ (i &lt; j)$，都满足 $a_i \oplus a_{i + 1} \oplus \cdots \oplus a_{j - 1} \oplus a_j = k$ 。 如果不存在这样的序列输出 -1 。$(0 \leq m \leq 17,0 \leq k \leq 10^9)$ Source[AtCoder]ABC126F Solution显然当 $k &gt; 2^m - 1$ 时无解，因为 $2^m - 1$ 的每一个二进制位都是 $1$，与比它小的数异或后不可能大于 $2^m - 1$ 。 考虑构造一个合法的序列。 我们在中间放一个数 $k$，然后在其两边放相同的数，比如： 0,1,2,3,\ldots ,2^m - 1,k,2^m - 1,\ldots,3,2,1,0这显然是没有问题的，因为对于任意两个相同的数，它们中间两两相同的数能互相抵消为 $0$，最终的异或和一定是 $k$ 。如果按这种方法构造，可以让除了 $k$ 之外的所有数符合条件，但是还多了一个 $k$，考虑这个 $k$ 应该放在哪里。 我们可以通过异或运算的性质得到一个结论： $n$ 为大于 $1$ 的整数时，存在 0 \oplus 1 \oplus 2 \oplus \cdots \oplus (2^n - 1) = 0证明： 将它们两两异或得到一个新的序列。 \begin{aligned} 0 \oplus (2^n - 1) &= 2^n - 1\\[1ex] 1 \oplus (2^n - 2) &= 2^n - 1\\[1ex] 2 \oplus (2^n - 3) &= 2^n - 1\\[1ex] \cdots &\cdots\\[1ex] (2^{n - 1} -1) \oplus 2^{n - 1} &= 2^n - 1 \end{aligned}显然异或后只剩下 $2^{n - 1}$ 个 $2^n - 1$，根据异或运算的性质（偶数个相同数的异或和为 $0$）得到：当 $n &gt; 1$ 时，$2^{n - 1}$ 一定为偶数，该式子的值为 $0$ 得证。 因此我们只需要将另一个 $k$ 放在最后即可，这样两个 $k$ 中间的数与其中一个 $k$ 的异或和刚好为 $0$，$0$ 异或另一个 $k$ 的值为 $k$ 。最后注意 $n = 1$ 时结论不成立需要特判。时间复杂度为 $O(n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = (1 &lt;&lt; 18) + 5;int n, m, k, maxn, ans[MAXN + 5];int main() &#123; read(m), read(k); maxn = (1 &lt;&lt; m) - 1, n = 1 &lt;&lt; (m + 1); if (m == 1) &#123;//特判 m = 1 if (k == 0) puts("0 0 1 1"); else puts("-1"); return 0; &#125; if (k &gt; maxn) &#123;//无解 puts("-1"); return 0; &#125; ans[n / 2] = ans[n] = k;//中间和末项都是 k for (int p = 0, i = 1; i &lt;= maxn; ++i, ++p) &#123; if (p == k) ++p;//k 已经被占用，k 的两边不能放 k ans[i] = ans[n - i] = p;//对称地在 k 两边放数 &#125; for (int i = 1; i &lt;= n; ++i) &#123; write(ans[i]); putchar(' '); &#125; putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>AtCoder</tag>
+        <tag>构造</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 3261」最大异或和]]></title>
     <url>%2Fproblems%2Fbzoj-3261%2F</url>
     <content type="text"><![CDATA[Description给定一个非负整数序列 $\{a\}$，初始长度为 $N$ 。 有 $M$ 个操作，有以下两种操作类型： A x：添加操作，表示在序列末尾添加一个数 $x$，序列的长度 $N+1$ 。 Q l r x：询问操作，你需要找到一个位置 $p$，满足 $l \le p \le r$，使得 $a_p \oplus a_{p+1} \oplus \cdots \oplus a_N \oplus x$ 最大，输出最大是多少。 $(1 \leq N,M \leq 3 \times 10^5,0 \leq a_i \leq 10^7)$ Source[BZOJ]3261 Solution先考虑简化问题。 我们可以像前缀和一样预处理出 $pre_i = a_1 \oplus a_2 \oplus \cdots \oplus a_i$，再根据异或运算的性质，可以得到： a_l \oplus a_{l + 1} \oplus \cdots \oplus a_{r - 1} \oplus a_r = pre_{r} \oplus pre_{l - 1}问题就变为找到一个位置 $p - 1$，满足 $l - 1 \le p - 1 \le r - 1$，使得 $pre_n \oplus pre_{p - 1} \oplus x$ 最大。显然 $pre_n$ 和 $x$ 都已知，所以我们只需要找与 $x \oplus pre_n$ 在指定范围内且异或结果最大的 $pre_{p - 1}$ 即可。 看到这个问题，很容易想到用 0-1 Trie 来维护。但是因为限制了区间，一棵 Trie 是肯定不够用的，所以还要 可持久化 。 可持久化 Trie 和 主席树 的实现方法相似。我们每插入一个前缀异或和 $pre_i$，就建一棵 Trie 。由于第 $i$ 棵 Trie 与第 $i - 1$ 棵 Trie 最多只会有 $\log n$ 棵节点是不同的。所以插入时，我们只需要新建一个根，只对当前数的每一位新建节点，其余的点连向上一棵树。这样空间复杂度可以优化为 $O(n \log n)$ 。在上述插入的过程中，我们只需要记录第 $i$ 棵 Trie 每个节点的个数，就能判断一个区间内是否有该节点。查询也很容易，从第 $l - 2$ 与第 $r - 1$ 棵 Trie 的根开始（因为这两棵 Trie 之间的数为 $pre_{l - 1} \sim pre_{r - 1}$），判断是否存在与 $x$ 某一位取反的节点，具体过程类似 [LOJ]10050 。不要忘记在第 $0$ 棵 Trie 上插入 $0$，时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'A' &amp;&amp; c != 'Q'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6e5;int n, m, pre[MAXN + 5];struct Trie &#123; int tot, root[MAXN + 5], sum[MAXN * 23 + 5], ch[MAXN * 23 + 5][2]; inline void update(int &amp;rt, int pre, int x) &#123; rt = ++tot;//建一个新的根 int u = rt;//当前节点 for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); ch[u][v] = ++tot, ch[u][v ^ 1] = ch[pre][v ^ 1]; //对当前数新建节点，另一分支连向上一棵树 u = ch[u][v], pre = ch[pre][v];//向下一层走 sum[u] = sum[pre] + 1;//记录该节点个数 &#125; &#125; inline int query(int ql, int qr, int x) &#123; int res = 0; for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); if (ch[ql][v ^ 1] &lt; ch[qr][v ^ 1]) &#123;//存在相反的节点 res += 1 &lt;&lt; i;//异或后第 i 位上是 1 ql = ch[ql][v ^ 1], qr = ch[qr][v ^ 1]; &#125; else ql = ch[ql][v], qr = ch[qr][v];//同时向下一层走 &#125; return res; &#125;&#125; tr;int main() &#123; read(n), read(m); tr.update(tr.root[0], 0, 0);//在第 0 棵 Trie 中插入 0 for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); pre[i] = pre[i - 1] ^ x;//前缀异或和 tr.update(tr.root[i], tr.root[i - 1], pre[i]);//在上一棵 Trie 的基础上插入 pre[i] &#125; for (int l, r, x, i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'A') &#123; read(x); ++n; pre[n] = pre[n - 1] ^ x;//更新前缀异或和 tr.update(tr.root[n], tr.root[n - 1], pre[n]);//插入新数 &#125; else &#123; read(l), read(r), read(x); if (l == 1) write(tr.query(0, tr.root[r - 1], x ^ pre[n])); //l = 1 时，要把 p = 1 的情况算进去，也就是说 Trie 中还要有 0 这个数， //因为 x ^ pre[n] 可能是最大的 else write(tr.query(tr.root[l - 2], tr.root[r - 1], x ^ pre[n])); //区间为 [l - 1, r - 1]，所以起始的根应该为 l - 2 和 r - 1 putchar('\n'); &#125; &#125; return 0;&#125;]]></content>
@@ -48,9 +60,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -64,9 +76,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -81,10 +93,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -97,10 +109,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -438,8 +450,8 @@
       <tags>
         <tag>图论</tag>
         <tag>Luogu</tag>
-        <tag>缩点</tag>
         <tag>USACO</tag>
+        <tag>缩点</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -484,8 +496,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -500,8 +512,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -517,8 +529,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -533,8 +545,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -549,8 +561,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -565,8 +577,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -582,8 +594,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -598,8 +610,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -613,8 +625,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -629,8 +641,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
