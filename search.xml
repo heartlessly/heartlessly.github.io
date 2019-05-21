@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「HDU 1847」Good Luck in CET-4 Everybody]]></title>
+    <url>%2Fproblems%2Fhdu-1847%2F</url>
+    <content type="text"><![CDATA[Description一个公平组合游戏： 总共 $n$ 张牌； 双方轮流抓牌，两人都足够聪明； 每人每次抓牌的个数只能是 $2$ 的幂次（即：$1,2,4,8,16\ldots$）； 最后抓完牌的人为胜者。 $\rm Kiki$ 先手，$\rm Cici$ 后手，求最后谁能获胜。$(1 \leq n \leq 10^3)$ Source[hdu]1847 Solution$\rm SG$ 函数经典例题。 我们把这个游戏放到一个 DAG 上。 最终取完牌的状态是 $0$，$0$ 没有后继状态，所以 $sg_0 = {\rm mex}(\varnothing ) = 0$，且这个点是必败点。 剩 $1$ 张牌的时候只能取走 $1$ 张，即 $1$ 的后继状态只有 $0$，所以 $sg_1 = {\rm mex}(\{sg_0\}) = {\rm mex}(\{0\})=1$ 。 剩 $2$ 张牌的时候能取走 $1$ 张或 $2$ 张，即 $2$ 的后继状态有 $1$ 和 $0$，所以 $sg_2 = {\rm mex}(\{sg_0,sg_1\}) = {\rm mex}(\{0,1\})=2$ 。 剩 $3$ 张牌的时候也能取走 $1$ 张或 $2$ 张，即 $3$ 的后继状态有 $2$ 和 $1$，所以 $sg_3 = {\rm mex}(\{sg_1,sg_2\}) = {\rm mex}(\{1,2\})=0$ 。 剩 $4$ 张牌的时候能取走 $1$ 张，$2$ 张或 $4$ 张，即 $4$ 的后继状态有 $3,2$ 和 $0$，所以 $sg_4 = {\rm mex}(\{sg_0,sg_2,sg_3\}) = {\rm mex}(\{0,2\})=1$ 。 同理我们能得到 $sg_5 = 2,sg_6 = 0,sg_7 = 1$ 。 $sg_0$ $sg_1$ $sg_2$ $sg_3$ $sg_4$ $sg_5$ $sg_6$ $sg_7$ $0$ $1$ $2$ $0$ $1$ $2$ $0$ $1$ 综上所述我们可以列出一个表格，很容易发现规律：$sg_n = n \bmod 3$ 。 所以当 $n$ 能被 $3$ 整除时，它的 $\rm SG$ 函数值为 $0$，即先手必败。 反之则先手必胜。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline bool read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) &#123; if (c == EOF) return 0; f ^= c == '-'; &#125; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x; return 1;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int main() &#123; for (int n; read(n); ) &#123; if (n % 3) puts("Kiki"); else puts("Cici"); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>HDU</tag>
+        <tag>博弈论</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[浅析SG函数与SG定理]]></title>
+    <url>%2Fnotes%2Fqian-xi-sg-han-shu-yu-sg-ding-li%2F</url>
+    <content type="text"><![CDATA[前言$\rm SG$ 函数与 $\rm SG$ 定理在博弈论中的 公平组合游戏 里起了不可或缺的作用。本文将简单介绍它们的原理及作用。 公平组合游戏公平组合游戏 与平常的游戏类似，但是需要满足以下要求： 有两个玩家轮流行动。 双方的游戏方式一致。 双方均知道游戏的完整信息。 以玩家无法行动为游戏结束。 游戏在有限步数内结束，并且一定能分出胜负。 经典的 Nim游戏 就是公平组合游戏的代表，但是围棋、象棋以及井字棋这些不属于，因为这三种双方的行动不同，且可能存在平局。 必胜与必败必胜点：常用字母 $\rm N$ 表示（意为 ”Next”，即执行这一步的人会赢），若某一方在此状态，且接下来双方操作均最优，则该方必胜。 必败点：常用字母 $\rm P$ 表示（意为 “Previous”，即执行上一步的人会赢），若某一方在此状态，且接下来双方操作均最优，则该方必败。 性质：我们定义一个点的 后继状态 为从该点通过一次操作得到的新状态。显然最后游戏结束的点没有后继状态，所以一般都已知是必败点，同时这个点也一定是其它某些点的后继状态。如果某个点的后继状态中有一个是必败点，则该点必胜。如果某个点的后继状态全部是必胜点，则该点必败。因此我们通过已知的点可以推出其它点是必胜点还是必败点。 $\rm SG$ 函数我们可以把一个 公平组合游戏 放到 DAG 上。 对于任意一个点，它指向它的所有后继状态，即连一条单向边。 若当前的图为 $G(V,E)$，则对于一个点 $u$，它的 $\rm SG$ 函数值为： g(u) = {\rm mex}(\{ g(v) \mid \forall (u,v) \in E \})其中 $\rm mex$ 是定义域在集合上的函数。设 $S$ 表示一个自然数集合，${\rm mex}(S)$ 返回集合 $S$ 中最小没出现过的自然数。 \begin{aligned} {\rm mex}(\varnothing ) &= 0\\[1ex] {\rm mex}(\{0\} ) &= 1\\[1ex] {\rm mex}(\{0,1,3,4\}) &= 2 \end{aligned}结论： 有向图游戏的某个局面必胜，当且仅当该局面对应节点的 $\rm SG$ 函数值大于 $0$ 。 有向图游戏的某个局面必败，当且仅当该局面对应节点的 $\rm SG$ 函数值等于 $0$ 。 解释： 对于一个出度为 $0$ 的节点，它的 $\rm SG$ 函数值为 $0$，对应必败点。 若一个节点的某个后继节点的 $\rm SG$ 函数值为 $0$，则在 $\rm mex$ 运算后该节点的 $\rm SG$ 函数值大于 $0$ 。等价于该点的后继状态中有一个是必败点，该点必胜。 若一个节点的所有后继节点的 $\rm SG$ 函数值均大于 $0$，则在 $\rm mex$ 运算后该节点的 $\rm SG$ 函数值等于 $0$ 。等价于该点的后继状态全部是必胜点，该点必败。 应用举例：[hdu]1847 $\rm SG$ 定理令 $G = G_1 + G_2 + \cdots + G_n$，设 $G_i$ 的 $\rm SG$ 函数值为 $g_i$，$G$ 的 $\rm SG$ 函数值为 $g$，则 g(X) = g((x_1,x_2,\ldots,x_n)) = g_1(x_1) \oplus g_2(x_2) \oplus \cdots \oplus g_n(x_n)其中 $x \in V,x_i \in V_i$，$\oplus$ 是异或运算。]]></content>
+      <categories>
+        <category>notes</category>
+      </categories>
+      <tags>
+        <tag>博弈论</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「AtCoder ABC126-F」XOR Matching]]></title>
     <url>%2Fproblems%2Fatcoder-abc126f%2F</url>
     <content type="text"><![CDATA[Description构造一个序列 $\{a\}$，这个序列的长度是 $2^{m + 1}$，且 $0 \sim 2^m - 1$ 中的每一个整数都必须出现 $2$ 次。对于任何 $a_i = a_j\ (i &lt; j)$，都满足 $a_i \oplus a_{i + 1} \oplus \cdots \oplus a_{j - 1} \oplus a_j = k$ 。 如果不存在这样的序列输出 -1 。$(0 \leq m \leq 17,0 \leq k \leq 10^9)$ Source[AtCoder]ABC126F Solution显然当 $k &gt; 2^m - 1$ 时无解，因为 $2^m - 1$ 的每一个二进制位都是 $1$，与比它小的数异或后不可能大于 $2^m - 1$ 。 考虑构造一个合法的序列。 我们在中间放一个数 $k$，然后在其两边放相同的数，比如： 0,1,2,3,\ldots ,2^m - 1,k,2^m - 1,\ldots,3,2,1,0这显然是没有问题的，因为对于任意两个相同的数，它们中间两两相同的数能互相抵消为 $0$，最终的异或和一定是 $k$ 。如果按这种方法构造，可以让除了 $k$ 之外的所有数符合条件，但是还多了一个 $k$，考虑这个 $k$ 应该放在哪里。 我们可以通过异或运算的性质得到一个结论： $n$ 为大于 $1$ 的整数时，存在 0 \oplus 1 \oplus 2 \oplus \cdots \oplus (2^n - 1) = 0证明： 将它们两两异或得到一个新的序列。 \begin{aligned} 0 \oplus (2^n - 1) &= 2^n - 1\\[1ex] 1 \oplus (2^n - 2) &= 2^n - 1\\[1ex] 2 \oplus (2^n - 3) &= 2^n - 1\\[1ex] \cdots &\cdots\\[1ex] (2^{n - 1} -1) \oplus 2^{n - 1} &= 2^n - 1 \end{aligned}显然异或后只剩下 $2^{n - 1}$ 个 $2^n - 1$，根据异或运算的性质（偶数个相同数的异或和为 $0$）得到：当 $n &gt; 1$ 时，$2^{n - 1}$ 一定为偶数，该式子的值为 $0$ 得证。 因此我们只需要将另一个 $k$ 放在最后即可，这样两个 $k$ 中间的数与其中一个 $k$ 的异或和刚好为 $0$，$0$ 异或另一个 $k$ 的值为 $k$ 。最后注意 $n = 1$ 时结论不成立需要特判。时间复杂度为 $O(n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = (1 &lt;&lt; 18) + 5;int n, m, k, maxn, ans[MAXN + 5];int main() &#123; read(m), read(k); maxn = (1 &lt;&lt; m) - 1, n = 1 &lt;&lt; (m + 1); if (m == 1) &#123;//特判 m = 1 if (k == 0) puts("0 0 1 1"); else puts("-1"); return 0; &#125; if (k &gt; maxn) &#123;//无解 puts("-1"); return 0; &#125; ans[n / 2] = ans[n] = k;//中间和末项都是 k for (int p = 0, i = 1; i &lt;= maxn; ++i, ++p) &#123; if (p == k) ++p;//k 已经被占用，k 的两边不能放 k ans[i] = ans[n - i] = p;//对称地在 k 两边放数 &#125; for (int i = 1; i &lt;= n; ++i) &#123; write(ans[i]); putchar(' '); &#125; putchar('\n'); return 0;&#125;]]></content>
@@ -60,11 +83,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>启发式搜索</tag>
-        <tag>迭代加深</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
+        <tag>启发式搜索</tag>
+        <tag>迭代加深</tag>
       </tags>
   </entry>
   <entry>
@@ -76,11 +99,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>启发式搜索</tag>
-        <tag>迭代加深</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
+        <tag>启发式搜索</tag>
+        <tag>迭代加深</tag>
       </tags>
   </entry>
   <entry>
@@ -93,10 +116,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -109,10 +132,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -450,8 +473,8 @@
       <tags>
         <tag>图论</tag>
         <tag>Luogu</tag>
-        <tag>USACO</tag>
         <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -495,9 +518,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -511,9 +534,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -527,10 +550,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -543,10 +566,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -560,9 +583,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -576,9 +599,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>2009</tag>
+        <tag>数位DP</tag>
         <tag>动态规划</tag>
         <tag>搜索</tag>
-        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -591,11 +614,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -607,11 +630,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
+        <tag>2009</tag>
         <tag>数位DP</tag>
+        <tag>动态规划</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -623,10 +646,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -639,10 +662,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -911,8 +934,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>动态规划</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -1098,8 +1121,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -1112,8 +1135,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
