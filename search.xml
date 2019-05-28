@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「AtCoder ABC128-D」equeue]]></title>
     <url>%2Fproblems%2Fatcoder-abc128-d%2F</url>
-    <content type="text"><![CDATA[Description给定一个长度为 $n$ 的序列 $\{v\}$，你最多可以进行 $m$ 次操作，操作有 $4$ 种： 把最左端的数放在手里； 把最右端的数放在手里； 把手中的某个数放回序列最左端； 把手中的某个数放回序列最右端； 求手中数的总和最大是多少。$(1 \leq n \leq 50,1 \leq m \leq 100,-10^7 \leq v_i \leq 10^7)$ Source[AtCoder]ABC128-D Solution显然答案一定是先从左边取若干数，放回取走的若干数；再从右边取若干数，放回取走的若干数。取和放的操作总数不超过 $m$ 。 尝试 动态规划 。 我们用 $f_{i,j}$ 表示取前 $i$ 个数，其中放回 $j$ 个数的最大价值，$g_{i,j}$ 表示取末尾 $i$ 个数，其中放回 $j$ 个数的最大价值。 其实只要会求 $f$，翻转数组求能用同样的方法求 $g$ 了。 对于 $f_{i,j}$，考虑第 $i$ 个数选还是不选。 如果选，取前 $i - 1$ 个数放回 $j$ 个数的最大价值为 $f_{i-1,j}$，还要加上 $v_i$ 。 如果不选，那么只能取前 $i - 1$ 个数并放回 $j - 1$ 个数，最大价值为 $f_{i-1,j-1}$ 。 取上述两个值的较大值即可。 即 \large { f_{i,j} = \max\left(f_{i-1,j-1}, f_{i - 1,j} + v_i \right) }最后通过 $f$ 和 $g$ 合并答案即可，注意 $m$ 次操作不一定要用完。$\rm DP$ 时间复杂度为 $O(nm)$，合并复杂度为 $O(n^2m^2)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 100;const LL INF = 0x7fffffffffffffff;int n, m;LL ans, v[MAXN + 5], f[MAXN + 5][MAXN + 5], g[MAXN + 5][MAXN + 5];int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) read(v[i]); for (int i = 1; i &lt;= min(n, m); ++i)//取的数不能超过 n for (int j = 0; j &lt;= i &amp;&amp; i + j &lt;= m; ++j) &#123; //放的操作不能多于取的操作，且加起来不能超过 m 次操作 f[i][j] = -INF; if (j &gt;= 1) f[i][j] = max(f[i][j], f[i - 1][j - 1]);//注意边界 if (j &lt;= i - 1) f[i][j] = max(f[i][j], f[i - 1][j] + v[i]); &#125; reverse(v + 1, v + n + 1);//翻转后做同样的 DP for (int i = 1; i &lt;= min(n, m); ++i) for (int j = 0; j &lt;= i &amp;&amp; i + j &lt;= m; ++j) &#123; g[i][j] = -INF; if (j &gt;= 1) g[i][j] = max(g[i][j], g[i - 1][j - 1]); if (j &lt;= i - 1) g[i][j] = max(g[i][j], g[i - 1][j] + v[i]); &#125; for (int i = 0; i &lt;= min(n, m); ++i) for (int j = 0; j &lt;= i; ++j) for (int k = 0; k &lt;= min(n, m); ++k) for (int l = 0; l &lt;= k; ++l) &#123; if (i + j + k + l &gt; m || i + k &gt; n) break; //加起来不能超过 m 次操作， //且前面的数和后面的数不能重叠（加起来超过 n） ans = max(ans, f[i][j] + g[k][l]);//合并答案 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一个长度为 $n$ 的序列 $\{v\}$，你最多可以进行 $m$ 次操作，操作有 $4$ 种： 把最左端的数放在手里； 把最右端的数放在手里； 把手中的某个数放回序列最左端； 把手中的某个数放回序列最右端。 求手中数的总和最大是多少。$(1 \leq n \leq 50,1 \leq m \leq 100,-10^7 \leq v_i \leq 10^7)$ Source[AtCoder]ABC128-D Solution显然答案一定是先从左边取若干数，放回取走的若干数；再从右边取若干数，放回取走的若干数。取和放的操作总数不超过 $m$ 。 尝试 动态规划 。 我们用 $f_{i,j}$ 表示取前 $i$ 个数，其中放回 $j$ 个数的最大价值，$g_{i,j}$ 表示取末尾 $i$ 个数，其中放回 $j$ 个数的最大价值。 其实只要会求 $f$，翻转数组求能用同样的方法求 $g$ 了。 对于 $f_{i,j}$，考虑第 $i$ 个数选还是不选。 如果选，取前 $i - 1$ 个数放回 $j$ 个数的最大价值为 $f_{i-1,j}$，还要加上 $v_i$ 。 如果不选，那么只能取前 $i - 1$ 个数并放回 $j - 1$ 个数，最大价值为 $f_{i-1,j-1}$ 。 取上述两个值的较大值即可。 即 \large { f_{i,j} = \max\left(f_{i-1,j-1}, f_{i - 1,j} + v_i \right) }最后通过 $f$ 和 $g$ 合并答案即可，注意 $m$ 次操作不一定要用完。$\rm DP$ 时间复杂度为 $O(nm)$，合并复杂度为 $O(n^2m^2)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 100;const LL INF = 0x7fffffffffffffff;int n, m;LL ans, v[MAXN + 5], f[MAXN + 5][MAXN + 5], g[MAXN + 5][MAXN + 5];int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) read(v[i]); for (int i = 1; i &lt;= min(n, m); ++i)//取的数不能超过 n for (int j = 0; j &lt;= i &amp;&amp; i + j &lt;= m; ++j) &#123; //放的操作不能多于取的操作，且加起来不能超过 m 次操作 f[i][j] = -INF; if (j &gt;= 1) f[i][j] = max(f[i][j], f[i - 1][j - 1]);//注意边界 if (j &lt;= i - 1) f[i][j] = max(f[i][j], f[i - 1][j] + v[i]); &#125; reverse(v + 1, v + n + 1);//翻转后做同样的 DP for (int i = 1; i &lt;= min(n, m); ++i) for (int j = 0; j &lt;= i &amp;&amp; i + j &lt;= m; ++j) &#123; g[i][j] = -INF; if (j &gt;= 1) g[i][j] = max(g[i][j], g[i - 1][j - 1]); if (j &lt;= i - 1) g[i][j] = max(g[i][j], g[i - 1][j] + v[i]); &#125; for (int i = 0; i &lt;= min(n, m); ++i) for (int j = 0; j &lt;= i; ++j) for (int k = 0; k &lt;= min(n, m); ++k) for (int l = 0; l &lt;= k; ++l) &#123; if (i + j + k + l &gt; m || i + k &gt; n) break; //加起来不能超过 m 次操作， //且前面的数和后面的数不能重叠（加起来超过 n） ans = max(ans, f[i][j] + g[k][l]);//合并答案 &#125; write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -93,8 +93,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>二分</tag>
         <tag>Codeforces</tag>
+        <tag>二分</tag>
         <tag>模拟</tag>
       </tags>
   </entry>
@@ -107,9 +107,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -123,9 +123,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -140,10 +140,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -156,10 +156,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -196,8 +196,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>分块</tag>
         <tag>二分</tag>
+        <tag>分块</tag>
       </tags>
   </entry>
   <entry>
@@ -209,8 +209,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>分块</tag>
         <tag>二分</tag>
+        <tag>分块</tag>
       </tags>
   </entry>
   <entry>
@@ -404,8 +404,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>最短路</tag>
         <tag>2012</tag>
+        <tag>最短路</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
@@ -418,9 +418,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -432,9 +432,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -446,8 +446,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>集训队</tag>
         <tag>最短路</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -459,8 +459,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>集训队</tag>
         <tag>最短路</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -495,8 +495,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -511,8 +511,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>图论</tag>
+        <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -526,8 +526,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -543,9 +543,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
-        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -559,9 +559,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
-        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -574,10 +574,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2010</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -590,10 +590,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2010</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -608,8 +608,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -624,8 +624,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -641,8 +641,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -657,8 +657,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -672,8 +672,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -688,8 +688,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -958,8 +958,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>动态规划</tag>
+        <tag>数论数学</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -1157,8 +1157,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -1171,8 +1171,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
