@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「BZOJ 3175」「TJOI2013」攻击装置]]></title>
     <url>%2Fproblems%2Fbzoj-3175%2F</url>
-    <content type="text"><![CDATA[Description给定一个大小为 $n \times n$ 的 $01$ 矩阵，其中你可以在 $0$ 的位置放置攻击装置。每一个攻击装置 $(x,y)$ 都可以按照“日”字攻击其周围的 $8$ 个位置。求在装置互不攻击的情况下，最多可以放置多少个装置。 $(1 \leq n \leq 200)$ Source[BZOJ]3175 Solution与 网络流 24 题 中的 骑士共存问题 几乎一样。 我们可以先将棋盘染色，得到 对于一个 $(x,y)$，若 $x + y$ 是奇数，则该格子为白色，否则为黑色。 很容易发现，放在白（黑）色格子上的攻击装置只能攻击到黑（白）色格子。 那么显然这是一个二分图。 我们把白色格子和黑色格子分成两部分。 如果某个白色格子可以攻击到某个黑色格子，则在它们之间连一条边。 一条边所连接的两个格子只能取其中一个（否则会互相攻击），所以问题变为求这个二分图的 最大独立集 。 最大独立集 = 总点数 - 最小点覆盖 = 总点数 - 最大匹配数 至于不能放攻击装置的格子，我们不把它当做二分图中的点即可，最后答案要减去这些点。 所以用 $\rm dinic$ 跑一遍最小割（最大流）就能够得到答案了。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(bool &amp;x) &#123; x = 0; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXP = 200, MAXN = 5e4, MAXM = 1e6, INF = 0x3f3f3f3f;const int dx[8] = &#123; 1, 2, -1, -2, -1, 2, 1, -2 &#125;;const int dy[8] = &#123; 2, 1, -2, -1, 2, -1, -2, 1 &#125;;int n, tot = 1, sum, id[MAXP + 5][MAXP + 5], head[MAXN + 5];int cur[MAXN + 5], depth[MAXN + 5];bool f[MAXP + 5][MAXP + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void build(int x, int y) &#123; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx &lt; 1 || ty &lt; 1 || tx &gt; n || ty &gt; n || f[tx][ty]) continue; addEdge(id[x][y], id[tx][ty], INF), addEdge(id[tx][ty], id[x][y], 0); //如果 (x,y) 能攻击到点 (tx,ty)，则在它们之间连一条边 &#125;&#125;inline bool bfs(int s, int t) &#123;//找增广路 for (int i = 0; i &lt;= t; ++i) cur[i] = head[i]; memset(depth, 0, sizeof (depth)); queue&lt;int&gt; q; depth[s] = 1; q.push(s); for (; !q.empty(); ) &#123; int u = q.front(); q.pop(); for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (depth[v] || !w) continue; depth[v] = depth[u] + 1; if (v == t) return 1; q.push(v); &#125; &#125; return 0;&#125;int dinic(int u, int t, int flow) &#123; if (u == t) return flow; int rest = flow; for (int v, w, i = cur[u]; v = e[i].to, w = e[i].dis, i &amp;&amp; rest; i = e[i].next) &#123; cur[u] = i;//当前弧优化 if (depth[v] != depth[u] + 1 || !w) continue; int k = dinic(v, t, min(rest, w)); if (!k) depth[v] = 0; else &#123; e[i].dis -= k; e[i ^ 1].dis += k; rest -= k; &#125; &#125; return flow - rest;&#125;inline int minCut(int s, int t) &#123;//求最小割 int res = 0; for (; bfs(s, t); ) res += dinic(s, t, INF); return res;&#125;int main() &#123; read(n); int s = 0, t = n * n + 1;//超级源点 s 与 超级汇点 t for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; readDigit(f[i][j]); sum += f[i][j];//不能放攻击装置的点的数量 &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; id[i][j] = (i - 1) * n + j;//点的编号 if (f[i][j]) continue; if ((i + j) &amp; 1)//源点向白色格子连一条流量为 1 的边 addEdge(s, id[i][j], 1), addEdge(id[i][j], s, 0); else //黑色格子向汇点连一条流量为 1 的边 addEdge(id[i][j], t, 1), addEdge(t, id[i][j], 0); &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) if ((i + j) &amp; 1) build(i, j);//白色格子与黑色格子连边 write(n * n - sum - minCut(s, t));//最大独立集 putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一个大小为 $n \times n$ 的 $01$ 矩阵，其中你可以在 $0$ 的位置放置攻击装置。每一个攻击装置 $(x,y)$ 都可以按照“日”字攻击其周围的 $8$ 个位置。求在装置互不攻击的情况下，最多可以放置多少个装置。 $(1 \leq n \leq 200)$ Source[BZOJ]3175 Solution与 网络流 24 题 中的 骑士共存问题 几乎一样。 我们可以先将棋盘染色，得到 对于格子 $(x,y)$，若 $x + y$ 是奇数，则该格子为白色，否则为黑色。 很容易发现，放在白（黑）色格子上的攻击装置只能攻击到黑（白）色格子。 那么显然这是一个二分图。 我们把白色格子和黑色格子分成两部分。 如果某个白色格子可以攻击到某个黑色格子，则在它们之间连一条边。 一条边所连接的两个格子只能取其中一个（否则会互相攻击），所以问题变为求这个二分图的 最大独立集 。 最大独立集 = 总点数 - 最小点覆盖 = 总点数 - 最大匹配数 至于不能放攻击装置的格子，我们不把它当做二分图中的点即可，最后答案要减去这些点。 所以用 $\rm dinic$ 跑一遍最小割（最大流）就能够得到答案了。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(bool &amp;x) &#123; x = 0; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXP = 200, MAXN = 5e4, MAXM = 1e6, INF = 0x3f3f3f3f;const int dx[8] = &#123; 1, 2, -1, -2, -1, 2, 1, -2 &#125;;const int dy[8] = &#123; 2, 1, -2, -1, 2, -1, -2, 1 &#125;;int n, tot = 1, sum, id[MAXP + 5][MAXP + 5], head[MAXN + 5];int cur[MAXN + 5], depth[MAXN + 5];bool f[MAXP + 5][MAXP + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void build(int x, int y) &#123; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx &lt; 1 || ty &lt; 1 || tx &gt; n || ty &gt; n || f[tx][ty]) continue; addEdge(id[x][y], id[tx][ty], INF), addEdge(id[tx][ty], id[x][y], 0); //如果 (x,y) 能攻击到点 (tx,ty)，则在它们之间连一条边 &#125;&#125;inline bool bfs(int s, int t) &#123;//找增广路 for (int i = 0; i &lt;= t; ++i) cur[i] = head[i]; memset(depth, 0, sizeof (depth)); queue&lt;int&gt; q; depth[s] = 1; q.push(s); for (; !q.empty(); ) &#123; int u = q.front(); q.pop(); for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (depth[v] || !w) continue; depth[v] = depth[u] + 1; if (v == t) return 1; q.push(v); &#125; &#125; return 0;&#125;int dinic(int u, int t, int flow) &#123; if (u == t) return flow; int rest = flow; for (int v, w, i = cur[u]; v = e[i].to, w = e[i].dis, i &amp;&amp; rest; i = e[i].next) &#123; cur[u] = i;//当前弧优化 if (depth[v] != depth[u] + 1 || !w) continue; int k = dinic(v, t, min(rest, w)); if (!k) depth[v] = 0; else &#123; e[i].dis -= k; e[i ^ 1].dis += k; rest -= k; &#125; &#125; return flow - rest;&#125;inline int minCut(int s, int t) &#123;//求最小割 int res = 0; for (; bfs(s, t); ) res += dinic(s, t, INF); return res;&#125;int main() &#123; read(n); int s = 0, t = n * n + 1;//超级源点 s 与 超级汇点 t for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; readDigit(f[i][j]); sum += f[i][j];//不能放攻击装置的点的数量 &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; id[i][j] = (i - 1) * n + j;//点的编号 if (f[i][j]) continue; if ((i + j) &amp; 1)//源点向白色格子连一条流量为 1 的边 addEdge(s, id[i][j], 1), addEdge(id[i][j], s, 0); else //黑色格子向汇点连一条流量为 1 的边 addEdge(id[i][j], t, 1), addEdge(t, id[i][j], 0); &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) if ((i + j) &amp; 1) build(i, j);//白色格子与黑色格子连边 write(n * n - sum - minCut(s, t));//最大独立集 putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -19,7 +19,7 @@
   <entry>
     <title><![CDATA[「Luogu P4304」「TJOI2013」攻击装置]]></title>
     <url>%2Fproblems%2Fluogu-p4304%2F</url>
-    <content type="text"><![CDATA[Description给定一个大小为 $n \times n$ 的 $01$ 矩阵，其中你可以在 $0$ 的位置放置攻击装置。每一个攻击装置 $(x,y)$ 都可以按照“日”字攻击其周围的 $8$ 个位置。求在装置互不攻击的情况下，最多可以放置多少个装置。 $(1 \leq n \leq 200)$ Source[Luogu]P4304 Solution与 网络流 24 题 中的 骑士共存问题 几乎一样。 我们可以先将棋盘染色，得到 对于一个 $(x,y)$，若 $x + y$ 是奇数，则该格子为白色，否则为黑色。 很容易发现，放在白（黑）色格子上的攻击装置只能攻击到黑（白）色格子。 那么显然这是一个二分图。 我们把白色格子和黑色格子分成两部分。 如果某个白色格子可以攻击到某个黑色格子，则在它们之间连一条边。 一条边所连接的两个格子只能取其中一个（否则会互相攻击），所以问题变为求这个二分图的 最大独立集 。 最大独立集 = 总点数 - 最小点覆盖 = 总点数 - 最大匹配数 至于不能放攻击装置的格子，我们不把它当做二分图中的点即可，最后答案要减去这些点。 所以用 $\rm dinic$ 跑一遍最小割（最大流）就能够得到答案了。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(bool &amp;x) &#123; x = 0; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXP = 200, MAXN = 5e4, MAXM = 1e6, INF = 0x3f3f3f3f;const int dx[8] = &#123; 1, 2, -1, -2, -1, 2, 1, -2 &#125;;const int dy[8] = &#123; 2, 1, -2, -1, 2, -1, -2, 1 &#125;;int n, tot = 1, sum, id[MAXP + 5][MAXP + 5], head[MAXN + 5];int cur[MAXN + 5], depth[MAXN + 5];bool f[MAXP + 5][MAXP + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void build(int x, int y) &#123; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx &lt; 1 || ty &lt; 1 || tx &gt; n || ty &gt; n || f[tx][ty]) continue; addEdge(id[x][y], id[tx][ty], INF), addEdge(id[tx][ty], id[x][y], 0); //如果 (x,y) 能攻击到点 (tx,ty)，则在它们之间连一条边 &#125;&#125;inline bool bfs(int s, int t) &#123;//找增广路 for (int i = 0; i &lt;= t; ++i) cur[i] = head[i]; memset(depth, 0, sizeof (depth)); queue&lt;int&gt; q; depth[s] = 1; q.push(s); for (; !q.empty(); ) &#123; int u = q.front(); q.pop(); for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (depth[v] || !w) continue; depth[v] = depth[u] + 1; if (v == t) return 1; q.push(v); &#125; &#125; return 0;&#125;int dinic(int u, int t, int flow) &#123; if (u == t) return flow; int rest = flow; for (int v, w, i = cur[u]; v = e[i].to, w = e[i].dis, i &amp;&amp; rest; i = e[i].next) &#123; cur[u] = i;//当前弧优化 if (depth[v] != depth[u] + 1 || !w) continue; int k = dinic(v, t, min(rest, w)); if (!k) depth[v] = 0; else &#123; e[i].dis -= k; e[i ^ 1].dis += k; rest -= k; &#125; &#125; return flow - rest;&#125;inline int minCut(int s, int t) &#123;//求最小割 int res = 0; for (; bfs(s, t); ) res += dinic(s, t, INF); return res;&#125;int main() &#123; read(n); int s = 0, t = n * n + 1;//超级源点 s 与 超级汇点 t for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; readDigit(f[i][j]); sum += f[i][j];//不能放攻击装置的点的数量 &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; id[i][j] = (i - 1) * n + j;//点的编号 if (f[i][j]) continue; if ((i + j) &amp; 1)//源点向白色格子连一条流量为 1 的边 addEdge(s, id[i][j], 1), addEdge(id[i][j], s, 0); else //黑色格子向汇点连一条流量为 1 的边 addEdge(id[i][j], t, 1), addEdge(t, id[i][j], 0); &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) if ((i + j) &amp; 1) build(i, j);//白色格子与黑色格子连边 write(n * n - sum - minCut(s, t));//最大独立集 putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一个大小为 $n \times n$ 的 $01$ 矩阵，其中你可以在 $0$ 的位置放置攻击装置。每一个攻击装置 $(x,y)$ 都可以按照“日”字攻击其周围的 $8$ 个位置。求在装置互不攻击的情况下，最多可以放置多少个装置。 $(1 \leq n \leq 200)$ Source[Luogu]P4304 Solution与 网络流 24 题 中的 骑士共存问题 几乎一样。 我们可以先将棋盘染色，得到 对于格子 $(x,y)$，若 $x + y$ 是奇数，则该格子为白色，否则为黑色。 很容易发现，放在白（黑）色格子上的攻击装置只能攻击到黑（白）色格子。 那么显然这是一个二分图。 我们把白色格子和黑色格子分成两部分。 如果某个白色格子可以攻击到某个黑色格子，则在它们之间连一条边。 一条边所连接的两个格子只能取其中一个（否则会互相攻击），所以问题变为求这个二分图的 最大独立集 。 最大独立集 = 总点数 - 最小点覆盖 = 总点数 - 最大匹配数 至于不能放攻击装置的格子，我们不把它当做二分图中的点即可，最后答案要减去这些点。 所以用 $\rm dinic$ 跑一遍最小割（最大流）就能够得到答案了。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(bool &amp;x) &#123; x = 0; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXP = 200, MAXN = 5e4, MAXM = 1e6, INF = 0x3f3f3f3f;const int dx[8] = &#123; 1, 2, -1, -2, -1, 2, 1, -2 &#125;;const int dy[8] = &#123; 2, 1, -2, -1, 2, -1, -2, 1 &#125;;int n, tot = 1, sum, id[MAXP + 5][MAXP + 5], head[MAXN + 5];int cur[MAXN + 5], depth[MAXN + 5];bool f[MAXP + 5][MAXP + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void build(int x, int y) &#123; for (int i = 0; i &lt; 8; ++i) &#123; int tx = x + dx[i], ty = y + dy[i]; if (tx &lt; 1 || ty &lt; 1 || tx &gt; n || ty &gt; n || f[tx][ty]) continue; addEdge(id[x][y], id[tx][ty], INF), addEdge(id[tx][ty], id[x][y], 0); //如果 (x,y) 能攻击到点 (tx,ty)，则在它们之间连一条边 &#125;&#125;inline bool bfs(int s, int t) &#123;//找增广路 for (int i = 0; i &lt;= t; ++i) cur[i] = head[i]; memset(depth, 0, sizeof (depth)); queue&lt;int&gt; q; depth[s] = 1; q.push(s); for (; !q.empty(); ) &#123; int u = q.front(); q.pop(); for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) &#123; if (depth[v] || !w) continue; depth[v] = depth[u] + 1; if (v == t) return 1; q.push(v); &#125; &#125; return 0;&#125;int dinic(int u, int t, int flow) &#123; if (u == t) return flow; int rest = flow; for (int v, w, i = cur[u]; v = e[i].to, w = e[i].dis, i &amp;&amp; rest; i = e[i].next) &#123; cur[u] = i;//当前弧优化 if (depth[v] != depth[u] + 1 || !w) continue; int k = dinic(v, t, min(rest, w)); if (!k) depth[v] = 0; else &#123; e[i].dis -= k; e[i ^ 1].dis += k; rest -= k; &#125; &#125; return flow - rest;&#125;inline int minCut(int s, int t) &#123;//求最小割 int res = 0; for (; bfs(s, t); ) res += dinic(s, t, INF); return res;&#125;int main() &#123; read(n); int s = 0, t = n * n + 1;//超级源点 s 与 超级汇点 t for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; readDigit(f[i][j]); sum += f[i][j];//不能放攻击装置的点的数量 &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) &#123; id[i][j] = (i - 1) * n + j;//点的编号 if (f[i][j]) continue; if ((i + j) &amp; 1)//源点向白色格子连一条流量为 1 的边 addEdge(s, id[i][j], 1), addEdge(id[i][j], s, 0); else //黑色格子向汇点连一条流量为 1 的边 addEdge(id[i][j], t, 1), addEdge(t, id[i][j], 0); &#125; for (int i = 1; i &lt;= n; ++i) for (int j = 1; j &lt;= n; ++j) if ((i + j) &amp; 1) build(i, j);//白色格子与黑色格子连边 write(n * n - sum - minCut(s, t));//最大独立集 putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -40,8 +40,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>AtCoder</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -64,8 +64,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>HDU</tag>
         <tag>博弈论</tag>
+        <tag>HDU</tag>
       </tags>
   </entry>
   <entry>
@@ -139,9 +139,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -155,9 +155,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -172,10 +172,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -188,10 +188,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -278,8 +278,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>集训队</tag>
         <tag>莫队</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -527,10 +527,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
-        <tag>缩点</tag>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
+        <tag>缩点</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -543,8 +543,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>图论</tag>
+        <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -558,8 +558,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -575,8 +575,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -591,8 +591,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -606,10 +606,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -622,10 +622,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
+        <tag>动态规划</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -640,8 +640,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -656,8 +656,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -673,8 +673,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -689,8 +689,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -704,8 +704,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -720,8 +720,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -990,8 +990,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>数论数学</tag>
+        <tag>动态规划</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -1189,8 +1189,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -1203,8 +1203,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2009</tag>
         <tag>数论数学</tag>
+        <tag>2009</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
