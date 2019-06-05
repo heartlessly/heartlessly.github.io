@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P3829」「SHOI2012」信用卡凸包]]></title>
+    <url>%2Fproblems%2Fluogu-p3829%2F</url>
+    <content type="text"><![CDATA[Description信用卡是一个矩形，唯四个角作了圆滑处理，使它们都是与矩形的两边相切的 $\frac{1}{4}$ 圆。现在平面上有 $n$ 张竖直方向长为 $a$，水平方向长为 $b$，圆半径为 $r$ 的信用卡，给定每张信用卡的坐标 $(x,y)$ 和旋转的弧度 $\theta$，试求其凸包的周长。注意凸包未必是多边形，因为它可能包含若干段圆弧。 $(1 \leq n \leq 10^4,0.1 \leq a,b \leq 10^6,0.0 \leq r &lt; \min \{ \frac{a}{4},\frac{b}{4} \};|x|,|y| \leq 10^6, 0 \leq \theta &lt; 2\pi)$ Source[Luogu]P3829 Solution包含所有信用卡的凸包一定由若干线段和圆弧构成。 我们可以把每张信用卡简化成一个矩形，矩形的四个顶点分别是其对应圆弧的圆心。 这个矩形上的每一个点到信用卡的轮廓距离刚好等于 $r$ 。于是问题就和 [Luogu]P2116 很相似了，唯一不同的地方在于点的处理（这里只分析该问题，其它过程详见链接）。 我们可以把这个矩形的四个顶点加入点集（比如说上图中的点 $A,B,C,D$）。具体求法为先假设信用卡中心为 $(0,0)$，得到的四个顶点分别为 (-\frac{b}{2} + r,\frac{a}{2} - r),(\frac{b}{2} - r,\frac{a}{2} - r),(-\frac{b}{2} + r,-\frac{a}{2} + r),(\frac{b}{2} - r,-\frac{a}{2} + r)然后对这些点进行旋转，最后给每个顶点的坐标加上原来的中心坐标即可。 对点集中的点求凸包长度，即是所有线段的总长。而圆弧总长刚好是半径为 $r$ 的圆的周长，加起来即是答案。时间复杂度为 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 4e4;const double PI = acos(-1);int n, m, top, tag;double a, b, r, ans;struct Vector &#123; double x, y; Vector(double a = 0, double b = 0) &#123; x = a, y = b; &#125; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator+(Vector a, Vector b) &#123; return (Vector) &#123; a.x + b.x, a.y + b.y &#125;; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; v[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void rotate(Vector &amp;a, double theta) &#123;//逆时针旋转 theta (rad) double sinTheta = sin(theta), cosTheta = cos(theta); a = (Vector) &#123; a.x * cosTheta - a.y * sinTheta, a.x * sinTheta + a.y * cosTheta &#125;;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n); scanf("%lf %lf %lf", &amp;a, &amp;b, &amp;r); for (int i = 1; i &lt;= n; ++i) &#123; double x, y, theta; scanf("%lf %lf %lf", &amp;x, &amp;y, &amp;theta); Vector p = (Vector) &#123; x, y &#125;, v1(-b / 2 + r, a / 2 - r), v2(b / 2 - r, a / 2 - r), //左上角，右上角 v3(-b / 2 + r, -a / 2 + r), v4(b / 2 - r, -a / 2 + r);//左下角，右下角 rotate(v1, theta), rotate(v2, theta); rotate(v3, theta), rotate(v4, theta);//旋转 v[++m] = v1 + p, v[++m] = v2 + p, v[++m] = v3 + p, v[++m] = v4 + p; //加上原来的中心坐标 &#125; getConvexHull(v, m); ans += 2 * PI * r;//答案加上圆弧总长 printf("%.2lf\n", ans); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>2012</tag>
+        <tag>SHOI</tag>
+        <tag>计算几何</tag>
+        <tag>凸包</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Luogu P2116」城墙]]></title>
     <url>%2Fproblems%2Fluogu-p2116%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个点，求出最短的包围所有点的轮廓且满足任意点到轮廓的距离不小于给定的 $L$ 。 $(3 \leq n \leq 10^3,1 \leq L \leq 10^3,-10^4 \leq x_i,y_i \leq 10^4)$ Source[Luogu]P2116 Solution所有点到轮廓的距离都 $\geq L$，显然取等于时是最优的。 因此轮廓一定由若干线段和圆弧构成。 而所有的线段都可以由点与点之间的连线平移得到，而且点围成的图形一定是一个凸多边形（凹多边形显然不优，比如图中的 $GH + HF &gt; GF$）。也就是说线段的长度和就是凸包的长度。 那圆弧的长度呢？我们可以大胆猜想圆弧的总长刚好是一个圆周。 证明： 以图中底部的圆为例。 $\because IB$ 和 $CJ$ 分别是 $\odot A$ 和 $\odot D$，$\odot A$ 和 $\odot E$ 的外公切线，$AD \parallel IB,AE \parallel CJ$ $\therefore \angle DAB = \angle EAC = \angle ABI = \angle ACJ = 90^\circ$ $\therefore \angle DAE$ 与 $\angle BAC$ 互补 $\because$ $\angle DAE$ 与它的外角互补 $\therefore \angle BAC$ 等于 $\angle DAE$ 的外角 同理，每个圆弧所对的圆心角都是凸多边形的一个外角，而凸多边形的外角和为 $360^\circ$，因此圆弧的总长即是半径为 $L$ 的圆的周长。 凸包长度加上圆弧总长即是答案。时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e3;const double PI = acos(-1);int n, l, top, tag;double ans;struct Vector &#123; double x, y; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; a[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点的直线距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 top = ans = 0; sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n), read(l); for (int i = 1; i &lt;= n; ++i) scanf("%lf %lf", &amp;a[i].x, &amp;a[i].y); getConvexHull(a, n); ans += 2 * PI * l;//加上圆弧总长 printf("%.0lf\n", ans); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个点，求出最短的包围所有点的轮廓且满足任意点到轮廓的距离不小于给定的 $L$ 。 $(3 \leq n \leq 10^3,1 \leq L \leq 10^3,-10^4 \leq x_i,y_i \leq 10^4)$ Source[Luogu]P2116 Solution所有点到轮廓的距离都 $\geq L$，显然取等于时是最优的。 因此轮廓一定由若干线段和圆弧构成。 而所有的线段都可以由点与点之间的连线平移得到，而且点围成的图形一定是一个凸多边形（凹多边形显然不优，比如图中的 $GH + HF &gt; GF$）。也就是说线段的长度和就是凸包的长度。 那圆弧的长度呢？我们可以大胆猜想圆弧的总长刚好是一个圆周。 证明： 以图中底部的圆为例。 $\because IB$ 和 $CJ$ 分别是 $\odot A$ 和 $\odot D$，$\odot A$ 和 $\odot E$ 的外公切线，$AD \parallel IB,AE \parallel CJ$ $\therefore \angle DAB = \angle EAC = \angle ABI = \angle ACJ = 90^\circ$ $\therefore \angle DAE$ 与 $\angle BAC$ 互补 $\because$ $\angle DAE$ 与它的外角互补 $\therefore \angle BAC$ 等于 $\angle DAE$ 的外角 同理，每个圆弧所对的圆心角都是凸多边形的一个外角，而凸多边形的外角和为 $360^\circ$，因此圆弧的总长即是半径为 $L$ 的圆的周长。 凸包长度加上圆弧总长即是答案。时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 1e3;const double PI = acos(-1);int n, l, top, tag;double ans;struct Vector &#123; double x, y; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; a[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点的直线距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 top = ans = 0; sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n), read(l); for (int i = 1; i &lt;= n; ++i) scanf("%lf %lf", &amp;a[i].x, &amp;a[i].y); getConvexHull(a, n); ans += 2 * PI * l;//加上圆弧总长 printf("%.0lf\n", ans); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -34,10 +49,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>USACO</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>USACO</tag>
         <tag>二分</tag>
       </tags>
   </entry>
@@ -113,8 +128,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>AtCoder</tag>
         <tag>动态规划</tag>
+        <tag>AtCoder</tag>
       </tags>
   </entry>
   <entry>
@@ -165,19 +180,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「Luogu P4735」最大异或和]]></title>
-    <url>%2Fproblems%2Fluogu-p4735%2F</url>
-    <content type="text"><![CDATA[Description给定一个非负整数序列 $\{a\}$，初始长度为 $N$ 。 有 $M$ 个操作，有以下两种操作类型： A x：添加操作，表示在序列末尾添加一个数 $x$，序列的长度 $N+1$ 。 Q l r x：询问操作，你需要找到一个位置 $p$，满足 $l \le p \le r$，使得 $a_p \oplus a_{p+1} \oplus \cdots \oplus a_N \oplus x$ 最大，输出最大是多少。 $(1 \leq N,M \leq 3 \times 10^5,0 \leq a_i \leq 10^7)$ Source[Luogu]P4735 Solution先考虑简化问题。 我们可以像前缀和一样预处理出 $pre_i = a_1 \oplus a_2 \oplus \cdots \oplus a_i$，再根据异或运算的性质，可以得到： a_l \oplus a_{l + 1} \oplus \cdots \oplus a_{r - 1} \oplus a_r = pre_{r} \oplus pre_{l - 1}问题就变为找到一个位置 $p - 1$，满足 $l - 1 \le p - 1 \le r - 1$，使得 $pre_n \oplus pre_{p - 1} \oplus x$ 最大。显然 $pre_n$ 和 $x$ 都已知，所以我们只需要找与 $x \oplus pre_n$ 在指定范围内且异或结果最大的 $pre_{p - 1}$ 即可。 看到这个问题，很容易想到用 0-1 Trie 来维护。但是因为限制了区间，一棵 Trie 是肯定不够用的，所以还要 可持久化 。 可持久化 Trie 和 主席树 的实现方法相似。我们每插入一个前缀异或和 $pre_i$，就建一棵 Trie 。由于第 $i$ 棵 Trie 与第 $i - 1$ 棵 Trie 最多只会有 $\log n$ 棵节点是不同的。所以插入时，我们只需要新建一个根，只对当前数的每一位新建节点，其余的点连向上一棵树。这样空间复杂度可以优化为 $O(n \log n)$ 。在上述插入的过程中，我们只需要记录第 $i$ 棵 Trie 每个节点的个数，就能判断一个区间内是否有该节点。查询也很容易，从第 $l - 2$ 与第 $r - 1$ 棵 Trie 的根开始（因为这两棵 Trie 之间的数为 $pre_{l - 1} \sim pre_{r - 1}$），判断是否存在与 $x$ 某一位取反的节点，具体过程类似 [LOJ]10050 。不要忘记在第 $0$ 棵 Trie 上插入 $0$，时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'A' &amp;&amp; c != 'Q'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6e5;int n, m, pre[MAXN + 5];struct Trie &#123; int tot, root[MAXN + 5], sum[MAXN * 23 + 5], ch[MAXN * 23 + 5][2]; inline void update(int &amp;rt, int pre, int x) &#123; rt = ++tot;//建一个新的根 int u = rt;//当前节点 for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); ch[u][v] = ++tot, ch[u][v ^ 1] = ch[pre][v ^ 1]; //对当前数新建节点，另一分支连向上一棵树 u = ch[u][v], pre = ch[pre][v];//向下一层走 sum[u] = sum[pre] + 1;//记录该节点个数 &#125; &#125; inline int query(int ql, int qr, int x) &#123; int res = 0; for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); if (ch[ql][v ^ 1] &lt; ch[qr][v ^ 1]) &#123;//存在相反的节点 res += 1 &lt;&lt; i;//异或后第 i 位上是 1 ql = ch[ql][v ^ 1], qr = ch[qr][v ^ 1]; &#125; else ql = ch[ql][v], qr = ch[qr][v];//同时向下一层走 &#125; return res; &#125;&#125; tr;int main() &#123; read(n), read(m); tr.update(tr.root[0], 0, 0);//在第 0 棵 Trie 中插入 0 for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); pre[i] = pre[i - 1] ^ x;//前缀异或和 tr.update(tr.root[i], tr.root[i - 1], pre[i]);//在上一棵 Trie 的基础上插入 pre[i] &#125; for (int l, r, x, i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'A') &#123; read(x); ++n; pre[n] = pre[n - 1] ^ x;//更新前缀异或和 tr.update(tr.root[n], tr.root[n - 1], pre[n]);//插入新数 &#125; else &#123; read(l), read(r), read(x); if (l == 1) write(tr.query(0, tr.root[r - 1], x ^ pre[n])); //l = 1 时，要把 p = 1 的情况算进去，也就是说 Trie 中还要有 0 这个数， //因为 x ^ pre[n] 可能是最大的 else write(tr.query(tr.root[l - 2], tr.root[r - 1], x ^ pre[n])); //区间为 [l - 1, r - 1]，所以起始的根应该为 l - 2 和 r - 1 putchar('\n'); &#125; &#125; return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>Luogu</tag>
-        <tag>Trie</tag>
-        <tag>可持久化</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[「BZOJ 3261」最大异或和]]></title>
     <url>%2Fproblems%2Fbzoj-3261%2F</url>
     <content type="text"><![CDATA[Description给定一个非负整数序列 $\{a\}$，初始长度为 $N$ 。 有 $M$ 个操作，有以下两种操作类型： A x：添加操作，表示在序列末尾添加一个数 $x$，序列的长度 $N+1$ 。 Q l r x：询问操作，你需要找到一个位置 $p$，满足 $l \le p \le r$，使得 $a_p \oplus a_{p+1} \oplus \cdots \oplus a_N \oplus x$ 最大，输出最大是多少。 $(1 \leq N,M \leq 3 \times 10^5,0 \leq a_i \leq 10^7)$ Source[BZOJ]3261 Solution先考虑简化问题。 我们可以像前缀和一样预处理出 $pre_i = a_1 \oplus a_2 \oplus \cdots \oplus a_i$，再根据异或运算的性质，可以得到： a_l \oplus a_{l + 1} \oplus \cdots \oplus a_{r - 1} \oplus a_r = pre_{r} \oplus pre_{l - 1}问题就变为找到一个位置 $p - 1$，满足 $l - 1 \le p - 1 \le r - 1$，使得 $pre_n \oplus pre_{p - 1} \oplus x$ 最大。显然 $pre_n$ 和 $x$ 都已知，所以我们只需要找与 $x \oplus pre_n$ 在指定范围内且异或结果最大的 $pre_{p - 1}$ 即可。 看到这个问题，很容易想到用 0-1 Trie 来维护。但是因为限制了区间，一棵 Trie 是肯定不够用的，所以还要 可持久化 。 可持久化 Trie 和 主席树 的实现方法相似。我们每插入一个前缀异或和 $pre_i$，就建一棵 Trie 。由于第 $i$ 棵 Trie 与第 $i - 1$ 棵 Trie 最多只会有 $\log n$ 棵节点是不同的。所以插入时，我们只需要新建一个根，只对当前数的每一位新建节点，其余的点连向上一棵树。这样空间复杂度可以优化为 $O(n \log n)$ 。在上述插入的过程中，我们只需要记录第 $i$ 棵 Trie 每个节点的个数，就能判断一个区间内是否有该节点。查询也很容易，从第 $l - 2$ 与第 $r - 1$ 棵 Trie 的根开始（因为这两棵 Trie 之间的数为 $pre_{l - 1} \sim pre_{r - 1}$），判断是否存在与 $x$ 某一位取反的节点，具体过程类似 [LOJ]10050 。不要忘记在第 $0$ 棵 Trie 上插入 $0$，时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'A' &amp;&amp; c != 'Q'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6e5;int n, m, pre[MAXN + 5];struct Trie &#123; int tot, root[MAXN + 5], sum[MAXN * 23 + 5], ch[MAXN * 23 + 5][2]; inline void update(int &amp;rt, int pre, int x) &#123; rt = ++tot;//建一个新的根 int u = rt;//当前节点 for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); ch[u][v] = ++tot, ch[u][v ^ 1] = ch[pre][v ^ 1]; //对当前数新建节点，另一分支连向上一棵树 u = ch[u][v], pre = ch[pre][v];//向下一层走 sum[u] = sum[pre] + 1;//记录该节点个数 &#125; &#125; inline int query(int ql, int qr, int x) &#123; int res = 0; for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); if (ch[ql][v ^ 1] &lt; ch[qr][v ^ 1]) &#123;//存在相反的节点 res += 1 &lt;&lt; i;//异或后第 i 位上是 1 ql = ch[ql][v ^ 1], qr = ch[qr][v ^ 1]; &#125; else ql = ch[ql][v], qr = ch[qr][v];//同时向下一层走 &#125; return res; &#125;&#125; tr;int main() &#123; read(n), read(m); tr.update(tr.root[0], 0, 0);//在第 0 棵 Trie 中插入 0 for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); pre[i] = pre[i - 1] ^ x;//前缀异或和 tr.update(tr.root[i], tr.root[i - 1], pre[i]);//在上一棵 Trie 的基础上插入 pre[i] &#125; for (int l, r, x, i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'A') &#123; read(x); ++n; pre[n] = pre[n - 1] ^ x;//更新前缀异或和 tr.update(tr.root[n], tr.root[n - 1], pre[n]);//插入新数 &#125; else &#123; read(l), read(r), read(x); if (l == 1) write(tr.query(0, tr.root[r - 1], x ^ pre[n])); //l = 1 时，要把 p = 1 的情况算进去，也就是说 Trie 中还要有 0 这个数， //因为 x ^ pre[n] 可能是最大的 else write(tr.query(tr.root[l - 2], tr.root[r - 1], x ^ pre[n])); //区间为 [l - 1, r - 1]，所以起始的根应该为 l - 2 和 r - 1 putchar('\n'); &#125; &#125; return 0;&#125;]]></content>
@@ -186,6 +188,19 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>Trie</tag>
+        <tag>可持久化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4735」最大异或和]]></title>
+    <url>%2Fproblems%2Fluogu-p4735%2F</url>
+    <content type="text"><![CDATA[Description给定一个非负整数序列 $\{a\}$，初始长度为 $N$ 。 有 $M$ 个操作，有以下两种操作类型： A x：添加操作，表示在序列末尾添加一个数 $x$，序列的长度 $N+1$ 。 Q l r x：询问操作，你需要找到一个位置 $p$，满足 $l \le p \le r$，使得 $a_p \oplus a_{p+1} \oplus \cdots \oplus a_N \oplus x$ 最大，输出最大是多少。 $(1 \leq N,M \leq 3 \times 10^5,0 \leq a_i \leq 10^7)$ Source[Luogu]P4735 Solution先考虑简化问题。 我们可以像前缀和一样预处理出 $pre_i = a_1 \oplus a_2 \oplus \cdots \oplus a_i$，再根据异或运算的性质，可以得到： a_l \oplus a_{l + 1} \oplus \cdots \oplus a_{r - 1} \oplus a_r = pre_{r} \oplus pre_{l - 1}问题就变为找到一个位置 $p - 1$，满足 $l - 1 \le p - 1 \le r - 1$，使得 $pre_n \oplus pre_{p - 1} \oplus x$ 最大。显然 $pre_n$ 和 $x$ 都已知，所以我们只需要找与 $x \oplus pre_n$ 在指定范围内且异或结果最大的 $pre_{p - 1}$ 即可。 看到这个问题，很容易想到用 0-1 Trie 来维护。但是因为限制了区间，一棵 Trie 是肯定不够用的，所以还要 可持久化 。 可持久化 Trie 和 主席树 的实现方法相似。我们每插入一个前缀异或和 $pre_i$，就建一棵 Trie 。由于第 $i$ 棵 Trie 与第 $i - 1$ 棵 Trie 最多只会有 $\log n$ 棵节点是不同的。所以插入时，我们只需要新建一个根，只对当前数的每一位新建节点，其余的点连向上一棵树。这样空间复杂度可以优化为 $O(n \log n)$ 。在上述插入的过程中，我们只需要记录第 $i$ 棵 Trie 每个节点的个数，就能判断一个区间内是否有该节点。查询也很容易，从第 $l - 2$ 与第 $r - 1$ 棵 Trie 的根开始（因为这两棵 Trie 之间的数为 $pre_{l - 1} \sim pre_{r - 1}$），判断是否存在与 $x$ 某一位取反的节点，具体过程类似 [LOJ]10050 。不要忘记在第 $0$ 棵 Trie 上插入 $0$，时间复杂度为 $O(n \log n)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'A' &amp;&amp; c != 'Q'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 6e5;int n, m, pre[MAXN + 5];struct Trie &#123; int tot, root[MAXN + 5], sum[MAXN * 23 + 5], ch[MAXN * 23 + 5][2]; inline void update(int &amp;rt, int pre, int x) &#123; rt = ++tot;//建一个新的根 int u = rt;//当前节点 for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); ch[u][v] = ++tot, ch[u][v ^ 1] = ch[pre][v ^ 1]; //对当前数新建节点，另一分支连向上一棵树 u = ch[u][v], pre = ch[pre][v];//向下一层走 sum[u] = sum[pre] + 1;//记录该节点个数 &#125; &#125; inline int query(int ql, int qr, int x) &#123; int res = 0; for (int i = 23; ~i; --i) &#123; bool v = x &amp; (1 &lt;&lt; i); if (ch[ql][v ^ 1] &lt; ch[qr][v ^ 1]) &#123;//存在相反的节点 res += 1 &lt;&lt; i;//异或后第 i 位上是 1 ql = ch[ql][v ^ 1], qr = ch[qr][v ^ 1]; &#125; else ql = ch[ql][v], qr = ch[qr][v];//同时向下一层走 &#125; return res; &#125;&#125; tr;int main() &#123; read(n), read(m); tr.update(tr.root[0], 0, 0);//在第 0 棵 Trie 中插入 0 for (int x, i = 1; i &lt;= n; ++i) &#123; read(x); pre[i] = pre[i - 1] ^ x;//前缀异或和 tr.update(tr.root[i], tr.root[i - 1], pre[i]);//在上一棵 Trie 的基础上插入 pre[i] &#125; for (int l, r, x, i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'A') &#123; read(x); ++n; pre[n] = pre[n - 1] ^ x;//更新前缀异或和 tr.update(tr.root[n], tr.root[n - 1], pre[n]);//插入新数 &#125; else &#123; read(l), read(r), read(x); if (l == 1) write(tr.query(0, tr.root[r - 1], x ^ pre[n])); //l = 1 时，要把 p = 1 的情况算进去，也就是说 Trie 中还要有 0 这个数， //因为 x ^ pre[n] 可能是最大的 else write(tr.query(tr.root[l - 2], tr.root[r - 1], x ^ pre[n])); //区间为 [l - 1, r - 1]，所以起始的根应该为 l - 2 和 r - 1 putchar('\n'); &#125; &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
         <tag>Trie</tag>
         <tag>可持久化</tag>
       </tags>
@@ -212,9 +227,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -228,9 +243,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -245,10 +260,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -261,10 +276,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -351,8 +366,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>集训队</tag>
         <tag>莫队</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -600,8 +615,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -616,8 +631,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>BZOJ</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -631,8 +646,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>图论</tag>
         <tag>Luogu</tag>
+        <tag>图论</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -648,9 +663,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
-        <tag>搜索</tag>
         <tag>CQOI</tag>
+        <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -664,9 +679,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
-        <tag>搜索</tag>
         <tag>CQOI</tag>
+        <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -681,8 +696,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -697,8 +712,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -713,8 +728,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -729,8 +744,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -746,8 +761,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -762,8 +777,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -777,8 +792,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -793,8 +808,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
