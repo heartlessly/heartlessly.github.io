@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Luogu P3829」信用卡凸包]]></title>
+    <url>%2Fproblems%2Fbzoj-2829%2F</url>
+    <content type="text"><![CDATA[Description信用卡是一个矩形，唯四个角作了圆滑处理，使它们都是与矩形的两边相切的 $\frac{1}{4}$ 圆。现在平面上有 $n$ 张竖直方向长为 $a$，水平方向长为 $b$，圆半径为 $r$ 的信用卡，给定每张信用卡的坐标 $(x,y)$ 和旋转的弧度 $\theta$，试求其凸包的周长。注意凸包未必是多边形，因为它可能包含若干段圆弧。 $(1 \leq n \leq 10^4,0.1 \leq a,b \leq 10^6,0.0 \leq r &lt; \min \{ \frac{a}{4},\frac{b}{4} \};|x|,|y| \leq 10^6, 0 \leq \theta &lt; 2\pi)$ Source[BZOJ]2829 Solution包含所有信用卡的凸包一定由若干线段和圆弧构成。 我们可以把每张信用卡简化成一个矩形，矩形的四个顶点分别是其对应圆弧的圆心。 这个矩形上的每一个点到信用卡的轮廓距离刚好等于 $r$ 。于是问题就和 [Luogu]P2116 很相似了，唯一不同的地方在于点的处理（这里只分析该问题，其它过程详见链接）。 我们可以把这个矩形的四个顶点加入点集（比如说上图中的点 $A,B,C,D$）。具体求法为先假设信用卡中心为 $(0,0)$，得到的四个顶点分别为 \left( -\frac{b}{2} + r,\frac{a}{2} - r \right),\left( \frac{b}{2} - r,\frac{a}{2} - r \right),\left( -\frac{b}{2} + r,-\frac{a}{2} + r \right),\left( \frac{b}{2} - r,-\frac{a}{2} + r\right)然后对这些点进行旋转，最后给每个顶点的坐标加上原来的中心坐标即可。 对点集中的点求凸包长度，即是所有线段的总长。而圆弧总长刚好是半径为 $r$ 的圆的周长，加起来即是答案。时间复杂度为 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 4e4;const double PI = acos(-1);int n, m, top, tag;double a, b, r, ans;struct Vector &#123; double x, y; Vector(double a = 0, double b = 0) &#123; x = a, y = b; &#125; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator+(Vector a, Vector b) &#123; return (Vector) &#123; a.x + b.x, a.y + b.y &#125;; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; v[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void rotate(Vector &amp;a, double theta) &#123;//逆时针旋转 theta (rad) double sinTheta = sin(theta), cosTheta = cos(theta); a = (Vector) &#123; a.x * cosTheta - a.y * sinTheta, a.x * sinTheta + a.y * cosTheta &#125;;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n); scanf("%lf %lf %lf", &amp;a, &amp;b, &amp;r); for (int i = 1; i &lt;= n; ++i) &#123; double x, y, theta; scanf("%lf %lf %lf", &amp;x, &amp;y, &amp;theta); Vector p = (Vector) &#123; x, y &#125;, v1(-b / 2 + r, a / 2 - r), v2(b / 2 - r, a / 2 - r), //左上角，右上角 v3(-b / 2 + r, -a / 2 + r), v4(b / 2 - r, -a / 2 + r);//左下角，右下角 rotate(v1, theta), rotate(v2, theta); rotate(v3, theta), rotate(v4, theta);//旋转 v[++m] = v1 + p, v[++m] = v2 + p, v[++m] = v3 + p, v[++m] = v4 + p; //加上原来的中心坐标 &#125; getConvexHull(v, m); ans += 2 * PI * r;//答案加上圆弧总长 printf("%.2lf\n", ans); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>BZOJ</tag>
+        <tag>凸包</tag>
+        <tag>计算几何</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「Luogu P3829」「SHOI2012」信用卡凸包]]></title>
     <url>%2Fproblems%2Fluogu-p3829%2F</url>
-    <content type="text"><![CDATA[Description信用卡是一个矩形，唯四个角作了圆滑处理，使它们都是与矩形的两边相切的 $\frac{1}{4}$ 圆。现在平面上有 $n$ 张竖直方向长为 $a$，水平方向长为 $b$，圆半径为 $r$ 的信用卡，给定每张信用卡的坐标 $(x,y)$ 和旋转的弧度 $\theta$，试求其凸包的周长。注意凸包未必是多边形，因为它可能包含若干段圆弧。 $(1 \leq n \leq 10^4,0.1 \leq a,b \leq 10^6,0.0 \leq r &lt; \min \{ \frac{a}{4},\frac{b}{4} \};|x|,|y| \leq 10^6, 0 \leq \theta &lt; 2\pi)$ Source[Luogu]P3829 Solution包含所有信用卡的凸包一定由若干线段和圆弧构成。 我们可以把每张信用卡简化成一个矩形，矩形的四个顶点分别是其对应圆弧的圆心。 这个矩形上的每一个点到信用卡的轮廓距离刚好等于 $r$ 。于是问题就和 [Luogu]P2116 很相似了，唯一不同的地方在于点的处理（这里只分析该问题，其它过程详见链接）。 我们可以把这个矩形的四个顶点加入点集（比如说上图中的点 $A,B,C,D$）。具体求法为先假设信用卡中心为 $(0,0)$，得到的四个顶点分别为 (-\frac{b}{2} + r,\frac{a}{2} - r),(\frac{b}{2} - r,\frac{a}{2} - r),(-\frac{b}{2} + r,-\frac{a}{2} + r),(\frac{b}{2} - r,-\frac{a}{2} + r)然后对这些点进行旋转，最后给每个顶点的坐标加上原来的中心坐标即可。 对点集中的点求凸包长度，即是所有线段的总长。而圆弧总长刚好是半径为 $r$ 的圆的周长，加起来即是答案。时间复杂度为 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 4e4;const double PI = acos(-1);int n, m, top, tag;double a, b, r, ans;struct Vector &#123; double x, y; Vector(double a = 0, double b = 0) &#123; x = a, y = b; &#125; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator+(Vector a, Vector b) &#123; return (Vector) &#123; a.x + b.x, a.y + b.y &#125;; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; v[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void rotate(Vector &amp;a, double theta) &#123;//逆时针旋转 theta (rad) double sinTheta = sin(theta), cosTheta = cos(theta); a = (Vector) &#123; a.x * cosTheta - a.y * sinTheta, a.x * sinTheta + a.y * cosTheta &#125;;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n); scanf("%lf %lf %lf", &amp;a, &amp;b, &amp;r); for (int i = 1; i &lt;= n; ++i) &#123; double x, y, theta; scanf("%lf %lf %lf", &amp;x, &amp;y, &amp;theta); Vector p = (Vector) &#123; x, y &#125;, v1(-b / 2 + r, a / 2 - r), v2(b / 2 - r, a / 2 - r), //左上角，右上角 v3(-b / 2 + r, -a / 2 + r), v4(b / 2 - r, -a / 2 + r);//左下角，右下角 rotate(v1, theta), rotate(v2, theta); rotate(v3, theta), rotate(v4, theta);//旋转 v[++m] = v1 + p, v[++m] = v2 + p, v[++m] = v3 + p, v[++m] = v4 + p; //加上原来的中心坐标 &#125; getConvexHull(v, m); ans += 2 * PI * r;//答案加上圆弧总长 printf("%.2lf\n", ans); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description信用卡是一个矩形，唯四个角作了圆滑处理，使它们都是与矩形的两边相切的 $\frac{1}{4}$ 圆。现在平面上有 $n$ 张竖直方向长为 $a$，水平方向长为 $b$，圆半径为 $r$ 的信用卡，给定每张信用卡的坐标 $(x,y)$ 和旋转的弧度 $\theta$，试求其凸包的周长。注意凸包未必是多边形，因为它可能包含若干段圆弧。 $(1 \leq n \leq 10^4,0.1 \leq a,b \leq 10^6,0.0 \leq r &lt; \min \{ \frac{a}{4},\frac{b}{4} \};|x|,|y| \leq 10^6, 0 \leq \theta &lt; 2\pi)$ Source[Luogu]P3829 Solution包含所有信用卡的凸包一定由若干线段和圆弧构成。 我们可以把每张信用卡简化成一个矩形，矩形的四个顶点分别是其对应圆弧的圆心。 这个矩形上的每一个点到信用卡的轮廓距离刚好等于 $r$ 。于是问题就和 [Luogu]P2116 很相似了，唯一不同的地方在于点的处理（这里只分析该问题，其它过程详见链接）。 我们可以把这个矩形的四个顶点加入点集（比如说上图中的点 $A,B,C,D$）。具体求法为先假设信用卡中心为 $(0,0)$，得到的四个顶点分别为 \left( -\frac{b}{2} + r,\frac{a}{2} - r \right),\left( \frac{b}{2} - r,\frac{a}{2} - r \right),\left( -\frac{b}{2} + r,-\frac{a}{2} + r \right),\left( \frac{b}{2} - r,-\frac{a}{2} + r\right)然后对这些点进行旋转，最后给每个顶点的坐标加上原来的中心坐标即可。 对点集中的点求凸包长度，即是所有线段的总长。而圆弧总长刚好是半径为 $r$ 的圆的周长，加起来即是答案。时间复杂度为 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;const int MAXN = 4e4;const double PI = acos(-1);int n, m, top, tag;double a, b, r, ans;struct Vector &#123; double x, y; Vector(double a = 0, double b = 0) &#123; x = a, y = b; &#125; inline friend bool operator&lt;(Vector a, Vector b) &#123; return a.x == b.x ? a.y &lt; b.y : a.x &lt; b.x; &#125; inline friend Vector operator+(Vector a, Vector b) &#123; return (Vector) &#123; a.x + b.x, a.y + b.y &#125;; &#125; inline friend Vector operator-(Vector a, Vector b) &#123; return (Vector) &#123; a.x - b.x, a.y - b.y &#125;; &#125;&#125; v[MAXN + 5], sta[MAXN + 5];inline double dist(Vector a, Vector b) &#123;//两点距离 return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));&#125;inline double cross(Vector a, Vector b) &#123;//叉积 return a.x * b.y - a.y * b.x;&#125;inline void rotate(Vector &amp;a, double theta) &#123;//逆时针旋转 theta (rad) double sinTheta = sin(theta), cosTheta = cos(theta); a = (Vector) &#123; a.x * cosTheta - a.y * sinTheta, a.x * sinTheta + a.y * cosTheta &#125;;&#125;inline void getConvexHull(Vector *a, int n) &#123;//求凸包长度 sort(a + 1, a + n + 1); for (int i = 1; i &lt;= n; ++i) &#123; for (; top &gt; 1 &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; tag = top; for (int i = n - 1; i; --i) &#123; for (; top &gt; tag &amp;&amp; cross(sta[top] - sta[top - 1], a[i] - sta[top]) &lt;= 0; --top); sta[++top] = a[i]; &#125; for (int i = 1; i &lt; top; ++i) ans += dist(sta[i], sta[i + 1]);&#125;int main() &#123; read(n); scanf("%lf %lf %lf", &amp;a, &amp;b, &amp;r); for (int i = 1; i &lt;= n; ++i) &#123; double x, y, theta; scanf("%lf %lf %lf", &amp;x, &amp;y, &amp;theta); Vector p = (Vector) &#123; x, y &#125;, v1(-b / 2 + r, a / 2 - r), v2(b / 2 - r, a / 2 - r), //左上角，右上角 v3(-b / 2 + r, -a / 2 + r), v4(b / 2 - r, -a / 2 + r);//左下角，右下角 rotate(v1, theta), rotate(v2, theta); rotate(v3, theta), rotate(v4, theta);//旋转 v[++m] = v1 + p, v[++m] = v2 + p, v[++m] = v3 + p, v[++m] = v4 + p; //加上原来的中心坐标 &#125; getConvexHull(v, m); ans += 2 * PI * r;//答案加上圆弧总长 printf("%.2lf\n", ans); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
         <tag>Luogu</tag>
         <tag>2012</tag>
-        <tag>SHOI</tag>
-        <tag>计算几何</tag>
         <tag>凸包</tag>
+        <tag>计算几何</tag>
+        <tag>SHOI</tag>
       </tags>
   </entry>
   <entry>
@@ -24,8 +37,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>计算几何</tag>
         <tag>凸包</tag>
+        <tag>计算几何</tag>
       </tags>
   </entry>
   <entry>
@@ -49,10 +62,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>USACO</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
+        <tag>USACO</tag>
         <tag>二分</tag>
       </tags>
   </entry>
@@ -128,8 +141,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>AtCoder</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -227,9 +240,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -243,9 +256,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -260,10 +273,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -276,10 +289,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
+        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -366,8 +379,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>莫队</tag>
         <tag>集训队</tag>
+        <tag>莫队</tag>
       </tags>
   </entry>
   <entry>
@@ -615,8 +628,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -631,8 +644,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>图论</tag>
+        <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -646,8 +659,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -663,9 +676,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>CQOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -679,9 +692,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>CQOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
+        <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
   </entry>
@@ -696,8 +709,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -712,8 +725,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>2010</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -728,8 +741,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -744,8 +757,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -761,8 +774,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -777,8 +790,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>数位DP</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -792,8 +805,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -808,8 +821,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2005</tag>
         <tag>搜索</tag>
+        <tag>2005</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
