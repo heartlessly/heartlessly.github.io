@@ -3,14 +3,14 @@
   <entry>
     <title><![CDATA[「Codeforces 1182E」Product Oriented Recurrence]]></title>
     <url>%2Fproblems%2Fcodeforces-1182e%2F</url>
-    <content type="text"><![CDATA[Description当 $x \geq 4$ 时，$f_x = c^{2x - 6} \cdot f_{x - 1} \cdot f_{x - 2} \cdot f_{x - 3}$ 。 现在已知 $n,f_1,f_2,f_3,c$ 的值，求 $f_n$ 的值，对 $10^9 + 7$ 取模。 $(4 \leq n \leq 10^{18},1 \leq f_1,f_2,f_3,c \leq 10^9)$ Solution一道比较有思维难度的 矩阵加速 。 一般情况下转移都是加法，而这道题是乘法，所以考虑转换。 我们可以先列举出前几个数。同底数幂相乘，底数不变，指数相加。 $f_1 = c^0 \cdot f_1^1 \cdot f_2^0 \cdot f_3^0$ $f_2 = c^0 \cdot f_1^0 \cdot f_2^1 \cdot f_3^0$ $f_3 = c^0 \cdot f_1^0 \cdot f_2^0 \cdot f_3^1$ $f_4 = c^2 \cdot f_1^1 \cdot f_2^1 \cdot f_3^1$ $f_5 = c^6 \cdot f_1^1 \cdot f_2^2 \cdot f_3^2$ $f_6 = c^{14} \cdot f_1^2 \cdot f_2^3 \cdot f_3^4$ $f_7 = c^{30} \cdot f_1^4 \cdot f_2^6 \cdot f_3^7$ $\cdots\cdots$ 不难发现对于每一个 $f_i$，我们都可以表示为 f_i = c^{w_i} \cdot f_{1}^{x_i} \cdot f_{2}^{y_i} \cdot f_{3}^{z_i}$w_i,x_i,y_i,z_i$ 的递推方程也可以写出。 $w_i = w_{i - 1} + w_{i - 2} + w_{i - 3} + 2i - 6$ $x_i = x_{i - 1} + x_{i - 2} + x_{i - 3}$ $y_i = y_{i - 1} + y_{i - 2} + y_{i - 3}$ $z_i = z_{i - 1} + z_{i - 2} + z_{i - 3}$ 我们可以先用 矩阵加速 分别求出 $4$ 个指数 $w_n,x_n,y_n,z_n$ 的值，再用快速幂求得 $f_n$ 。 对于 $x,y,z$ 数组，因为转移方程相同，所以转移矩阵也相同。这里以 $x$ 为例。 \begin{bmatrix}1&1&1\\1&0&0\\0&1&0\end{bmatrix}\times \begin{bmatrix}x_{i-1}\\x_{i-2}\\x_{i-3}\end{bmatrix}=\begin{bmatrix}x_i\\x_{i-1}\\x_{i-2}\end{bmatrix}因为 $x_i = x_{i - 1} + x_{i - 2} + x_{i - 3}$，所以矩阵第一行全部是 $1$ 。$x_{i - 1},x_{i - 2}$ 都可以在上一个矩阵中找到，对应位置标为 $1$ 。 初始矩阵： \begin{bmatrix}0\\0\\1\end{bmatrix}=\begin{bmatrix}x_3\\x_2\\x_1\end{bmatrix} \begin{bmatrix}0\\1\\0\end{bmatrix}=\begin{bmatrix}y_3\\y_2\\x_1\end{bmatrix} \begin{bmatrix}1\\0\\0\end{bmatrix}=\begin{bmatrix}z_3\\z_2\\z_1\end{bmatrix}通过 $f_1,f_2,f_3$ 得到。 答案矩阵： \begin{bmatrix}1&1&1\\1&0&0\\0&1&0\end{bmatrix}^{n - 3}\times \begin{bmatrix}x_{3}\\x_{2}\\x_{1}\end{bmatrix}=\begin{bmatrix}x_n\\x_{n-1}\\x_{n-2}\end{bmatrix}$x_n,y_n,z_n$ 都是取矩阵第一行第一列的值。 $w$ 数组就稍微麻烦一些了，因为多了一项 $2i - 6$ 。 \begin{bmatrix}1&1&1&1&1\\1&0&0&0&0\\0&1&0&0&0\\0&0&0&1&1\\0&0&0&0&1\end{bmatrix}\times \begin{bmatrix}w_{i-1}\\w_{i-2}\\w_{i-3}\\2(i - 1) - 6\\2\end{bmatrix}=\begin{bmatrix}w_i\\w_{i-1}\\w_{i-2}\\2i - 6\\2\end{bmatrix}因为 $w_i = w_{i - 1} + w_{i - 2} + w_{i - 3} + 2(i - 1) - 6 + 2$，所以第一行全部是 $1$ 。$w_{i - 1},w_{i - 2}$ 可以在上一个矩阵中找到，对应位置标为 $1$ 。$2i - 6 = 2(i - 1) - 6 + 2$，所以第四列和第五列为 $1$ 。对于 $2 = 2$，把第五列标为 $1$ 。 初始矩阵： \begin{bmatrix}0\\0\\0\\0\\2\end{bmatrix}=\begin{bmatrix}w_3\\w_2\\w_1\\2 \cdot 3 - 6 = 0\\2\end{bmatrix}可以直接得出。 答案矩阵： \begin{bmatrix}1&1&1&1&1\\1&0&0&0&0\\0&1&0&0&0\\0&0&0&1&1\\0&0&0&0&1\end{bmatrix}^{n - 3}\times \begin{bmatrix}w_3\\w_2\\w_1\\2 \cdot 3 - 6 = 0\\2\end{bmatrix}=\begin{bmatrix}w_n\\w_{n-1}\\w_{n-2}\\2n - 6\\2\end{bmatrix}$w_n$ 也同样取矩阵第一行第一列的值。 最后的结果要对 $10^9 + 7$ 取模，但是在做 矩阵加速 的过程中，指数肯定不能直接对它取模。这里要用到 扩展欧拉定理： 若 $a,p$ 互质，则 a^b \equiv a^{b \bmod \varphi(p)} \pmod p因为 $p$ 是质数，所以 $a,p$ 一定互质。我们可以将指数对 $\varphi(p) = p - 1 = 10^9 + 6$ 取模，就能达到降幂的效果。 分别求出 $w_n,x_n,y_n,z_n$，最后用快速幂合并答案得到 $f_n$ 。时间复杂度为 $O(\log n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const LL MOD = 1e9 + 7, PHI = 1e9 + 6;LL n, f1, f2, f3, c, ans;struct Matrix &#123; int size; LL mat[6][6]; Matrix(int x) &#123; size = x; memset(mat, 0, sizeof (mat)); &#125; inline friend Matrix operator*(Matrix a, Matrix b) &#123;//矩阵乘法 Matrix c(a.size); for (int i = 1; i &lt;= c.size; ++i) for (int k = 1; k &lt;= c.size; ++k) for (int j = 1; j &lt;= c.size; ++j) c.mat[i][j] = (c.mat[i][j] + a.mat[i][k] * b.mat[k][j]) % PHI; //这里对 φ(p) 取模 return c; &#125;&#125; baseA(3), x(3), y(3), z(3), baseB(5), w(5);inline LL quickPow(LL x, LL p) &#123;//快速幂 LL res = 1; for (; p; p &gt;&gt;= 1, x = x * x % MOD) if (p &amp; 1) res = res * x % MOD; return res;&#125;inline Matrix quickPow(Matrix x, LL p) &#123;//矩阵快速幂 Matrix res(x.size); for (int i = 1; i &lt;= res.size; ++i) res.mat[i][i] = 1;//单位矩阵 for (; p; p &gt;&gt;= 1, x = x * x) if (p &amp; 1) res = res * x; return res;&#125;inline void build() &#123;//构造初始矩阵和转移矩阵 x.mat[3][1] = y.mat[2][1] = z.mat[1][1] = 1; w.mat[5][1] = 2; baseA.mat[1][1] = baseA.mat[1][2] = baseA.mat[1][3] = baseA.mat[2][1] = baseA.mat[3][2] = 1;//baseA 是 x,y,z 的转移矩阵 for (int i = 1; i &lt;= 5; ++i) baseB.mat[1][i] = 1; baseB.mat[2][1] = baseB.mat[3][2] = baseB.mat[4][4] = baseB.mat[4][5] = baseB.mat[5][5] = 1;//baseB 是 w 的转移矩阵 &#125;int main() &#123; read(n), read(f1), read(f2), read(f3), read(c); build(); baseA = quickPow(baseA, n - 3), baseB = quickPow(baseB, n - 3); w = baseB * w, x = baseA * x, y = baseA * y, z = baseA * z; //求出四个答案矩阵后得到 w[n],x[n],y[n],z[n] ans = quickPow(c, w.mat[1][1]) * quickPow(f1, x.mat[1][1]) % MOD * quickPow(f2, y.mat[1][1]) % MOD * quickPow(f3, z.mat[1][1]) % MOD; //快速幂合并答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description当 $x \geq 4$ 时，$f_x = c^{2x - 6} \cdot f_{x - 1} \cdot f_{x - 2} \cdot f_{x - 3}$ 。 现在已知 $n,f_1,f_2,f_3,c$ 的值，求 $f_n$ 的值，对 $10^9 + 7$ 取模。 $(4 \leq n \leq 10^{18},1 \leq f_1,f_2,f_3,c \leq 10^9)$ Source[Luogu]CF1182E [Codeforces]1182E Solution一道比较有思维难度的 矩阵加速 。 一般情况下转移都是加法，而这道题是乘法，所以考虑转换。 我们可以先列举出前几个数。同底数幂相乘，底数不变，指数相加。 $f_1 = c^0 \cdot f_1^1 \cdot f_2^0 \cdot f_3^0$ $f_2 = c^0 \cdot f_1^0 \cdot f_2^1 \cdot f_3^0$ $f_3 = c^0 \cdot f_1^0 \cdot f_2^0 \cdot f_3^1$ $f_4 = c^2 \cdot f_1^1 \cdot f_2^1 \cdot f_3^1$ $f_5 = c^6 \cdot f_1^1 \cdot f_2^2 \cdot f_3^2$ $f_6 = c^{14} \cdot f_1^2 \cdot f_2^3 \cdot f_3^4$ $f_7 = c^{30} \cdot f_1^4 \cdot f_2^6 \cdot f_3^7$ $\cdots\cdots$ 不难发现对于每一个 $f_i$，我们都可以表示为 f_i = c^{w_i} \cdot f_{1}^{x_i} \cdot f_{2}^{y_i} \cdot f_{3}^{z_i}$w_i,x_i,y_i,z_i$ 的递推方程也可以写出。 $w_i = w_{i - 1} + w_{i - 2} + w_{i - 3} + 2i - 6$ $x_i = x_{i - 1} + x_{i - 2} + x_{i - 3}$ $y_i = y_{i - 1} + y_{i - 2} + y_{i - 3}$ $z_i = z_{i - 1} + z_{i - 2} + z_{i - 3}$ 我们可以先用 矩阵加速 分别求出 $4$ 个指数 $w_n,x_n,y_n,z_n$ 的值，再用快速幂求得 $f_n$ 。 对于 $x,y,z$ 数组，因为转移方程相同，所以转移矩阵也相同。这里以 $x$ 为例。 \begin{bmatrix}1&1&1\\1&0&0\\0&1&0\end{bmatrix}\times \begin{bmatrix}x_{i-1}\\x_{i-2}\\x_{i-3}\end{bmatrix}=\begin{bmatrix}x_i\\x_{i-1}\\x_{i-2}\end{bmatrix}因为 $x_i = x_{i - 1} + x_{i - 2} + x_{i - 3}$，所以矩阵第一行全部是 $1$ 。$x_{i - 1},x_{i - 2}$ 都可以在上一个矩阵中找到，对应位置标为 $1$ 。 初始矩阵： \begin{bmatrix}0\\0\\1\end{bmatrix}=\begin{bmatrix}x_3\\x_2\\x_1\end{bmatrix} \begin{bmatrix}0\\1\\0\end{bmatrix}=\begin{bmatrix}y_3\\y_2\\x_1\end{bmatrix} \begin{bmatrix}1\\0\\0\end{bmatrix}=\begin{bmatrix}z_3\\z_2\\z_1\end{bmatrix}通过 $f_1,f_2,f_3$ 得到。 答案矩阵： \begin{bmatrix}1&1&1\\1&0&0\\0&1&0\end{bmatrix}^{n - 3}\times \begin{bmatrix}x_{3}\\x_{2}\\x_{1}\end{bmatrix}=\begin{bmatrix}x_n\\x_{n-1}\\x_{n-2}\end{bmatrix}$x_n,y_n,z_n$ 都是取矩阵第一行第一列的值。 $w$ 数组就稍微麻烦一些了，因为多了一项 $2i - 6$ 。 \begin{bmatrix}1&1&1&1&1\\1&0&0&0&0\\0&1&0&0&0\\0&0&0&1&1\\0&0&0&0&1\end{bmatrix}\times \begin{bmatrix}w_{i-1}\\w_{i-2}\\w_{i-3}\\2(i - 1) - 6\\2\end{bmatrix}=\begin{bmatrix}w_i\\w_{i-1}\\w_{i-2}\\2i - 6\\2\end{bmatrix}因为 $w_i = w_{i - 1} + w_{i - 2} + w_{i - 3} + 2(i - 1) - 6 + 2$，所以第一行全部是 $1$ 。$w_{i - 1},w_{i - 2}$ 可以在上一个矩阵中找到，对应位置标为 $1$ 。$2i - 6 = 2(i - 1) - 6 + 2$，所以第四列和第五列为 $1$ 。对于 $2 = 2$，把第五列标为 $1$ 。 初始矩阵： \begin{bmatrix}0\\0\\0\\0\\2\end{bmatrix}=\begin{bmatrix}w_3\\w_2\\w_1\\2 \cdot 3 - 6 = 0\\2\end{bmatrix}可以直接得出。 答案矩阵： \begin{bmatrix}1&1&1&1&1\\1&0&0&0&0\\0&1&0&0&0\\0&0&0&1&1\\0&0&0&0&1\end{bmatrix}^{n - 3}\times \begin{bmatrix}w_3\\w_2\\w_1\\2 \cdot 3 - 6 = 0\\2\end{bmatrix}=\begin{bmatrix}w_n\\w_{n-1}\\w_{n-2}\\2n - 6\\2\end{bmatrix}$w_n$ 也同样取矩阵第一行第一列的值。 最后的结果要对 $10^9 + 7$ 取模，但是在做 矩阵加速 的过程中，指数肯定不能直接对它取模。这里要用到 扩展欧拉定理： 若 $a,p$ 互质，则 a^b \equiv a^{b \bmod \varphi(p)} \pmod p因为 $p$ 是质数，所以 $a,p$ 一定互质。我们可以将指数对 $\varphi(p) = p - 1 = 10^9 + 6$ 取模，就能达到降幂的效果。 分别求出 $w_n,x_n,y_n,z_n$，最后用快速幂合并答案得到 $f_n$ 。时间复杂度为 $O(\log n)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const LL MOD = 1e9 + 7, PHI = 1e9 + 6;LL n, f1, f2, f3, c, ans;struct Matrix &#123; int size; LL mat[6][6]; Matrix(int x) &#123; size = x; memset(mat, 0, sizeof (mat)); &#125; inline friend Matrix operator*(Matrix a, Matrix b) &#123;//矩阵乘法 Matrix c(a.size); for (int i = 1; i &lt;= c.size; ++i) for (int k = 1; k &lt;= c.size; ++k) for (int j = 1; j &lt;= c.size; ++j) c.mat[i][j] = (c.mat[i][j] + a.mat[i][k] * b.mat[k][j]) % PHI; //这里对 φ(p) 取模 return c; &#125;&#125; baseA(3), x(3), y(3), z(3), baseB(5), w(5);inline LL quickPow(LL x, LL p) &#123;//快速幂 LL res = 1; for (; p; p &gt;&gt;= 1, x = x * x % MOD) if (p &amp; 1) res = res * x % MOD; return res;&#125;inline Matrix quickPow(Matrix x, LL p) &#123;//矩阵快速幂 Matrix res(x.size); for (int i = 1; i &lt;= res.size; ++i) res.mat[i][i] = 1;//单位矩阵 for (; p; p &gt;&gt;= 1, x = x * x) if (p &amp; 1) res = res * x; return res;&#125;inline void build() &#123;//构造初始矩阵和转移矩阵 x.mat[3][1] = y.mat[2][1] = z.mat[1][1] = 1; w.mat[5][1] = 2; baseA.mat[1][1] = baseA.mat[1][2] = baseA.mat[1][3] = baseA.mat[2][1] = baseA.mat[3][2] = 1;//baseA 是 x,y,z 的转移矩阵 for (int i = 1; i &lt;= 5; ++i) baseB.mat[1][i] = 1; baseB.mat[2][1] = baseB.mat[3][2] = baseB.mat[4][4] = baseB.mat[4][5] = baseB.mat[5][5] = 1;//baseB 是 w 的转移矩阵 &#125;int main() &#123; read(n), read(f1), read(f2), read(f3), read(c); build(); baseA = quickPow(baseA, n - 3), baseB = quickPow(baseB, n - 3); w = baseB * w, x = baseA * x, y = baseA * y, z = baseA * z; //求出四个答案矩阵后得到 w[n],x[n],y[n],z[n] ans = quickPow(c, w.mat[1][1]) * quickPow(f1, x.mat[1][1]) % MOD * quickPow(f2, y.mat[1][1]) % MOD * quickPow(f3, z.mat[1][1]) % MOD; //快速幂合并答案 write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
+        <tag>矩阵加速</tag>
         <tag>数论数学</tag>
         <tag>Codeforces</tag>
-        <tag>矩阵加速</tag>
       </tags>
   </entry>
   <entry>
@@ -34,11 +34,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2012</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -49,9 +49,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -74,12 +74,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>USACO</tag>
         <tag>二分</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -106,12 +106,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>ZJOI</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -138,12 +138,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -226,9 +226,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>Trie</tag>
         <tag>可持久化</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -268,12 +268,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -300,12 +300,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -341,9 +341,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分</tag>
         <tag>分块</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -360,9 +360,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ 2453」维护队列]]></title>
-    <url>%2Fproblems%2Fbzoj-2453%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2453 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <title><![CDATA[「BZOJ 2120」数颜色]]></title>
+    <url>%2Fproblems%2Fbzoj-2120%2F</url>
+    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2120 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -372,9 +372,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ 2120」数颜色]]></title>
-    <url>%2Fproblems%2Fbzoj-2120%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2120 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
+    <title><![CDATA[「BZOJ 2453」维护队列]]></title>
+    <url>%2Fproblems%2Fbzoj-2453%2F</url>
+    <content type="text"><![CDATA[Description给定 $n$ 个数，$m$ 次操作，操作分两种： Q L R：询问区间 $[L,R]$ 中有多少个不同的数； R P Col：把第 $P$ 个数替换为 $Col$ 。 $(1 \leq n,m \leq 10^4$，数的大小均大于等于 $1$ 且不超过 $10^6)$ Source[BZOJ]2453 Solution看到这道题的询问，就很容易想到 莫队 。可是还有修改操作，普通的莫队不支持，怎么办呢？带修莫队 应运而生。 带修莫队，字面意思即是带修改的莫队。它与普通莫队不同的是，多了一个 时间戳，用来记录到当前这个询问时已经进行了多少次修改操作。 我们把询问和修改分别存下来。对于每一个询问，我们不仅要做到左右端点与当前询问一致，还要使修改次数与当前询问相同。如果我们修改得过多，那么应该删去多余的修改，修改过少则反之。 普通莫队写法： 1234for (; l &gt; ql; add(col[--l]));for (; r &lt; qr; add(col[++r]));for (; l &lt; ql; del(col[l++]));for (; r &gt; qr; del(col[r--])); 带修莫队新增的两句话： 12for (; t &lt; qt; upd(++t, i));for (; t &gt; qt; upd(t--, i)); 其中 $qt$ 表示这个询问已修改的次数，$t$ 表示当前已修改的次数，$i$ 表示排序后是第 $i$ 个询问。 upd 操作： 123456789inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125; 至于排序，和普通莫队大致相同。 普通排序： 123if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return x.r &lt; y.r;return x.t &lt; y.t; 若左端点不在同一块，则按左端点排序；若左端点在同一块，右端点不在同一块，则按右端点排序；若都在同一块，则按修改次数排序。 奇偶性排序： 1234if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l;else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r;return x.t &lt; y.t; 若左端点在同一块，右端点不在同一块，则根据左端点所在块编号的奇偶性对右端点排序。其它与普通排序相同。 在带修莫队中，块的大小（$blockSize$）设 $n^{\frac{2}{3}}$ 比较快。此时的时间复杂度约为 $O(n^{\frac{5}{3}})$，证明有些麻烦，这里暂不给出。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readChar(char &amp;c) &#123; for (c = getchar(); c != 'Q' &amp;&amp; c != 'R'; c = getchar());&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4, MAXM = 1e6;int n, m, cntQ, cntR, res, blockSize, ans[MAXN + 5], col[MAXN + 5], cnt[MAXM + 5];struct Query &#123; int l, r, t, id; //l = 左端点，r = 右端点，t = 已修改次数（时间戳），id = 询问编号 inline friend bool operator&lt;(Query x, Query y) &#123; if (x.l / blockSize != y.l / blockSize) return x.l &lt; y.l; else if (x.r / blockSize != y.r / blockSize) return ((x.l / blockSize) &amp; 1) ? x.r &lt; y.r : x.r &gt; y.r; return x.t &lt; y.t; &#125;&#125; q[MAXN + 5];struct Update &#123; int pos, k;//把第 pos 个数变为 k &#125; u[MAXN + 5];inline void add(int x) &#123; res += !cnt[x]; ++cnt[x];&#125;inline void del(int x) &#123; --cnt[x]; res -= !cnt[x];&#125;inline void upd(int x, int i) &#123;//在第 i 个询问进行第 x 次修改 if (u[x].pos &gt;= q[i].l &amp;&amp; u[x].pos &lt;= q[i].r) &#123;//修改的位置在询问区间内才会产生影响 del(col[u[x].pos]);//删掉第 pos 位上的数 add(u[x].k);//增加修改完的数 &#125; swap(col[u[x].pos], u[x].k); //如果我们这一次修改把 x 变成了 y，下次如果要改回来就不是把 x 变成 y 了， //而是应当把 y 变成 x，所以我们修改完后我们要把 x 和 y 交换&#125;inline void mo() &#123; sort(q + 1, q + cntQ + 1); int l = 1, r = 0, t = 0;//初始左端点为 1，右端点为 0，进行了 0 次修改 for (int i = 1; i &lt;= cntQ; ++i) &#123; int ql = q[i].l, qr = q[i].r, qt = q[i].t; for (; l &gt; ql; add(col[--l])); for (; r &lt; qr; add(col[++r])); for (; l &lt; ql; del(col[l++])); for (; r &gt; qr; del(col[r--])); for (; t &lt; qt; upd(++t, i)); for (; t &gt; qt; upd(t--, i)); ans[q[i].id] = res; &#125;&#125;int main() &#123; read(n), read(m); blockSize = pow(n, 2.0 / 3); for (int i = 1; i &lt;= n; ++i) read(col[i]);//初始颜色 for (int i = 1; i &lt;= m; ++i) &#123; char opt; readChar(opt); if (opt == 'Q') &#123;//记录共 cntQ 个修改 read(q[++cntQ].l), read(q[cntQ].r); q[cntQ].t = cntR, q[cntQ].id = cntQ; &#125; else read(u[++cntR].pos), read(u[cntR].k);//记录共 cntR 个修改 &#125; mo(); for (int i = 1; i &lt;= cntQ; ++i) &#123; write(ans[i]); putchar('\n'); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -391,9 +391,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>莫队</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -417,9 +417,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -496,11 +496,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -511,9 +511,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>矩阵加速</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -549,10 +549,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -577,10 +577,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -604,9 +604,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -617,8 +617,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -629,8 +629,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -641,10 +641,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>缩点</tag>
         <tag>图论</tag>
-        <tag>USACO</tag>
         <tag>Luogu</tag>
+        <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -657,11 +657,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -672,11 +672,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -687,8 +687,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
@@ -703,12 +703,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -719,12 +719,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -735,12 +735,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -751,9 +751,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
@@ -767,12 +767,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -783,10 +783,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
       </tags>
@@ -799,12 +799,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2009</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -815,8 +815,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
@@ -831,12 +831,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -847,8 +847,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
@@ -863,12 +863,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -879,9 +879,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -892,9 +892,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -905,9 +905,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -921,11 +921,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>SDOI</tag>
         <tag>动态规划</tag>
         <tag>2006</tag>
-        <tag>SDOI</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -936,9 +936,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -974,9 +974,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -988,9 +988,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1001,10 +1001,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>数论数学</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1016,8 +1016,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -1040,8 +1040,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1053,8 +1053,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
+        <tag>数论数学</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -1066,10 +1066,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>SDOI</tag>
-        <tag>2012</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>数论数学</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -1092,8 +1092,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1155,10 +1155,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1182,9 +1182,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1254,8 +1254,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -1316,10 +1316,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
