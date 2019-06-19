@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「AtCoder Code-Festival-2017-qualA-D」Four Coloring]]></title>
+    <url>%2Fproblems%2Fatcoder-code-festival-2017-quala-d%2F</url>
+    <content type="text"><![CDATA[Description给定一个 $h \times w$ 的网格，试给其中所有格子染 RYGB 四种颜色之一，使得网格上任意一对曼哈顿距离为 $d$ 的格子颜色不同。 $(2 \leq h,w \leq 500, 1\leq d \leq h + w - 2)$ Source[Luogu]AT3557 [AtCoder]Code-Festival-2017-qualA-D Solution曼哈顿距离并不方便处理，我们考虑把它转化为切比雪夫距离。（详见 常用距离算法详解） 举个例子，当 $d = 3$ 时，我们把曼哈顿坐标系（网格）旋转 $45^\circ$（即 $(i,j) \Rightarrow (i+j,i - j)$ ），得到切比雪夫坐标系。 其中蓝点是到红点距离为 $3$ 的点，切比雪夫坐标系中的点到周围 $8$ 个点的距离都是 $1$ 。 考虑把切比雪夫坐标系分成多个网格，每个网格的大小是 $d \times d$ 。如果我们给同一网格中的点染相同的颜色（中心网格的所有点对的切比雪夫距离都 $&lt; d$），那么对于任意一个网格，它周围 $8$ 个网格的颜色都应该与它不同，因为周围网格存在到中心网格距离为 $d$ 的点。 怎么给网格染色呢？ 我们会发现对于任意一个网格，它左上，右上，左下，右下网格的横坐标与纵坐标的奇偶性是相同的，上下网格的奇偶性也是相同的，左右网格的奇偶性也是相同的，但周围 $8$ 个网格都与中心网格的奇偶性不同。 所以一种有效的方式是按网格横坐标，纵坐标的奇偶性分成 $4$ 种颜色。对于坐标 $(x,y)$，其所在的网格为 $(\left \lfloor \frac{x}{d} \right \rfloor,\left \lfloor \frac{y}{d} \right \rfloor)$ 。若设奇数为 $1$，偶数为 $0$，则 $4$ 种颜色分别对应 $(0,0),(0,1),(1,0),(1,1)$ 。时间复杂度为 $O(hw)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int h, w, d;char s[4] = &#123; 'R', 'Y', 'G', 'B' &#125;;//四种颜色 int main() &#123; read(h), read(w), read(d); for (int i = 1; i &lt;= h; ++i, putchar('\n')) for (int j = 1; j &lt;= w; ++j) &#123; int x = i + j + w, y = i - j + w; //转成切比雪夫坐标系，+w 是因为防止坐标出现负数，方便得出奇偶性 putchar(s[((x / d) &amp; 1) * 2 + ((y / d) &amp; 1)]); &#125; return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>AtCoder</tag>
+        <tag>构造</tag>
+        <tag>距离</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[「BZOJ 3382」「USACO04OPEN」Cave Cows 3 洞穴里的牛之三]]></title>
     <url>%2Fproblems%2Fbzoj-3382%2F</url>
     <content type="text"><![CDATA[Description给定 $n$ 个点，每个点的坐标为 $(x,y)$，求曼哈顿距离的最大点对，输出这个最大值。 $(1 \leq n \leq 5 \times 10^4,-10^6 \leq x,y \leq 10^6)$ Source[BZOJ]3382 Solution 1根据题意，对于式子 $\left | x_1-x_2\right| +\left | y_1-y_2\right| $，我们可以分成四种情况考虑： 第一种情况：$x_1 - x_2 \geq 0,y_1 - y_2 \geq 0$ \begin{aligned} &\left | x_1 - x_2 \right | + \left | y_1 - y_2\right |\\ =\ & x_1 - x_2 + y_1 - y_2\\ =\ & (x_1 + y_1) - (x_2 + y_2)\\ \end{aligned}第二种情况：$x_1 - x_2 &lt; 0,y_1 - y_2 \geq 0$ \begin{aligned} &\left | x_1 - x_2 \right | + \left | y_1 - y_2\right |\\ =\ & x_2 - x_1 + y_1 - y_2\\ =\ & (x_2 - y_2) - (x_1 - y_1)\\ \end{aligned}第三种情况：$x_1 - x_2 \geq 0,y_1 - y_2 &lt; 0$ \begin{aligned} &\left | x_1 - x_2 \right | + \left | y_1 - y_2\right |\\ =\ & x_1 - x_2 + y_2 - y_1\\ =\ & (x_1 - y_1) - (x_2 - y_2)\\ \end{aligned}第四种情况：$x_1 - x_2 &lt; 0,y_1 - y_2 &lt; 0$ \begin{aligned} &\left | x_1 - x_2 \right | + \left | y_1 - y_2\right |\\ =\ & x_2 - x_1 + y_2 - y_1 \\ =\ & (x_2 + y_2) -(x_1 + y_1)\\ \end{aligned}每种情况的答案要么只与 $x+y$ 的值有关，要么只与 $x-y$ 的值有关，所以最后的答案为 \max \begin{Bmatrix} \max \begin{Bmatrix} x_i + y_i \end{Bmatrix} - \min \begin{Bmatrix} x_i + y_i \end{Bmatrix},\max \begin{Bmatrix} x_i - y_i \end{Bmatrix} - \min \begin{Bmatrix} x_i - y_i \end{Bmatrix} \end{Bmatrix}Code 11234567891011121314151617181920212223242526272829303132333435363738#include &lt;bits/stdc++.h&gt;using namespace std;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int n, x, y, minx = 0x7fffffff, maxx, miny = 0x7fffffff, maxy;int main() &#123; read(n); for (int i = 1; i &lt;= n; i++) &#123; read(x), read(y); minx = min(minx, x + y), maxx = max(maxx, x + y); miny = min(miny, x - y), maxy = max(maxy, x - y); &#125; write(max(maxx - minx, maxy - miny)); putchar('\n'); return 0;&#125; Solution 2我们考虑将题目所求的 曼哈顿距离 转化为 切比雪夫距离，即把每个点的坐标 $(x,y)$ 变为 $(x + y, x - y)$ 。 所求的答案就变为 $\max \begin{Bmatrix} \max\begin{Bmatrix} \left | x_i - x_j\right| ,\left | y_i - y_j\right| \end{Bmatrix} \end{Bmatrix}$ 。 在所有点中，横坐标之差的最大值和纵坐标之差的最大值都有可能成为答案，所以我们只需要预处理出 $x,y$ 的最大值和最小值即可。时间复杂度为 $O(n)$ 。 Code 2123456789101112131415161718192021222324252627282930313233343536373839#include &lt;bits/stdc++.h&gt;using namespace std;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int n, x, y, a, b, minx = 0x7fffffff, maxx, miny = 0x7fffffff, maxy;int main() &#123; read(n); for (int i = 1; i &lt;= n; i++) &#123; read(a), read(b); x = a + b, y = a - b; minx = min(minx, x), maxx = max(maxx, x); miny = min(miny, y), maxy = max(maxy, y); &#125; write(max(maxx - minx, maxy - miny)); putchar('\n'); return 0;&#125;]]></content>
@@ -9,8 +22,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>USACO</tag>
         <tag>距离</tag>
+        <tag>USACO</tag>
         <tag>2004</tag>
       </tags>
   </entry>
@@ -23,8 +36,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>USACO</tag>
         <tag>距离</tag>
+        <tag>USACO</tag>
         <tag>2004</tag>
       </tags>
   </entry>
@@ -51,9 +64,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
+        <tag>距离</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>距离</tag>
         <tag>二分</tag>
       </tags>
   </entry>
@@ -66,9 +79,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
+        <tag>距离</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>距离</tag>
         <tag>二分</tag>
       </tags>
   </entry>
@@ -263,8 +276,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>HDU</tag>
         <tag>博弈论</tag>
+        <tag>HDU</tag>
       </tags>
   </entry>
   <entry>
@@ -325,8 +338,8 @@
       </categories>
       <tags>
         <tag>模拟</tag>
-        <tag>二分</tag>
         <tag>Codeforces</tag>
+        <tag>二分</tag>
       </tags>
   </entry>
   <entry>
@@ -808,9 +821,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>2010</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -824,9 +837,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>2010</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
