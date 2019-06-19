@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[「Codeforces 1096C」Polygon for the Angle]]></title>
+    <url>%2Funcategorized%2Fcodeforces-1096c%2F</url>
+    <content type="text"><![CDATA[Description$T$ 组数据。给定一个角度 $\theta$，请你寻找一个正 $n$ 边形，满足这个正 $n$ 边形上存在三个顶点 $A,B,C$（可以不相邻），使得 $\angle ABC=\theta$ 。请输出最小的 $n$ 。保证 $n$ 不超过 $998244353$ 。 $(1 \leq T \leq 180,1 \leq \theta &lt; 180)$ Source[Luogu]CF1096C [Codeforces]1096C Solution正 $n$ 边形是存在外接圆的，且 $n$ 个顶点把圆分成 $n$ 段等长的弧（下文中均称作基本弧），每段基本弧对应的圆心角是 $\left( \frac{360}{n} \right)^\circ$，圆周角是 $\left( \frac{180}{n} \right)^\circ$（圆心角的一半）。 从这个正 $n$ 边形上选 $3$ 个点 $A,B,C$，我们可以看做选择顶点 $B$ 和弧 $\widehat{AC}$ 。弧 $\widehat{AC}$ 对应的圆周角就是 $\angle ABC$（与顶点 $B$ 无关，因为同弧所对的圆周角相等）。弧 $\widehat{AC}$ 的长度一定是基本弧的 $x$ 倍，其中 $x$ 是一个正整数，且不超过 $n - 2$（否则顶点 $B$ 没有位置），所以弧 $\widehat{AC}$ 所对的圆周角就是 $\left( \frac{180x}{n} \right)^\circ$ 。显然我们可以枚举 $n$ 和 $x$，求出正 $n$ 边形可以得到的所有角度。 $n$ 的下界显然是 $3$，$n$ 的上界是什么呢？ 很容易发现当 $n = 360$ 时，$\theta$ 可以等于 $1^\circ \sim 179^\circ$ 中的任意一个角度。所以只要枚举到 $360$ 就好了。注意所给的 $\theta$ 是正整数，所以枚举时要满足 $180x$ 能被 $n$ 整除。 Code1234567891011121314151617181920212223242526272829303132333435363738394041#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 180;int t, n, theta[MAXN + 5];int main() &#123; for (int i = 3; i &lt;= 360; ++i)//枚举正 n 边形 for (int j = 1; j &lt;= i - 2; ++j)//枚举 x if (180 * j % i == 0 &amp;&amp; !theta[180 * j / i])//不能有小数 theta[180 * j / i] = i;//i 就是 θ=(180 * j / i)°时最小的 n for (read(t); t; --t) &#123; read(n); write(theta[n]); putchar('\n'); &#125; return 0;&#125;]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[「AtCoder Code-Festival-2017-qualA-D」Four Coloring]]></title>
     <url>%2Fproblems%2Fatcoder-code-festival-2017-quala-d%2F</url>
     <content type="text"><![CDATA[Description给定一个 $h \times w$ 的网格，试给其中所有格子染 RYGB 四种颜色之一，使得网格上任意一对曼哈顿距离为 $d$ 的格子颜色不同。 $(2 \leq h,w \leq 500, 1\leq d \leq h + w - 2)$ Source[Luogu]AT3557 [AtCoder]Code-Festival-2017-qualA-D Solution曼哈顿距离并不方便处理，我们考虑把它转化为切比雪夫距离。（详见 常用距离算法详解） 举个例子，当 $d = 3$ 时，我们把曼哈顿坐标系（网格）旋转 $45^\circ$（即 $(i,j) \Rightarrow (i+j,i - j)$ ），得到切比雪夫坐标系。 其中蓝点是到红点距离为 $3$ 的点，切比雪夫坐标系中的点到周围 $8$ 个点的距离都是 $1$ 。 考虑把切比雪夫坐标系分成多个网格，每个网格的大小是 $d \times d$ 。如果我们给同一网格中的点染相同的颜色（中心网格的所有点对的切比雪夫距离都 $&lt; d$），那么对于任意一个网格，它周围 $8$ 个网格的颜色都应该与它不同，因为周围网格存在到中心网格距离为 $d$ 的点。 怎么给网格染色呢？ 我们会发现对于任意一个网格，它左上，右上，左下，右下网格的横坐标与纵坐标的奇偶性是相同的，上下网格的奇偶性也是相同的，左右网格的奇偶性也是相同的，但周围 $8$ 个网格都与中心网格的奇偶性不同。 所以一种有效的方式是按网格横坐标，纵坐标的奇偶性分成 $4$ 种颜色。对于坐标 $(x,y)$，其所在的网格为 $(\left \lfloor \frac{x}{d} \right \rfloor,\left \lfloor \frac{y}{d} \right \rfloor)$ 。若设奇数为 $1$，偶数为 $0$，则 $4$ 种颜色分别对应 $(0,0),(0,1),(1,0),(1,1)$ 。时间复杂度为 $O(hw)$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;int h, w, d;char s[4] = &#123; 'R', 'Y', 'G', 'B' &#125;;//四种颜色 int main() &#123; read(h), read(w), read(d); for (int i = 1; i &lt;= h; ++i, putchar('\n')) for (int j = 1; j &lt;= w; ++j) &#123; int x = i + j + w, y = i - j + w; //转成切比雪夫坐标系，+w 是因为防止坐标出现负数，方便得出奇偶性 putchar(s[((x / d) &amp; 1) * 2 + ((y / d) &amp; 1)]); &#125; return 0;&#125;]]></content>
@@ -173,10 +178,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>2006</tag>
-        <tag>USACO</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
+        <tag>USACO</tag>
         <tag>二分</tag>
       </tags>
   </entry>
@@ -252,8 +257,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>AtCoder</tag>
+        <tag>动态规划</tag>
       </tags>
   </entry>
   <entry>
@@ -338,8 +343,8 @@
       </categories>
       <tags>
         <tag>模拟</tag>
-        <tag>Codeforces</tag>
         <tag>二分</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -490,8 +495,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>集训队</tag>
         <tag>莫队</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -741,8 +746,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>缩点</tag>
         <tag>USACO</tag>
         <tag>IOI</tag>
@@ -757,8 +762,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>BZOJ</tag>
         <tag>图论</tag>
+        <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -772,8 +777,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>Luogu</tag>
         <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
@@ -821,9 +826,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
-        <tag>2010</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -837,9 +842,9 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
-        <tag>2010</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -1206,8 +1211,8 @@
       <tags>
         <tag>动态规划</tag>
         <tag>数论数学</tag>
-        <tag>概率期望</tag>
         <tag>Codeforces</tag>
+        <tag>概率期望</tag>
         <tag>高斯消元</tag>
       </tags>
   </entry>
