@@ -46,8 +46,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>BZOJ</tag>
+        <tag>距离</tag>
         <tag>USACO</tag>
         <tag>2004</tag>
       </tags>
@@ -60,10 +60,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>距离</tag>
         <tag>USACO</tag>
         <tag>2004</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -74,8 +74,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>Luogu</tag>
+        <tag>距离</tag>
         <tag>NOIp提高组</tag>
         <tag>2017</tag>
       </tags>
@@ -83,13 +83,13 @@
   <entry>
     <title><![CDATA[「BZOJ 3170」「TJOI2013」松鼠聚会]]></title>
     <url>%2Fproblems%2Fbzoj-3170%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个点，每个点的坐标为 $(x_i,y_i)$，且点 $(x,y)$ 到它周围 $8$ 个点 $(x-1,y)(x+1,y),(x,y-1),(x,y+1).(x-1,y+1),(x-1,y-1),(x+1,y+1),(x+1,y-1)$ 的距离均为 $1$ 。现要找到一个点，使其它点到这个点的距离和最小，输出这个最小值。 $(0 \leq n \leq 10^5,-10^9 \leq x_i,y_i \leq 10^9)$ Source[BZOJ]3170 Solution很容易看出这道题属于 切比雪夫距离 的一般模型。即对于两个点 $(x_1, y_1),(x_2,y_2)$，它们之间的距离为 \max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )直接求 切比雪夫距离 似乎很困难？考虑把 切比雪夫距离 转化为 曼哈顿距离，即把每个点的坐标 $(x,y)$ 变为 $(\frac{x + y}{2}, \frac{x - y}{2})$ 。（详见 常用距离算法详解） 枚举所选的点 $i$，我们只需要计算其它点到它的曼哈顿距离和即可。 如果某个点 $j$ 的横坐标 $x_j \leq x_i$，则它的对总距离的贡献为 $x_i - x_j$，反之则为 $x_j - x_i$ 。 这样就可以分两种情况讨论了。 设前 $k$ 个点的横坐标都 $\leq x_i$，那么所有点横坐标的贡献和为 kx_i - \sum\limits_{i = 1}^k x_i + \sum\limits_{i = n-k}^n x_i - (n - k)x_i对于 $\sum\limits_{i = 1}^k x_i$ 和 $\sum\limits_{i = n-k}^n x_i$，我们可以预处理出 $x$ 的前缀和后 $O(1)$ 求得。 怎么求 $k$ 呢？显然可以将横坐标排序后二分得到。 纵坐标 $y$ 的计算方法与上面一样。时间复杂度为 $O(n \log n)$ 。 切比雪夫距离 转成 曼哈顿距离 时要除以 $2$，为了避免出现小数，我们可以横坐标和纵坐标同时乘上 $2$，最后答案除以 $2$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, x[MAXN + 5], y[MAXN + 5], p[MAXN + 5], q[MAXN + 5];LL ans = 0x7fffffffffffffff, prex[MAXN + 5], prey[MAXN + 5];int main() &#123; read(n); for (int a, b, i = 1; i &lt;= n; ++i) &#123; read(a), read(b); x[i] = p[i] = a + b, y[i] = q[i] = a - b;//转曼哈顿距离，且乘上 2 &#125; sort(p + 1, p + n + 1), sort(q + 1, q + n + 1);//排序 for (int a, b, i = 1; i &lt;= n; ++i)//维护前缀和 prex[i] = prex[i - 1] + p[i], prey[i] = prey[i - 1] + q[i]; for (int posx, posy, i = 1; i &lt;= n; ++i) &#123; posx = lower_bound(p + 1, p + n + 1, x[i]) - p; posy = lower_bound(q + 1, q + n + 1, y[i]) - q; //二分找到 x[i] 和 y[i] 是所有点中第几个大的 LL sumx, sumy; sumx = (LL) posx * x[i] - prex[posx] + prex[n] - prex[posx] - (LL) (n - posx) * x[i];//计算横坐标贡献 sumy = (LL) posy * y[i] - prey[posy] + prey[n] - prey[posy] - (LL) (n - posy) * y[i];//计算纵坐标贡献 ans = min(ans, sumx + sumy); &#125; write(ans / 2);//答案不要忘记除回去 putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个点，每个点的坐标为 $(x_i,y_i)$，且点 $(x,y)$ 到它周围 $8$ 个点 $(x-1,y)(x+1,y),(x,y-1),(x,y+1).(x-1,y+1),(x-1,y-1),(x+1,y+1),(x+1,y-1)$ 的距离均为 $1$ 。现要找到一个点，使其它点到这个点的距离和最小，输出这个最小值。 $(0 \leq n \leq 10^5,-10^9 \leq x_i,y_i \leq 10^9)$ Source[BZOJ]3170 Solution很容易看出这道题属于 切比雪夫距离 的一般模型。即对于两个点 $(x_1, y_1),(x_2,y_2)$，它们之间的距离为 \max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )直接求 切比雪夫距离 似乎很困难？考虑把 切比雪夫距离 转化为 曼哈顿距离，即把每个点的坐标 $(x,y)$ 变为 $(\frac{x + y}{2}, \frac{x - y}{2})$ 。（详见 常用距离算法详解） 枚举所选的点 $i$，我们只需要计算其它点到它的曼哈顿距离和即可。 如果某个点 $j$ 的横坐标 $x_j \leq x_i$，则它的对总距离的贡献为 $x_i - x_j$，反之则为 $x_j - x_i$ 。 这样就可以分两种情况讨论了。 设前 $k$ 个点的横坐标都 $\leq x_i$，那么所有点横坐标的贡献和为 kx_i - \sum\limits_{i = 1}^k x_i + \sum\limits_{i = k+1}^n x_i - (n - k)x_i对于 $\sum\limits_{i = 1}^k x_i$ 和 $\sum\limits_{i = k+1}^n x_i$，我们可以预处理出 $x$ 的前缀和后 $O(1)$ 求得。 怎么求 $k$ 呢？显然可以将横坐标排序后二分得到。 纵坐标 $y$ 的计算方法与上面一样。时间复杂度为 $O(n \log n)$ 。 切比雪夫距离 转成 曼哈顿距离 时要除以 $2$，为了避免出现小数，我们可以横坐标和纵坐标同时乘上 $2$，最后答案除以 $2$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, x[MAXN + 5], y[MAXN + 5], p[MAXN + 5], q[MAXN + 5];LL ans = 0x7fffffffffffffff, prex[MAXN + 5], prey[MAXN + 5];int main() &#123; read(n); for (int a, b, i = 1; i &lt;= n; ++i) &#123; read(a), read(b); x[i] = p[i] = a + b, y[i] = q[i] = a - b;//转曼哈顿距离，且乘上 2 &#125; sort(p + 1, p + n + 1), sort(q + 1, q + n + 1);//排序 for (int a, b, i = 1; i &lt;= n; ++i)//维护前缀和 prex[i] = prex[i - 1] + p[i], prey[i] = prey[i - 1] + q[i]; for (int posx, posy, i = 1; i &lt;= n; ++i) &#123; posx = lower_bound(p + 1, p + n + 1, x[i]) - p; posy = lower_bound(q + 1, q + n + 1, y[i]) - q; //二分找到 x[i] 和 y[i] 是所有点中第几个大的 LL sumx, sumy; sumx = (LL) posx * x[i] - prex[posx] + prex[n] - prex[posx] - (LL) (n - posx) * x[i];//计算横坐标贡献 sumy = (LL) posy * y[i] - prey[posy] + prey[n] - prey[posy] - (LL) (n - posy) * y[i];//计算纵坐标贡献 ans = min(ans, sumx + sumy); &#125; write(ans / 2);//答案不要忘记除回去 putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>BZOJ</tag>
+        <tag>距离</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
         <tag>二分</tag>
@@ -98,16 +98,16 @@
   <entry>
     <title><![CDATA[「Luogu P3964」「TJOI2013」松鼠聚会]]></title>
     <url>%2Fproblems%2Fluogu-p3964%2F</url>
-    <content type="text"><![CDATA[Description给定 $n$ 个点，每个点的坐标为 $(x_i,y_i)$，且点 $(x,y)$ 到它周围 $8$ 个点 $(x-1,y)(x+1,y),(x,y-1),(x,y+1).(x-1,y+1),(x-1,y-1),(x+1,y+1),(x+1,y-1)$ 的距离均为 $1$ 。现要找到一个点，使其它点到这个点的距离和最小，输出这个最小值。 $(0 \leq n \leq 10^5,-10^9 \leq x_i,y_i \leq 10^9)$ Source[Luogu]P3964 Solution很容易看出这道题属于 切比雪夫距离 的一般模型。即对于两个点 $(x_1, y_1),(x_2,y_2)$，它们之间的距离为 \max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )直接求 切比雪夫距离 似乎很困难？考虑把 切比雪夫距离 转化为 曼哈顿距离，即把每个点的坐标 $(x,y)$ 变为 $(\frac{x + y}{2}, \frac{x - y}{2})$ 。（详见 常用距离算法详解） 枚举所选的点 $i$，我们只需要计算其它点到它的曼哈顿距离和即可。 如果某个点 $j$ 的横坐标 $x_j \leq x_i$，则它的对总距离的贡献为 $x_i - x_j$，反之则为 $x_j - x_i$ 。 这样就可以分两种情况讨论了。 设前 $k$ 个点的横坐标都 $\leq x_i$，那么所有点横坐标的贡献和为 kx_i - \sum\limits_{i = 1}^k x_i + \sum\limits_{i = n-k}^n x_i - (n - k)x_i对于 $\sum\limits_{i = 1}^k x_i$ 和 $\sum\limits_{i = n-k}^n x_i$，我们可以预处理出 $x$ 的前缀和后 $O(1)$ 求得。 怎么求 $k$ 呢？显然可以将横坐标排序后二分得到。 纵坐标 $y$ 的计算方法与上面一样。时间复杂度为 $O(n \log n)$ 。 切比雪夫距离 转成 曼哈顿距离 时要除以 $2$，为了避免出现小数，我们可以横坐标和纵坐标同时乘上 $2$，最后答案除以 $2$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, x[MAXN + 5], y[MAXN + 5], p[MAXN + 5], q[MAXN + 5];LL ans = 0x7fffffffffffffff, prex[MAXN + 5], prey[MAXN + 5];int main() &#123; read(n); for (int a, b, i = 1; i &lt;= n; ++i) &#123; read(a), read(b); x[i] = p[i] = a + b, y[i] = q[i] = a - b;//转曼哈顿距离，且乘上 2 &#125; sort(p + 1, p + n + 1), sort(q + 1, q + n + 1);//排序 for (int a, b, i = 1; i &lt;= n; ++i)//维护前缀和 prex[i] = prex[i - 1] + p[i], prey[i] = prey[i - 1] + q[i]; for (int posx, posy, i = 1; i &lt;= n; ++i) &#123; posx = lower_bound(p + 1, p + n + 1, x[i]) - p; posy = lower_bound(q + 1, q + n + 1, y[i]) - q; //二分找到 x[i] 和 y[i] 是所有点中第几个大的 LL sumx, sumy; sumx = (LL) posx * x[i] - prex[posx] + prex[n] - prex[posx] - (LL) (n - posx) * x[i];//计算横坐标贡献 sumy = (LL) posy * y[i] - prey[posy] + prey[n] - prey[posy] - (LL) (n - posy) * y[i];//计算纵坐标贡献 ans = min(ans, sumx + sumy); &#125; write(ans / 2);//答案不要忘记除回去 putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定 $n$ 个点，每个点的坐标为 $(x_i,y_i)$，且点 $(x,y)$ 到它周围 $8$ 个点 $(x-1,y)(x+1,y),(x,y-1),(x,y+1).(x-1,y+1),(x-1,y-1),(x+1,y+1),(x+1,y-1)$ 的距离均为 $1$ 。现要找到一个点，使其它点到这个点的距离和最小，输出这个最小值。 $(0 \leq n \leq 10^5,-10^9 \leq x_i,y_i \leq 10^9)$ Source[Luogu]P3964 Solution很容易看出这道题属于 切比雪夫距离 的一般模型。即对于两个点 $(x_1, y_1),(x_2,y_2)$，它们之间的距离为 \max(\left | x_1 - x_2\right | , \left | y_1 - y_2\right | )直接求 切比雪夫距离 似乎很困难？考虑把 切比雪夫距离 转化为 曼哈顿距离，即把每个点的坐标 $(x,y)$ 变为 $(\frac{x + y}{2}, \frac{x - y}{2})$ 。（详见 常用距离算法详解） 枚举所选的点 $i$，我们只需要计算其它点到它的曼哈顿距离和即可。 如果某个点 $j$ 的横坐标 $x_j \leq x_i$，则它的对总距离的贡献为 $x_i - x_j$，反之则为 $x_j - x_i$ 。 这样就可以分两种情况讨论了。 设前 $k$ 个点的横坐标都 $\leq x_i$，那么所有点横坐标的贡献和为 kx_i - \sum\limits_{i = 1}^k x_i + \sum\limits_{i = k+1}^n x_i - (n - k)x_i对于 $\sum\limits_{i = 1}^k x_i$ 和 $\sum\limits_{i = k+1}^n x_i$，我们可以预处理出 $x$ 的前缀和后 $O(1)$ 求得。 怎么求 $k$ 呢？显然可以将横坐标排序后二分得到。 纵坐标 $y$ 的计算方法与上面一样。时间复杂度为 $O(n \log n)$ 。 切比雪夫距离 转成 曼哈顿距离 时要除以 $2$，为了避免出现小数，我们可以横坐标和纵坐标同时乘上 $2$，最后答案除以 $2$ 。 Code123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5;int n, x[MAXN + 5], y[MAXN + 5], p[MAXN + 5], q[MAXN + 5];LL ans = 0x7fffffffffffffff, prex[MAXN + 5], prey[MAXN + 5];int main() &#123; read(n); for (int a, b, i = 1; i &lt;= n; ++i) &#123; read(a), read(b); x[i] = p[i] = a + b, y[i] = q[i] = a - b;//转曼哈顿距离，且乘上 2 &#125; sort(p + 1, p + n + 1), sort(q + 1, q + n + 1);//排序 for (int a, b, i = 1; i &lt;= n; ++i)//维护前缀和 prex[i] = prex[i - 1] + p[i], prey[i] = prey[i - 1] + q[i]; for (int posx, posy, i = 1; i &lt;= n; ++i) &#123; posx = lower_bound(p + 1, p + n + 1, x[i]) - p; posy = lower_bound(q + 1, q + n + 1, y[i]) - q; //二分找到 x[i] 和 y[i] 是所有点中第几个大的 LL sumx, sumy; sumx = (LL) posx * x[i] - prex[posx] + prex[n] - prex[posx] - (LL) (n - posx) * x[i];//计算横坐标贡献 sumy = (LL) posy * y[i] - prey[posy] + prey[n] - prey[posy] - (LL) (n - posy) * y[i];//计算纵坐标贡献 ans = min(ans, sumx + sumy); &#125; write(ans / 2);//答案不要忘记除回去 putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>距离</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
         <tag>二分</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -156,11 +156,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2012</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -171,9 +171,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -196,13 +196,13 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2006</tag>
+        <tag>USACO</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>USACO</tag>
         <tag>二分</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -229,12 +229,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>ZJOI</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -261,12 +261,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -349,9 +349,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>Trie</tag>
         <tag>可持久化</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -377,10 +377,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
-        <tag>2012</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -391,12 +391,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
-        <tag>2012</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>Luogu</tag>
+        <tag>AHOI</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -423,12 +423,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -464,9 +464,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分</tag>
         <tag>分块</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -514,9 +514,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>集训队</tag>
-        <tag>莫队</tag>
         <tag>Luogu</tag>
+        <tag>莫队</tag>
+        <tag>集训队</tag>
       </tags>
   </entry>
   <entry>
@@ -540,9 +540,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -620,12 +620,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>2012</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -637,8 +637,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>矩阵加速</tag>
         <tag>Luogu</tag>
+        <tag>矩阵加速</tag>
       </tags>
   </entry>
   <entry>
@@ -674,10 +674,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>2012</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -702,10 +702,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -729,9 +729,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -742,8 +742,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -754,8 +754,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -766,10 +766,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>缩点</tag>
         <tag>图论</tag>
-        <tag>USACO</tag>
         <tag>Luogu</tag>
+        <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -782,11 +782,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -797,11 +797,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -829,11 +829,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -861,11 +861,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
         <tag>2010</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -893,11 +893,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -925,11 +925,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>SCOI</tag>
         <tag>2009</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -957,11 +957,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -989,11 +989,11 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1005,8 +1005,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -1018,8 +1018,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -1031,8 +1031,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>树形DP</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -1047,10 +1047,10 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>2006</tag>
         <tag>SDOI</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1062,8 +1062,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>树形DP</tag>
         <tag>Luogu</tag>
+        <tag>树形DP</tag>
       </tags>
   </entry>
   <entry>
@@ -1099,9 +1099,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1126,10 +1126,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1165,8 +1165,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1191,10 +1191,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>SDOI</tag>
         <tag>2012</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1217,8 +1217,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1280,10 +1280,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1307,9 +1307,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1348,9 +1348,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ 3038」上帝造题的七分钟2]]></title>
-    <url>%2Fproblems%2Fbzoj-3038%2F</url>
-    <content type="text"><![CDATA[Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2$ 种）： 1 x y：询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。 2 x y：将区间 $[x,y]\ (1 \leq x,y \leq n)$ 内的每一个数开 平方根（下取整） 。 Source[BZOJ]3038 Solution 前置知识： 线段树 因为要维护区间和，所以我们想到用线段树来维护。 但是会发现懒惰标记不能打，那该怎么办呢？ 考虑暴力修改： $a[i]$ 最大为 $10^{18}$。 \left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1换言之， \left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1一个数最多开 $6$ 次平方根就会变成 $1$ 。 因为 $\sqrt{1} = 1,\sqrt{0} = 0$， 我们只需要维护 区间和 与 区间最大值 即可， 当一个区间的最大值 $\leq 1$ 时，我们对这个区间的修改就是无用的，因为无论怎么修改这个数仍是它本身。 而我们对一个数的开平方操作不会超过 $6$ 次，所以时间复杂度仍是 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5 + 10;struct SegmentTree &#123; LL sum[MAXN &lt;&lt; 2], maxx[MAXN &lt;&lt; 2]; inline int lson(int x) &#123; return x &lt;&lt; 1; &#125; inline int rson(int x) &#123; return x &lt;&lt; 1 | 1; &#125; inline void pushUp(int x) &#123; sum[x] = sum[lson(x)] + sum[rson(x)]; maxx[x] = max(maxx[lson(x)], maxx[rson(x)]); &#125; void build(int x, int l, int r, LL *a) &#123; if (l == r) &#123; sum[x] = a[l]; maxx[x] = a[l]; return; &#125; int mid = (l + r) &gt;&gt; 1; build(lson(x), l, mid, a), build(rson(x), mid + 1, r, a); pushUp(x); &#125; void update(int ql, int qr, int l, int r, int x) &#123; if (maxx[x] &lt;= 1) return;//如果区间最大值小于等于1，就可以直接忽略这个区间的修改操作 if (l == r) &#123; sum[x] = sqrt(sum[x]); maxx[x] = sqrt(maxx[x]); return; &#125; int mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) update(ql, qr, l, mid, lson(x)); if (qr &gt; mid) update(ql, qr, mid + 1, r, rson(x)); pushUp(x); &#125; LL query(int ql, int qr, int l, int r, int x) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) return sum[x]; int mid = (l + r) &gt;&gt; 1; LL res = 0; if (ql &lt;= mid) res += query(ql, qr, l, mid, lson(x)); if (qr &gt; mid) res += query(ql, qr, mid + 1, r, rson(x)); return res; &#125;&#125; tr;int n, m;LL a[MAXN];int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(a[i]); tr.build(1, 1, n, a); read(m); for (int opt, l, r, i = 1; i &lt;= m; ++i) &#123; read(opt), read(l), read(r); if (l &gt; r) swap(l, r); if (opt == 1) &#123; write(tr.query(l, r, 1, n, 1)); putchar('\n'); &#125; else tr.update(l, r, 1, n, 1); &#125; return 0;&#125;]]></content>
+    <title><![CDATA[「BZOJ 3211」花神游历各国]]></title>
+    <url>%2Fproblems%2Fbzoj-3211%2F</url>
+    <content type="text"><![CDATA[Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2$ 种）： 1 x y：询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。 2 x y：将区间 $[x,y]\ (1 \leq x,y \leq n)$ 内的每一个数开 平方根（下取整） 。 Source[BZOJ]3211 Solution 前置知识： 线段树 因为要维护区间和，所以我们想到用线段树来维护。 但是会发现懒惰标记不能打，那该怎么办呢？ 考虑暴力修改： $a[i]$ 最大为 $10^{18}$。 \left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1换言之， \left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1一个数最多开 $6$ 次平方根就会变成 $1$ 。 因为 $\sqrt{1} = 1,\sqrt{0} = 0$， 我们只需要维护 区间和 与 区间最大值 即可， 当一个区间的最大值 $\leq 1$ 时，我们对这个区间的修改就是无用的，因为无论怎么修改这个数仍是它本身。 而我们对一个数的开平方操作不会超过 $6$ 次，所以时间复杂度仍是 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5 + 10;struct SegmentTree &#123; LL sum[MAXN &lt;&lt; 2], maxx[MAXN &lt;&lt; 2]; inline int lson(int x) &#123; return x &lt;&lt; 1; &#125; inline int rson(int x) &#123; return x &lt;&lt; 1 | 1; &#125; inline void pushUp(int x) &#123; sum[x] = sum[lson(x)] + sum[rson(x)]; maxx[x] = max(maxx[lson(x)], maxx[rson(x)]); &#125; void build(int x, int l, int r, LL *a) &#123; if (l == r) &#123; sum[x] = a[l]; maxx[x] = a[l]; return; &#125; int mid = (l + r) &gt;&gt; 1; build(lson(x), l, mid, a), build(rson(x), mid + 1, r, a); pushUp(x); &#125; void update(int ql, int qr, int l, int r, int x) &#123; if (maxx[x] &lt;= 1) return;//如果区间最大值小于等于1，就可以直接忽略这个区间的修改操作 if (l == r) &#123; sum[x] = sqrt(sum[x]); maxx[x] = sqrt(maxx[x]); return; &#125; int mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) update(ql, qr, l, mid, lson(x)); if (qr &gt; mid) update(ql, qr, mid + 1, r, rson(x)); pushUp(x); &#125; LL query(int ql, int qr, int l, int r, int x) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) return sum[x]; int mid = (l + r) &gt;&gt; 1; LL res = 0; if (ql &lt;= mid) res += query(ql, qr, l, mid, lson(x)); if (qr &gt; mid) res += query(ql, qr, mid + 1, r, rson(x)); return res; &#125;&#125; tr;int n, m;LL a[MAXN];int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(a[i]); tr.build(1, 1, n, a); read(m); for (int opt, l, r, i = 1; i &lt;= m; ++i) &#123; read(opt), read(l), read(r); if (l &gt; r) swap(l, r); if (opt == 1) &#123; write(tr.query(l, r, 1, n, 1)); putchar('\n'); &#125; else tr.update(l, r, 1, n, 1); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -1360,9 +1360,9 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[「BZOJ 3211」花神游历各国]]></title>
-    <url>%2Fproblems%2Fbzoj-3211%2F</url>
-    <content type="text"><![CDATA[Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2$ 种）： 1 x y：询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。 2 x y：将区间 $[x,y]\ (1 \leq x,y \leq n)$ 内的每一个数开 平方根（下取整） 。 Source[BZOJ]3211 Solution 前置知识： 线段树 因为要维护区间和，所以我们想到用线段树来维护。 但是会发现懒惰标记不能打，那该怎么办呢？ 考虑暴力修改： $a[i]$ 最大为 $10^{18}$。 \left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1换言之， \left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1一个数最多开 $6$ 次平方根就会变成 $1$ 。 因为 $\sqrt{1} = 1,\sqrt{0} = 0$， 我们只需要维护 区间和 与 区间最大值 即可， 当一个区间的最大值 $\leq 1$ 时，我们对这个区间的修改就是无用的，因为无论怎么修改这个数仍是它本身。 而我们对一个数的开平方操作不会超过 $6$ 次，所以时间复杂度仍是 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5 + 10;struct SegmentTree &#123; LL sum[MAXN &lt;&lt; 2], maxx[MAXN &lt;&lt; 2]; inline int lson(int x) &#123; return x &lt;&lt; 1; &#125; inline int rson(int x) &#123; return x &lt;&lt; 1 | 1; &#125; inline void pushUp(int x) &#123; sum[x] = sum[lson(x)] + sum[rson(x)]; maxx[x] = max(maxx[lson(x)], maxx[rson(x)]); &#125; void build(int x, int l, int r, LL *a) &#123; if (l == r) &#123; sum[x] = a[l]; maxx[x] = a[l]; return; &#125; int mid = (l + r) &gt;&gt; 1; build(lson(x), l, mid, a), build(rson(x), mid + 1, r, a); pushUp(x); &#125; void update(int ql, int qr, int l, int r, int x) &#123; if (maxx[x] &lt;= 1) return;//如果区间最大值小于等于1，就可以直接忽略这个区间的修改操作 if (l == r) &#123; sum[x] = sqrt(sum[x]); maxx[x] = sqrt(maxx[x]); return; &#125; int mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) update(ql, qr, l, mid, lson(x)); if (qr &gt; mid) update(ql, qr, mid + 1, r, rson(x)); pushUp(x); &#125; LL query(int ql, int qr, int l, int r, int x) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) return sum[x]; int mid = (l + r) &gt;&gt; 1; LL res = 0; if (ql &lt;= mid) res += query(ql, qr, l, mid, lson(x)); if (qr &gt; mid) res += query(ql, qr, mid + 1, r, rson(x)); return res; &#125;&#125; tr;int n, m;LL a[MAXN];int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(a[i]); tr.build(1, 1, n, a); read(m); for (int opt, l, r, i = 1; i &lt;= m; ++i) &#123; read(opt), read(l), read(r); if (l &gt; r) swap(l, r); if (opt == 1) &#123; write(tr.query(l, r, 1, n, 1)); putchar('\n'); &#125; else tr.update(l, r, 1, n, 1); &#125; return 0;&#125;]]></content>
+    <title><![CDATA[「BZOJ 3038」上帝造题的七分钟2]]></title>
+    <url>%2Fproblems%2Fbzoj-3038%2F</url>
+    <content type="text"><![CDATA[Description给定 $n\ (n \leq 10^5)$ 个数，已知 $\sum\limits_{i=1}^{n}a_i \leq 10^{18}$。 $m\ (m \leq 10^5)$ 个操作（操作有 $2$ 种）： 1 x y：询问区间 $[x,y]\ (1 \leq x,y \leq n)$ 所有数的和（不保证 $x \leq y$，若 $x &gt; y$，则交换 $x,y$）。 2 x y：将区间 $[x,y]\ (1 \leq x,y \leq n)$ 内的每一个数开 平方根（下取整） 。 Source[BZOJ]3038 Solution 前置知识： 线段树 因为要维护区间和，所以我们想到用线段树来维护。 但是会发现懒惰标记不能打，那该怎么办呢？ 考虑暴力修改： $a[i]$ 最大为 $10^{18}$。 \left \lfloor \sqrt{\sqrt{\sqrt{\sqrt{\sqrt{\sqrt{10^{18}}}}}}}\right \rfloor = 1换言之， \left \lfloor \sqrt[2^6]{10^{18}}\right \rfloor = 1一个数最多开 $6$ 次平方根就会变成 $1$ 。 因为 $\sqrt{1} = 1,\sqrt{0} = 0$， 我们只需要维护 区间和 与 区间最大值 即可， 当一个区间的最大值 $\leq 1$ 时，我们对这个区间的修改就是无用的，因为无论怎么修改这个数仍是它本身。 而我们对一个数的开平方操作不会超过 $6$ 次，所以时间复杂度仍是 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899091#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5 + 10;struct SegmentTree &#123; LL sum[MAXN &lt;&lt; 2], maxx[MAXN &lt;&lt; 2]; inline int lson(int x) &#123; return x &lt;&lt; 1; &#125; inline int rson(int x) &#123; return x &lt;&lt; 1 | 1; &#125; inline void pushUp(int x) &#123; sum[x] = sum[lson(x)] + sum[rson(x)]; maxx[x] = max(maxx[lson(x)], maxx[rson(x)]); &#125; void build(int x, int l, int r, LL *a) &#123; if (l == r) &#123; sum[x] = a[l]; maxx[x] = a[l]; return; &#125; int mid = (l + r) &gt;&gt; 1; build(lson(x), l, mid, a), build(rson(x), mid + 1, r, a); pushUp(x); &#125; void update(int ql, int qr, int l, int r, int x) &#123; if (maxx[x] &lt;= 1) return;//如果区间最大值小于等于1，就可以直接忽略这个区间的修改操作 if (l == r) &#123; sum[x] = sqrt(sum[x]); maxx[x] = sqrt(maxx[x]); return; &#125; int mid = (l + r) &gt;&gt; 1; if (ql &lt;= mid) update(ql, qr, l, mid, lson(x)); if (qr &gt; mid) update(ql, qr, mid + 1, r, rson(x)); pushUp(x); &#125; LL query(int ql, int qr, int l, int r, int x) &#123; if (ql &lt;= l &amp;&amp; qr &gt;= r) return sum[x]; int mid = (l + r) &gt;&gt; 1; LL res = 0; if (ql &lt;= mid) res += query(ql, qr, l, mid, lson(x)); if (qr &gt; mid) res += query(ql, qr, mid + 1, r, rson(x)); return res; &#125;&#125; tr;int n, m;LL a[MAXN];int main() &#123; read(n); for (int i = 1; i &lt;= n; ++i) read(a[i]); tr.build(1, 1, n, a); read(m); for (int opt, l, r, i = 1; i &lt;= m; ++i) &#123; read(opt), read(l), read(r); if (l &gt; r) swap(l, r); if (opt == 1) &#123; write(tr.query(l, r, 1, n, 1)); putchar('\n'); &#125; else tr.update(l, r, 1, n, 1); &#125; return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -1379,8 +1379,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -1441,10 +1441,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1455,8 +1455,8 @@
         <category>notes</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>数论数学</tag>
+        <tag>距离</tag>
       </tags>
   </entry>
 </search>
