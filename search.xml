@@ -114,9 +114,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>模拟</tag>
         <tag>BZOJ</tag>
         <tag>2009</tag>
-        <tag>模拟</tag>
         <tag>AHOI</tag>
         <tag>二分</tag>
         <tag>尺取法（双指针法）</tag>
@@ -130,8 +130,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2009</tag>
         <tag>模拟</tag>
+        <tag>2009</tag>
         <tag>AHOI</tag>
         <tag>二分</tag>
         <tag>尺取法（双指针法）</tag>
@@ -334,11 +334,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>2006</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>USACO</tag>
-        <tag>2006</tag>
         <tag>二分</tag>
         <tag>Luogu</tag>
       </tags>
@@ -515,9 +515,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -530,9 +530,9 @@
       </categories>
       <tags>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
         <tag>2012</tag>
         <tag>Luogu</tag>
       </tags>
@@ -652,8 +652,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>莫队</tag>
         <tag>集训队</tag>
+        <tag>莫队</tag>
         <tag>Luogu</tag>
       </tags>
   </entry>
@@ -775,8 +775,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>Luogu</tag>
         <tag>矩阵加速</tag>
+        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -904,9 +904,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>USACO</tag>
         <tag>缩点</tag>
         <tag>图论</tag>
+        <tag>USACO</tag>
         <tag>Luogu</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
@@ -1185,8 +1185,8 @@
       </categories>
       <tags>
         <tag>动态规划</tag>
-        <tag>SDOI</tag>
         <tag>2006</tag>
+        <tag>SDOI</tag>
         <tag>树形DP</tag>
         <tag>Luogu</tag>
       </tags>
