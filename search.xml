@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[「HDU 6623」Minimal Power of Prime]]></title>
-    <url>%2Fproblems%2Fhdu-6623%2F</url>
-    <content type="text"><![CDATA[Description$T$ 组数据。给定一个正整数 $n$，用质因子乘积的形式表示为 $n = \prod {p_i}^{a_i}$，求 $\min\{ a_i \}$ 。 $(1 \leq T \leq 5 \times 10^4,1 &lt; n \leq 10^{18})$ Source[hdu]6623 Solution暴力分解质因数的时间复杂度是 $O(T\sqrt{n})$，显然行不通。 一种巧妙的思路是：我们只提取出 $n$ 中所有 $\leq \sqrt[5]{n}$ 的质因子，剩下 $&gt; \sqrt[5]{n}$ 的质因子最多只有 $4$ 个，假设它们是 $a,b,c,d$，分情况讨论，可能是 a,a^2,ab,a^3,a^2b,abc,a^4,a^3b,a^2b^2,a^2bc,abcd很容易发现只有 $a^2,a^3,a^4,a^2b^2$ 时答案 $&gt; 1$，其余情况不需要考虑（答案至少为 $1$），所以只需要特判是否是 完全平方数/三次方数/四次方数 。不要忘记提前筛出质数，否则仍然会超时。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e4;int t, tot, prime[MAXN + 5];LL n;bool isNotPrime[MAXN + 5];inline void getPrime(int n) &#123;//线性筛出 10000 以内的质数 for (int i = 2; i &lt;= n; ++i) &#123; if (!isNotPrime[i]) prime[++tot] = i; for (int j = 1; j &lt;= tot &amp;&amp; i * prime[j] &lt;= n; ++j) &#123; isNotPrime[i * prime[j]] = 1; if (i % prime[j] == 0) break; &#125; &#125;&#125;inline int solve(LL x) &#123; //可以用 pow 函数直接开高次根号，但因为精度问题，我们 //把上取整和下取整的值都验证一下，注意验证时的顺序为从 4 到 2 int a = floor(pow(x, 1.0 / 4)), b = ceil(pow(x, 1.0 / 4)); if (1ll * a * a * a * a == x || 1ll * b * b * b * b == x) return 4; a = floor(pow(x, 1.0 / 3)), b = ceil(pow(x, 1.0 / 3)); if (1ll * a * a * a == x || 1ll * b * b * b == x) return 3; a = floor(sqrt(x)), b = ceil(sqrt(x)); if (1ll * a * a == x || 1ll * b * b == x) return 2; return 1;&#125;int main() &#123; getPrime(MAXN); for (read(t); t; --t) &#123; read(n); int ans = 64; for (int j = pow(n, 0.2), i = 1; i &lt;= tot &amp;&amp; prime[i] &lt;= j; ++i) if (n % prime[i] == 0) &#123; int cnt = 0; for (; n % prime[i] == 0; n /= prime[i]) ++cnt; ans = min(ans, cnt); &#125;//提取出 5次根号下 n 的所有质因子 if (n &gt; 1) ans = min(ans, solve(n));//若还有多余的质因子则特判 write(ans); putchar('\n'); &#125; return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>数论数学</tag>
-        <tag>HDU</tag>
-      </tags>
-  </entry>
-  <entry>
     <title><![CDATA[「Codeforces 1197C」Array Splitting]]></title>
     <url>%2Fproblems%2Fcodeforces-1197c%2F</url>
     <content type="text"><![CDATA[Description给出一个长度为 $n$ 的单调不下降序列 $\{ a \}$，现要将其分成 $k$ 段，使得每一段的极差的和最小，求这个最小的和（每段长度至少为 $1$，当长度为 $1$ 时，其极差为 $0$）。 $(1 \leq k \leq n \leq 3 \times 10^5,1 \leq a_i \leq 10^9, \forall a_i \geq a_{i - 1})$ Source[Luogu]CF1197C [Codeforces]1197C Solution直接求似乎很难？考虑转化问题。 我们不妨把分成 $k$ 段看作断开 $k - 1$ 处，假设我们断在了第 $i$ 个数和第 $i + 1$ 个数中间，那么第 $i$ 个数贡献为正，第 $i + 1$ 个数贡献为负，贡献和为 $a_i - a_{i + 1}$ 。 显然我们让断开的地方贡献和最小时最优，因此我们可以预处理出 $f_i = a_i - a_{i + 1}$，然后将 $f$ 数组从小到大排序，选前 $k - 1$ 个的和即可。第 $1$ 个数的贡献为负，第 $n$ 个数的贡献为正，这里没有算进去，所以最后应当加上 $a_n - a_1$ 。时间复杂度为排序的复杂度 $O(n \log n)$ 。 Code12345678910111213141516171819202122232425262728293031323334353637383940414243#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL; template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125; template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125; const int MAXN = 3e5;int n, k, a[MAXN + 5], f[MAXN + 5];LL ans; int main() &#123; read(n), read(k); for (int i = 1; i &lt;= n; ++i) &#123; read(a[i]); f[i - 1] = a[i - 1] - a[i];//转化为相邻两数之差 &#125; sort(f + 1, f + n + 1);//从小到大排序 ans = a[n] - a[1]; for (int i = 1; i &lt; k; ++i) ans += f[i];//取前 k - 1 个 write(ans); putchar('\n'); return 0;&#125;]]></content>
@@ -21,8 +9,8 @@
       </categories>
       <tags>
         <tag>Codeforces</tag>
-        <tag>差分</tag>
         <tag>贪心</tag>
+        <tag>差分</tag>
       </tags>
   </entry>
   <entry>
@@ -268,8 +256,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>矩阵加速</tag>
+        <tag>数论数学</tag>
         <tag>Codeforces</tag>
       </tags>
   </entry>
@@ -337,10 +325,10 @@
         <tag>Luogu</tag>
         <tag>2006</tag>
         <tag>USACO</tag>
-        <tag>二分图</tag>
+        <tag>二分</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>二分</tag>
+        <tag>二分图</tag>
       </tags>
   </entry>
   <entry>
@@ -354,9 +342,9 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>ZJOI</tag>
-        <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
+        <tag>二分图</tag>
       </tags>
   </entry>
   <entry>
@@ -370,9 +358,9 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>ZJOI</tag>
-        <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
+        <tag>二分图</tag>
       </tags>
   </entry>
   <entry>
@@ -384,11 +372,11 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>二分图</tag>
-        <tag>网络流</tag>
-        <tag>最大流</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
+        <tag>网络流</tag>
+        <tag>最大流</tag>
+        <tag>二分图</tag>
       </tags>
   </entry>
   <entry>
@@ -400,11 +388,11 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>二分图</tag>
-        <tag>网络流</tag>
-        <tag>最大流</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
+        <tag>网络流</tag>
+        <tag>最大流</tag>
+        <tag>二分图</tag>
       </tags>
   </entry>
   <entry>
@@ -439,8 +427,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>博弈论</tag>
         <tag>HDU</tag>
+        <tag>博弈论</tag>
       </tags>
   </entry>
   <entry>
@@ -514,9 +502,9 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -530,9 +518,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>搜索</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
         <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
@@ -547,10 +535,10 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -563,10 +551,10 @@
       <tags>
         <tag>Luogu</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>搜索</tag>
       </tags>
   </entry>
   <entry>
@@ -813,8 +801,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>最短路</tag>
         <tag>2012</tag>
+        <tag>最短路</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
@@ -952,8 +940,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -968,8 +956,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
       </tags>
@@ -983,10 +971,10 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>2010</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
+        <tag>2010</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -999,10 +987,10 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2010</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
+        <tag>2010</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>ZJOI</tag>
       </tags>
   </entry>
@@ -1017,8 +1005,8 @@
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -1033,8 +1021,8 @@
         <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>动态规划</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
         <tag>AHOI</tag>
       </tags>
   </entry>
@@ -1050,8 +1038,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -1066,8 +1054,8 @@
         <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>数位DP</tag>
         <tag>搜索</tag>
+        <tag>数位DP</tag>
       </tags>
   </entry>
   <entry>
@@ -1081,8 +1069,8 @@
         <tag>BZOJ</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -1097,8 +1085,8 @@
         <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>搜索</tag>
         <tag>2005</tag>
+        <tag>搜索</tag>
         <tag>状态压缩</tag>
       </tags>
   </entry>
@@ -1367,8 +1355,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>动态规划</tag>
+        <tag>数论数学</tag>
         <tag>概率期望</tag>
         <tag>Codeforces</tag>
         <tag>高斯消元</tag>
@@ -1554,8 +1542,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
@@ -1568,8 +1556,8 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>数论数学</tag>
         <tag>2009</tag>
+        <tag>数论数学</tag>
         <tag>CQOI</tag>
       </tags>
   </entry>
