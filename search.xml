@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[「Codeforces 520E」Pluses everywhere]]></title>
-    <url>%2Fproblems%2Fcodeforces-520e%2F</url>
-    <content type="text"><![CDATA[Description给定一个 $n$ 位数 $a$，请你在这些数位之间添加 $m$ 个 ‘+’ 号，得到一个表达式。求所有可能的不同表达式的和，答案对 $10^9 + 7$ 取模。 $(0 \leq m &lt; n \leq 10^5)$ Source[Luogu]CF520E [Codeforces]520E Solution考虑单独计算每一个 $a_i$ 的贡献。 首先一共有 $n - 1$ 个位置可以放加号，根据离 $a_i$ 最近的加号位置分情况讨论： 若最近的加号在 $a_i$ 后面，则剩下 $m - 1$ 个加号，有 $n - 2$ 个位置可以放，$a_i$ 的贡献为 $a_i \times {\rm C}_{n-2}^{m - 1}$； 若最近的加号在 $a_{i+1}$ 后面，则剩下 $m - 1$ 个加号，有 $n - 3$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10 \times {\rm C}_{n-3}^{m - 1}$； 若最近的加号在 $a_{i+2}$ 后面，则剩下 $m - 1$ 个加号，有 $n - 4$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10^2 \times {\rm C}_{n-4}^{m - 1}$； …… 若最近的加号在 $a_{i+n-m-1}$ 后面，则剩下 $m - 1$ 个加号，有 $m - 1$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10^{n - m - 1} \times {\rm C}_{m - 1}^{m - 1}$ 。（当且仅当其它加数都是一位数时 $a_i$ 的单次贡献为 $a_i \times 10^{n - m - 1}$） 特殊地，当最近的加号在 $a_{n}$ 后面时，剩下 $m$ 个加号，有 $i - 1$ 个位置可以放，$a_i$ 的贡献为$a_i \times 10^{n - i} \times {\rm C}_{i - 1}^{m}$ 。 答案就是贡献总和。 直接枚举 $a_i$ 的贡献为 $10^j$ 的时间复杂度是 $O(n^2)$ 的。 我们发现贡献是 $10^j$ 的数字乘上的组合数是相同的，因此前缀和预处理出能产生 $10^j$ 贡献的数字总和即可，注意加号放在 $a_n$ 后时要单独计算，时间复杂度为 $O(n)$ 。 最后的式子： \sum\limits_{i = 1}^{n - m} 10^{i - 1} \times \left(\sum\limits_{j = 1}^{n - i}a_j \times {\rm C}_{n - 1 - i}^{m - 1} + a_{n - i + 1} \times {\rm C}_{n - i}^{m}\right)Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(int &amp;x) &#123; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MOD = 1e9 + 7;int n, m, ans, a[MAXN + 5], pre[MAXN + 5], fac[MAXN + 5], inv[MAXN + 5];inline int quickPow(int x, int p) &#123; int res = 1; for (; p; p &gt;&gt;= 1, x = 1ll * x * x % MOD) if (p &amp; 1) res = 1ll * res * x % MOD; return res;&#125;inline void init() &#123; fac[0] = 1; for (int i = 1; i &lt;= MAXN; ++i) fac[i] = 1ll * fac[i - 1] * i % MOD; inv[MAXN] = quickPow(fac[MAXN], MOD - 2); for (int i = MAXN - 1; ~i; --i) inv[i] = 1ll * inv[i + 1] * (i + 1) % MOD;&#125;inline int c(int n, int m) &#123; if (n &lt; 0 || m &lt; 0 || n &lt; m) return 0; return 1ll * fac[n] * inv[m] % MOD * inv[n - m] % MOD;&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; readDigit(a[i]); pre[i] = pre[i - 1] + a[i]; &#125; init();//预处理组合数 for (int cur = 1, i = 1; i &lt;= n - m; ++i, cur = 1ll * cur * 10 % MOD) ans = (ans + 1ll * cur * (1ll * pre[n - i] * c(n - 1 - i, m - 1) % MOD + 1ll * a[n - i + 1] * c(n - i, m) % MOD) % MOD) % MOD; write(ans); putchar('\n'); return 0;&#125;]]></content>
+    <title><![CDATA[「Codeforces 1239A」Ivan the Fool and the Probability Theory]]></title>
+    <url>%2Fproblems%2Fcodeforces-1239a%2F</url>
+    <content type="text"><![CDATA[Description给定一个 $n \times m$ 的方格图，每个格子可以被染成黑色或白色，且与其相邻的格子（上，下，左，右）中至多只有一个与其颜色相同。求方案数，对 $10^9 + 7$ 取模。 Source[Luogu]CF1239A [Codeforces]1239A Solution先考虑 $n = 1$ 怎么做。 用 $f_{i,0/1}$ 表示填了前 $i$ 个格子，最后一个格子的颜色是白色/黑色的方案数。 初始有 $f_{0,0/1}=f_{1,0/1} = 1$ 。 对于 $f_{i,0}$，可以通过第 $i - 1$ 格填什么颜色转移。如果填的是黑色，则 $f_{i - 1,1}$ 都是合法方案。如果填的是白色，则 $f_{i - 2,1}$ 都是合法方案。 f_{i,0} = f_{i - 1,1} + f_{i - 2,1}一个很显然的性质：$f_{i,0} = f_{i,1}$（把以白色结尾的任意一种合法方案取反，都能得到一种新的以黑色结尾的方案） 所以有 $f_{i,0} = f_{i - 1,0} + f_{i - 2,0}$，且 $f_{i,1} = f_{i,0}$ 。 若我们用 $fib_i$ 表示斐波那契数列的第 $i$ 项，那么 $n = 1$ 时的方案数就是 $f_{m,0} + f_{m,1} = 2fib_m$ 。 对于一行中所有的合法方案，我们再分两种情况： 方案 1：有白色/黑色连续 方案 2：黑白相间（只有两种情况，情况 1 是 010101...，情况 2 是 101010...） 对于方案 1，第一行确定了，接下来的每一行都有且只有一种方案（将上一行取反），方案数为 $2fib_m - 2$。 对于方案 2，我们不妨把情况 1 看做白色格子，情况 2 看做黑色格子。 显然在 $m$ 行里，白色格子和黑色格子最多只能连续出现 $2$ 次，那么方案数就和 $n = 1$ 一样了，即 $2fib_{n}$ 。 最终答案就是 $2fib_{n} + 2fib_{m} - 2$ 。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MOD = 1e9 + 7;int n, m, f[MAXN + 5];int main() &#123; read(n), read(m); f[0] = f[1] = 1; for (int i = 2; i &lt;= max(n, m); ++i) f[i] = (f[i - 1] + f[i - 2]) % MOD; write((((f[n] &lt;&lt; 1) % MOD + (f[m] &lt;&lt; 1) % MOD) % MOD - 2 + MOD) % MOD); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
       <tags>
+        <tag>动态规划</tag>
         <tag>Codeforces</tag>
-        <tag>组合数学</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[「Codeforces 520E」Pluses everywhere]]></title>
-    <url>%2Fproblems%2Fnew%2F</url>
-    <content type="text"><![CDATA[Description给定一个 $n$ 位数 $a$，请你在这些数位之间添加 $m$ 个 ‘+’ 号，得到一个表达式。求所有可能的不同表达式的和，答案对 $10^9 + 7$ 取模。 $(0 \leq m &lt; n \leq 10^5)$ Source[Luogu]CF520E [Codeforces]520E Solution考虑单独计算每一个 $a_i$ 的贡献。即 $a_i$ 作为其中一个加数的个位，十位，百位，……，第 $n - m$ 位时的贡献。当且仅当其它加数都是一位数时 $a_i$ 会作为第 $n - m$ 位。 Code12]]></content>
+    <url>%2Fproblems%2Fcodeforces-520e%2F</url>
+    <content type="text"><![CDATA[Description给定一个 $n$ 位数 $a$，请你在这些数位之间添加 $m$ 个 ‘+’ 号，得到一个表达式。求所有可能的不同表达式的和，答案对 $10^9 + 7$ 取模。 $(0 \leq m &lt; n \leq 10^5)$ Source[Luogu]CF520E [Codeforces]520E Solution考虑单独计算每一个 $a_i$ 的贡献。 首先一共有 $n - 1$ 个位置可以放加号，根据离 $a_i$ 最近且在 $a_i$ 之后的加号位置分情况讨论： 若最近的加号在 $a_i$ 后面，则剩下 $m - 1$ 个加号，有 $n - 2$ 个位置可以放，$a_i$ 的贡献为 $a_i \times {\rm C}_{n-2}^{m - 1}$； 若最近的加号在 $a_{i+1}$ 后面，则剩下 $m - 1$ 个加号，有 $n - 3$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10 \times {\rm C}_{n-3}^{m - 1}$； 若最近的加号在 $a_{i+2}$ 后面，则剩下 $m - 1$ 个加号，有 $n - 4$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10^2 \times {\rm C}_{n-4}^{m - 1}$； …… 若最近的加号在 $a_{i+n-m-1}$ 后面，则剩下 $m - 1$ 个加号，有 $m - 1$ 个位置可以放，$a_i$ 的贡献为 $a_i \times 10^{n - m - 1} \times {\rm C}_{m - 1}^{m - 1}$ 。（当且仅当其它加数都是一位数时 $a_i$ 的单次贡献为 $a_i \times 10^{n - m - 1}$） 特殊地，当最近的加号在 $a_{n}$ 后面时，剩下 $m$ 个加号，有 $i - 1$ 个位置可以放，$a_i$ 的贡献为$a_i \times 10^{n - i} \times {\rm C}_{i - 1}^{m}$ 。 答案就是贡献总和。 直接枚举 $a_i$ 的贡献为 $10^j$ 的时间复杂度是 $O(n^2)$ 的。 我们发现贡献是 $10^j$ 的数字乘上的组合数是相同的，因此前缀和预处理出能产生 $10^j$ 贡献的数字总和即可，注意加号放在 $a_n$ 后时要单独计算，时间复杂度为 $O(n)$ 。 最后的式子： \sum\limits_{i = 1}^{n - m} 10^{i - 1} \times \left(\sum\limits_{j = 1}^{n - i}a_j \times {\rm C}_{n - 1 - i}^{m - 1} + a_{n - i + 1} \times {\rm C}_{n - i}^{m}\right)枚举 $i$，计算所有 $i$ 位数产生的贡献。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;inline void readDigit(int &amp;x) &#123; char c = getchar(); for (; !isdigit(c); c = getchar()); x = c ^ 48;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MOD = 1e9 + 7;int n, m, ans, a[MAXN + 5], pre[MAXN + 5], fac[MAXN + 5], inv[MAXN + 5];inline int quickPow(int x, int p) &#123; int res = 1; for (; p; p &gt;&gt;= 1, x = 1ll * x * x % MOD) if (p &amp; 1) res = 1ll * res * x % MOD; return res;&#125;inline void init() &#123; fac[0] = 1; for (int i = 1; i &lt;= MAXN; ++i) fac[i] = 1ll * fac[i - 1] * i % MOD; inv[MAXN] = quickPow(fac[MAXN], MOD - 2); for (int i = MAXN - 1; ~i; --i) inv[i] = 1ll * inv[i + 1] * (i + 1) % MOD;&#125;inline int c(int n, int m) &#123; if (n &lt; 0 || m &lt; 0 || n &lt; m) return 0; return 1ll * fac[n] * inv[m] % MOD * inv[n - m] % MOD;&#125;int main() &#123; read(n), read(m); for (int i = 1; i &lt;= n; ++i) &#123; readDigit(a[i]); pre[i] = pre[i - 1] + a[i]; &#125; init();//预处理组合数 for (int cur = 1, i = 1; i &lt;= n - m; ++i, cur = 1ll * cur * 10 % MOD) ans = (ans + 1ll * cur * (1ll * pre[n - i] * c(n - 1 - i, m - 1) % MOD + 1ll * a[n - i + 1] * c(n - i, m) % MOD) % MOD) % MOD; write(ans); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -82,8 +82,8 @@
       </categories>
       <tags>
         <tag>Codeforces</tag>
-        <tag>差分</tag>
         <tag>贪心</tag>
+        <tag>差分</tag>
       </tags>
   </entry>
   <entry>
@@ -159,12 +159,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>线段树</tag>
         <tag>2016</tag>
         <tag>BJOI</tag>
         <tag>树状数组</tag>
         <tag>离散化</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -175,10 +175,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>模拟</tag>
         <tag>BZOJ</tag>
         <tag>2009</tag>
         <tag>AHOI</tag>
+        <tag>模拟</tag>
         <tag>二分</tag>
         <tag>尺取法（双指针法）</tag>
       </tags>
@@ -191,12 +191,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>模拟</tag>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>AHOI</tag>
+        <tag>模拟</tag>
         <tag>二分</tag>
         <tag>尺取法（双指针法）</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -219,8 +219,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>构造</tag>
         <tag>数论数学</tag>
+        <tag>构造</tag>
         <tag>Codeforces</tag>
       </tags>
   </entry>
@@ -245,8 +245,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>BZOJ</tag>
+        <tag>距离</tag>
         <tag>USACO</tag>
         <tag>2004</tag>
       </tags>
@@ -259,10 +259,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>距离</tag>
         <tag>USACO</tag>
         <tag>2004</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -273,8 +273,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>Luogu</tag>
+        <tag>距离</tag>
         <tag>NOIP提高组</tag>
         <tag>2017</tag>
       </tags>
@@ -287,8 +287,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>BZOJ</tag>
+        <tag>距离</tag>
         <tag>二分</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
@@ -302,11 +302,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>距离</tag>
         <tag>二分</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -329,9 +329,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>矩阵加速</tag>
         <tag>数论数学</tag>
         <tag>Codeforces</tag>
-        <tag>矩阵加速</tag>
       </tags>
   </entry>
   <entry>
@@ -355,11 +355,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2012</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
         <tag>SHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -370,9 +370,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -395,13 +395,13 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>2006</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>USACO</tag>
         <tag>二分</tag>
-        <tag>2006</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -428,12 +428,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>ZJOI</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -460,12 +460,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>二分图</tag>
         <tag>网络流</tag>
         <tag>最大流</tag>
         <tag>TJOI</tag>
         <tag>2013</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -500,8 +500,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>博弈论</tag>
         <tag>HDU</tag>
+        <tag>博弈论</tag>
       </tags>
   </entry>
   <entry>
@@ -548,9 +548,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>Trie</tag>
         <tag>可持久化</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -576,9 +576,9 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -590,12 +590,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
-        <tag>AHOI</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
+        <tag>AHOI</tag>
         <tag>2012</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -622,12 +622,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>启发式搜索</tag>
         <tag>迭代加深</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -663,8 +663,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>二分</tag>
         <tag>Luogu</tag>
+        <tag>二分</tag>
         <tag>分块</tag>
       </tags>
   </entry>
@@ -713,9 +713,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>莫队</tag>
-        <tag>集训队</tag>
         <tag>Luogu</tag>
+        <tag>集训队</tag>
+        <tag>莫队</tag>
       </tags>
   </entry>
   <entry>
@@ -739,9 +739,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>搜索</tag>
         <tag>Trie</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -819,12 +819,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>USACO</tag>
         <tag>2012</tag>
         <tag>Trie</tag>
         <tag>拓扑排序</tag>
         <tag>字符串</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -835,8 +835,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>Luogu</tag>
+        <tag>动态规划</tag>
         <tag>矩阵加速</tag>
       </tags>
   </entry>
@@ -873,10 +873,24 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>2012</tag>
-        <tag>最短路</tag>
-        <tag>SHOI</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
+        <tag>2012</tag>
+        <tag>SHOI</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[「Luogu P4568」「JLOI2011」飞行路线]]></title>
+    <url>%2Fproblems%2Fluogu-p4568%2F</url>
+    <content type="text"><![CDATA[Description给定一个 $n\ (2 \leq n \leq 10^4)$ 个点（编号为 $0 \sim n - 1$），$m\ (1 \leq m \leq 5 \times 10^4)$ 条边的无向图，其中最多可以把 $k\ (0 \leq k \leq 10)$ 条边的边权变成 $0$，求 $s$ 到 $t\ (0 \leq s,t &lt; n)$ 的最短路。 Source[Luogu]P4568 Solution分层图最短路 模板题。 这类题目主要难在建图。 比如说，对于样例 Sample Input123456785 6 10 40 1 51 2 52 3 53 4 52 3 30 2 100 Sample Output18 建出来的图： 我们可以考虑把图分成 $k + 1$ 层，每往下一层，边权变成 $0$ 的边就增加 $1$ 条。编号为 $i$ 的点在第 $j$ 层的编号为 $i + j \times n\ (0 \leq i &lt; n,0 \leq j \leq k)$ 。 每一层都有同样的 $n$ 个点，$m$ 条边。 在层与层之间有单向边，边权为 $0$，且不能从下层到上层。 对于一条边权为 $w$ 的无向边 $u \leftrightarrow v$，我们可以在第 $i = 0 \sim k$ 层连无向边 $u + i \times n \leftrightarrow v + i \times n$，边权为 $w$，表示每一层里的 $u$ 和 $v$ 能互相到达，且花费的代价为 $w$ 。 紧接着，在第 $i - 1$ 层和第 $i$ 层之间连两条边权为 $0$ 的有向边 $u + (i-1) \times n \to v + i \times n$ 和 $v + (i-1) \times n \to u + i \times n$，表示可以把边 $u \to v$ 或 $v \to u$ 的边权变成 $0$，然后到下一层的 $v$ 点或 $u$ 点。 建图后，$s$ 到 $t + k \times n$ 的最短路即是用完 $k$ 次机会的最少花费。 最后可能没有用完 $k$ 次机会，所以到每层终点的最短路都有可能成为答案，取最小值即可。时间复杂度为 $O\left(mk\log (nk) \right)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 2e5, MAXM = 5e6;int n, m, k, s, t, tot, ans = 0x7fffffff, head[MAXN + 5], dis[MAXN + 5];bool vis[MAXN + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];struct Node &#123; int val, id; inline friend bool operator&lt;(Node x, Node y) &#123; return x.val &gt; y.val; &#125; &#125;;inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void dijkstra(int s) &#123;//堆优化 dijkstra memset(dis, 0x3f, sizeof (dis)); priority_queue&lt;Node&gt; q; dis[s] = 0; q.push((Node) &#123; 0, s &#125;); for (; !q.empty(); ) &#123; int u = q.top().id; q.pop(); if (vis[u]) continue; vis[u] = 1; for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) if (dis[v] &gt; dis[u] + w) &#123; dis[v] = dis[u] + w; if (!vis[v]) q.push((Node) &#123; dis[v], v &#125;); &#125; &#125;&#125;int main() &#123; read(n), read(m), read(k), read(s), read(t); ++s, ++t;//点的编号改为 1 ~ n for (int u, v, w, i = 1; i &lt;= m; ++i) &#123; read(u), read(v), read(w); ++u, ++v; addEdge(u, v, w), addEdge(v, u, w); for (int j = 1; j &lt;= k; ++j) &#123;//一共 k 层 addEdge(u + (j - 1) * n, v + j * n, 0), addEdge(v + (j - 1) * n, u + j * n, 0); //层与层之间对应的点连一条权值为 0 的边 addEdge(u + j * n, v + j * n, w), addEdge(v + j * n, u + j * n, w); //每一层中对应的点连边 &#125; &#125; dijkstra(s); for (int i = 0; i &lt;= k; ++i) ans = min(ans, dis[t + i * n]); //可能没有用完 k 次机会，所以要取 到每一层终点最短路 的最小值 write(ans); putchar('\n'); return 0;&#125;]]></content>
+      <categories>
+        <category>problems</category>
+      </categories>
+      <tags>
+        <tag>Luogu</tag>
+        <tag>最短路</tag>
+        <tag>JLOI</tag>
+        <tag>2011</tag>
       </tags>
   </entry>
   <entry>
@@ -891,20 +905,6 @@
         <tag>最短路</tag>
         <tag>JLOI</tag>
         <tag>2011</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title><![CDATA[「Luogu P4568」「JLOI2011」飞行路线]]></title>
-    <url>%2Fproblems%2Fluogu-p4568%2F</url>
-    <content type="text"><![CDATA[Description给定一个 $n\ (2 \leq n \leq 10^4)$ 个点（编号为 $0 \sim n - 1$），$m\ (1 \leq m \leq 5 \times 10^4)$ 条边的无向图，其中最多可以把 $k\ (0 \leq k \leq 10)$ 条边的边权变成 $0$，求 $s$ 到 $t\ (0 \leq s,t &lt; n)$ 的最短路。 Source[Luogu]P4568 Solution分层图最短路 模板题。 这类题目主要难在建图。 比如说，对于样例 Sample Input123456785 6 10 40 1 51 2 52 3 53 4 52 3 30 2 100 Sample Output18 建出来的图： 我们可以考虑把图分成 $k + 1$ 层，每往下一层，边权变成 $0$ 的边就增加 $1$ 条。编号为 $i$ 的点在第 $j$ 层的编号为 $i + j \times n\ (0 \leq i &lt; n,0 \leq j \leq k)$ 。 每一层都有同样的 $n$ 个点，$m$ 条边。 在层与层之间有单向边，边权为 $0$，且不能从下层到上层。 对于一条边权为 $w$ 的无向边 $u \leftrightarrow v$，我们可以在第 $i = 0 \sim k$ 层连无向边 $u + i \times n \leftrightarrow v + i \times n$，边权为 $w$，表示每一层里的 $u$ 和 $v$ 能互相到达，且花费的代价为 $w$ 。 紧接着，在第 $i - 1$ 层和第 $i$ 层之间连两条边权为 $0$ 的有向边 $u + (i-1) \times n \to v + i \times n$ 和 $v + (i-1) \times n \to u + i \times n$，表示可以把边 $u \to v$ 或 $v \to u$ 的边权变成 $0$，然后到下一层的 $v$ 点或 $u$ 点。 建图后，$s$ 到 $t + k \times n$ 的最短路即是用完 $k$ 次机会的最少花费。 最后可能没有用完 $k$ 次机会，所以到每层终点的最短路都有可能成为答案，取最小值即可。时间复杂度为 $O\left(mk\log (nk) \right)$ 。 Code1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 2e5, MAXM = 5e6;int n, m, k, s, t, tot, ans = 0x7fffffff, head[MAXN + 5], dis[MAXN + 5];bool vis[MAXN + 5];struct Edge &#123; int next, to, dis;&#125; e[MAXM + 5];struct Node &#123; int val, id; inline friend bool operator&lt;(Node x, Node y) &#123; return x.val &gt; y.val; &#125; &#125;;inline void addEdge(int u, int v, int w) &#123; e[++tot] = (Edge) &#123; head[u], v, w &#125;; head[u] = tot;&#125;inline void dijkstra(int s) &#123;//堆优化 dijkstra memset(dis, 0x3f, sizeof (dis)); priority_queue&lt;Node&gt; q; dis[s] = 0; q.push((Node) &#123; 0, s &#125;); for (; !q.empty(); ) &#123; int u = q.top().id; q.pop(); if (vis[u]) continue; vis[u] = 1; for (int v, w, i = head[u]; v = e[i].to, w = e[i].dis, i; i = e[i].next) if (dis[v] &gt; dis[u] + w) &#123; dis[v] = dis[u] + w; if (!vis[v]) q.push((Node) &#123; dis[v], v &#125;); &#125; &#125;&#125;int main() &#123; read(n), read(m), read(k), read(s), read(t); ++s, ++t;//点的编号改为 1 ~ n for (int u, v, w, i = 1; i &lt;= m; ++i) &#123; read(u), read(v), read(w); ++u, ++v; addEdge(u, v, w), addEdge(v, u, w); for (int j = 1; j &lt;= k; ++j) &#123;//一共 k 层 addEdge(u + (j - 1) * n, v + j * n, 0), addEdge(v + (j - 1) * n, u + j * n, 0); //层与层之间对应的点连一条权值为 0 的边 addEdge(u + j * n, v + j * n, w), addEdge(v + j * n, u + j * n, w); //每一层中对应的点连边 &#125; &#125; dijkstra(s); for (int i = 0; i &lt;= k; ++i) ans = min(ans, dis[t + i * n]); //可能没有用完 k 次机会，所以要取 到每一层终点最短路 的最小值 write(ans); putchar('\n'); return 0;&#125;]]></content>
-      <categories>
-        <category>problems</category>
-      </categories>
-      <tags>
-        <tag>最短路</tag>
-        <tag>JLOI</tag>
-        <tag>2011</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -928,9 +928,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>集训队</tag>
         <tag>最短路</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -941,8 +941,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>最短路</tag>
         <tag>Luogu</tag>
+        <tag>最短路</tag>
       </tags>
   </entry>
   <entry>
@@ -953,8 +953,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -965,10 +965,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>USACO</tag>
-        <tag>缩点</tag>
         <tag>图论</tag>
         <tag>Luogu</tag>
+        <tag>缩点</tag>
+        <tag>USACO</tag>
         <tag>IOI</tag>
         <tag>1996</tag>
       </tags>
@@ -981,11 +981,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
         <tag>BZOJ</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
       </tags>
   </entry>
   <entry>
@@ -996,11 +996,11 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>图论</tag>
+        <tag>Luogu</tag>
         <tag>HAOI</tag>
         <tag>2006</tag>
         <tag>缩点</tag>
-        <tag>图论</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1011,8 +1011,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
@@ -1027,12 +1027,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>CQOI</tag>
         <tag>2016</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1043,12 +1043,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
       </tags>
   </entry>
   <entry>
@@ -1059,12 +1059,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
+        <tag>2010</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>ZJOI</tag>
-        <tag>2010</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1075,9 +1075,9 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
@@ -1091,12 +1091,12 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
         <tag>AHOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1107,10 +1107,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
-        <tag>SCOI</tag>
         <tag>2009</tag>
+        <tag>动态规划</tag>
+        <tag>SCOI</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
       </tags>
@@ -1123,12 +1123,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
+        <tag>2009</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
-        <tag>2009</tag>
         <tag>数位DP</tag>
         <tag>搜索</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1139,8 +1139,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
@@ -1155,12 +1155,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SCOI</tag>
         <tag>搜索</tag>
         <tag>2005</tag>
         <tag>状态压缩</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1171,8 +1171,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
         <tag>BZOJ</tag>
+        <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
@@ -1187,12 +1187,12 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>SHOI</tag>
         <tag>2014</tag>
         <tag>概率期望</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1203,9 +1203,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1216,9 +1216,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1229,9 +1229,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
         <tag>背包问题</tag>
         <tag>CTSC</tag>
         <tag>1997</tag>
@@ -1245,11 +1245,11 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>动态规划</tag>
+        <tag>Luogu</tag>
         <tag>SDOI</tag>
+        <tag>动态规划</tag>
         <tag>2006</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1260,9 +1260,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>动态规划</tag>
         <tag>树形DP</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1298,9 +1298,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>欧拉定理</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1325,10 +1325,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>NOI</tag>
         <tag>2002</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1340,8 +1340,8 @@
       </categories>
       <tags>
         <tag>数论数学</tag>
-        <tag>Codeforces</tag>
         <tag>中国剩余定理</tag>
+        <tag>Codeforces</tag>
       </tags>
   </entry>
   <entry>
@@ -1364,8 +1364,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1377,8 +1377,8 @@
       </categories>
       <tags>
         <tag>BZOJ</tag>
-        <tag>数论数学</tag>
         <tag>SDOI</tag>
+        <tag>数论数学</tag>
         <tag>2012</tag>
       </tags>
   </entry>
@@ -1390,10 +1390,10 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
-        <tag>SDOI</tag>
-        <tag>2012</tag>
         <tag>Luogu</tag>
+        <tag>SDOI</tag>
+        <tag>数论数学</tag>
+        <tag>2012</tag>
       </tags>
   </entry>
   <entry>
@@ -1416,8 +1416,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>数论数学</tag>
         <tag>Luogu</tag>
+        <tag>数论数学</tag>
       </tags>
   </entry>
   <entry>
@@ -1479,10 +1479,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>USACO</tag>
         <tag>2008</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1506,9 +1506,9 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>数论数学</tag>
         <tag>筛法</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1566,8 +1566,8 @@
         <category>problems</category>
       </categories>
       <tags>
-        <tag>线段树</tag>
         <tag>Luogu</tag>
+        <tag>线段树</tag>
       </tags>
   </entry>
   <entry>
@@ -1628,10 +1628,10 @@
         <category>problems</category>
       </categories>
       <tags>
+        <tag>Luogu</tag>
         <tag>2009</tag>
         <tag>数论数学</tag>
         <tag>CQOI</tag>
-        <tag>Luogu</tag>
       </tags>
   </entry>
   <entry>
@@ -1642,8 +1642,8 @@
         <category>notes</category>
       </categories>
       <tags>
-        <tag>距离</tag>
         <tag>数论数学</tag>
+        <tag>距离</tag>
       </tags>
   </entry>
 </search>
