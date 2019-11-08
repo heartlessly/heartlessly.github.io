@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[「Codeforces 1239A」Ivan the Fool and the Probability Theory]]></title>
     <url>%2Fproblems%2Fcodeforces-1239a%2F</url>
-    <content type="text"><![CDATA[Description给定一个 $n \times m$ 的方格图，每个格子可以被染成黑色或白色，且与其相邻的格子（上，下，左，右）中至多只有一个与其颜色相同。求方案数，对 $10^9 + 7$ 取模。 Source[Luogu]CF1239A [Codeforces]1239A Solution先考虑 $n = 1$ 怎么做。 用 $f_{i,0/1}$ 表示填了前 $i$ 个格子，最后一个格子的颜色是白色/黑色的方案数。 初始有 $f_{0,0/1}=f_{1,0/1} = 1$ 。 对于 $f_{i,0}$，可以通过第 $i - 1$ 格填什么颜色转移。如果填的是黑色，则 $f_{i - 1,1}$ 都是合法方案。如果填的是白色，则 $f_{i - 2,1}$ 都是合法方案。 f_{i,0} = f_{i - 1,1} + f_{i - 2,1}一个很显然的性质：$f_{i,0} = f_{i,1}$（把以白色结尾的任意一种合法方案取反，都能得到一种新的以黑色结尾的方案） 所以有 $f_{i,0} = f_{i - 1,0} + f_{i - 2,0}$，且 $f_{i,1} = f_{i,0}$ 。 若我们用 $fib_i$ 表示斐波那契数列的第 $i$ 项，那么 $n = 1$ 时的方案数就是 $f_{m,0} + f_{m,1} = 2fib_m$ 。 对于一行中所有的合法方案，我们再分两种情况： 方案 1：有白色/黑色连续 方案 2：黑白相间（只有两种情况，情况 1 是 010101...，情况 2 是 101010...） 对于方案 1，第一行确定了，接下来的每一行都有且只有一种方案（将上一行取反），方案数为 $2fib_m - 2$ 。 对于方案 2，我们不妨把情况 1 看做白色格子，情况 2 看做黑色格子。 显然在 $m$ 列里，白色格子和黑色格子最多只能连续出现 $2$ 次，那么方案数就和 $n = 1$ 一样了，即 $2fib_{n}$ 。 最终答案就是 $2fib_{n} + 2fib_{m} - 2$ 。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MOD = 1e9 + 7;int n, m, f[MAXN + 5];int main() &#123; read(n), read(m); f[0] = f[1] = 1; for (int i = 2; i &lt;= max(n, m); ++i) f[i] = (f[i - 1] + f[i - 2]) % MOD; write((((f[n] &lt;&lt; 1) % MOD + (f[m] &lt;&lt; 1) % MOD) % MOD - 2 + MOD) % MOD); putchar('\n'); return 0;&#125;]]></content>
+    <content type="text"><![CDATA[Description给定一个 $n \times m$ 的方格图，每个格子可以被染成黑色或白色，且与其相邻的格子（上，下，左，右）中至多只有一个与其颜色相同。求方案数，对 $10^9 + 7$ 取模。 Source[Luogu]CF1239A [Codeforces]1239A Solution先考虑 $n = 1$ 怎么做。 用 $f_{i,0/1}$ 表示填了前 $i$ 个格子，最后一个格子的颜色是白色/黑色的方案数。 初始有 $f_{0,0/1}=f_{1,0/1} = 1$ 。 对于 $f_{i,0}$，可以通过第 $i - 1$ 格填什么颜色转移。如果填的是黑色，则 $f_{i - 1,1}$ 都是合法方案。如果填的是白色，则 $f_{i - 2,1}$ 都是合法方案。 f_{i,0} = f_{i - 1,1} + f_{i - 2,1}一个很显然的性质：$f_{i,0} = f_{i,1}$（把以白色结尾的任意一种合法方案取反，都能得到一种新的以黑色结尾的方案） 所以有 $f_{i,0} = f_{i - 1,0} + f_{i - 2,0}$，且 $f_{i,1} = f_{i,0}$ 。 若我们用 $fib_i$ 表示斐波那契数列的第 $i$ 项，那么 $n = 1$ 时的方案数就是 $f_{m,0} + f_{m,1} = 2fib_m$ 。 对于一行中所有的合法方案，我们再分两种情况： 方案 1：有白色/黑色连续 方案 2：黑白相间（只有两种情况，情况 1 是 010101...，情况 2 是 101010...） 对于方案 1，第一行确定了，接下来的每一行都有且只有一种方案（将上一行取反），方案数为 $2fib_m - 2$ 。 对于方案 2，我们不妨把情况 1 看做白色格子，情况 2 看做黑色格子。 显然在 $n$ 行里，白色格子和黑色格子最多只能连续出现 $2$ 次，那么方案数就和 $n = 1$ 一样了，即 $2fib_{n}$ 。 最终答案就是 $2fib_{n} + 2fib_{m} - 2$ 。 Code12345678910111213141516171819202122232425262728293031323334353637#include &lt;bits/stdc++.h&gt;using namespace std;typedef long long LL;template &lt;class T&gt;inline void read(T &amp;x) &#123; x = 0; char c = getchar(); bool f = 0; for (; !isdigit(c); c = getchar()) f ^= c == '-'; for (; isdigit(c); c = getchar()) x = x * 10 + (c ^ 48); x = f ? -x : x;&#125;template &lt;class T&gt;inline void write(T x) &#123; if (x &lt; 0) &#123; putchar('-'); x = -x; &#125; T y = 1; int len = 1; for (; y &lt;= x / 10; y *= 10) ++len; for (; len; --len, x %= y, y /= 10) putchar(x / y + 48);&#125;const int MAXN = 1e5, MOD = 1e9 + 7;int n, m, f[MAXN + 5];int main() &#123; read(n), read(m); f[0] = f[1] = 1; for (int i = 2; i &lt;= max(n, m); ++i) f[i] = (f[i - 1] + f[i - 2]) % MOD; write((((f[n] &lt;&lt; 1) % MOD + (f[m] &lt;&lt; 1) % MOD) % MOD - 2 + MOD) % MOD); putchar('\n'); return 0;&#125;]]></content>
       <categories>
         <category>problems</category>
       </categories>
@@ -145,8 +145,8 @@
       <tags>
         <tag>BZOJ</tag>
         <tag>线段树</tag>
-        <tag>2016</tag>
         <tag>BJOI</tag>
+        <tag>2016</tag>
         <tag>树状数组</tag>
         <tag>离散化</tag>
       </tags>
@@ -161,8 +161,8 @@
       <tags>
         <tag>Luogu</tag>
         <tag>线段树</tag>
-        <tag>2016</tag>
         <tag>BJOI</tag>
+        <tag>2016</tag>
         <tag>树状数组</tag>
         <tag>离散化</tag>
       </tags>
@@ -356,9 +356,9 @@
       </categories>
       <tags>
         <tag>Luogu</tag>
-        <tag>2012</tag>
         <tag>凸包</tag>
         <tag>计算几何</tag>
+        <tag>2012</tag>
         <tag>SHOI</tag>
       </tags>
   </entry>
